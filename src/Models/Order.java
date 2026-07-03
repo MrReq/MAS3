@@ -28,6 +28,7 @@ public class Order extends ObjectPlus{
     //=========================================================
     private static int counter = 1;
     private final int orderID;
+    private int tableNumber;
     private final OrderType orderType;
     private OrderStatus orderStatus;
     private final LocalDateTime createdAt;
@@ -371,5 +372,28 @@ public class Order extends ObjectPlus{
         }
 
         counter = maxId + 1;
+    }
+
+    public void serveOrder() {
+        if (orderStatus != OrderStatus.READY) {
+            throw new IllegalStateException(
+                    "Only READY orders can be served."
+            );
+        }
+        orderStatus = OrderStatus.SERVED;
+    }
+
+    public static List<Order> getReadyOrders() {
+        List<Order> result = new ArrayList<>();
+        for (Order order : getOrderExtent()) {
+            if (order.getOrderStatus() == OrderStatus.READY) {
+                result.add(order);
+            }
+        }
+        return result;
+    }
+
+    public int getTableNumber() {
+        return tableNumber;
     }
 }

@@ -134,7 +134,7 @@ public class BossProductsPanel extends JPanel {
         editButton.addActionListener(e -> editProduct());
 
         deleteButton.addActionListener(e -> deleteProduct());
-        
+
         manageButton.addActionListener(e -> Boss.manageProducts());
 
     }

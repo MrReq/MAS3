@@ -127,10 +127,38 @@ public class Boss extends Person {
     /**
      * Use Case: Manage Employees
      */
-    public void manageEmployees() {
-
+    public static void manageEmployees() {
+        Employee thBestEmployee = null;
+        float salary = 0;
+        for(Employee employee : Employee.getEmployeeExtent()){
+            if (employee.getEmployeeSalary() > salary){
+                thBestEmployee = employee;
+            }
+        }
         System.out.println("Managing employees...");
+        if (thBestEmployee != null) {
 
+            JOptionPane.showMessageDialog(
+
+                    null,
+
+                    "The best Employee:\n\n" +
+                            "Name: " + thBestEmployee.getPersonName() +
+                            "\nSalary: " + thBestEmployee.getEmployeeSalary() + " zł"
+
+            );
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+
+                    null,
+
+                    "No employees available."
+
+            );
+
+        }
     }
 
     /**

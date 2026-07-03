@@ -1,10 +1,7 @@
 package Views.Employee;
 import Models.Waiter;
 import Views.Loging.LoginSelectionView;
-import Views.Panels.Waiter.WaiterOrdersPanel;
-import Views.Panels.Waiter.WaiterPaymentsPanel;
-import Views.Panels.Waiter.WaiterStatisticsPanel;
-import Views.Panels.Waiter.WaiterTablesPanel;
+import Views.Panels.Waiter.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +11,11 @@ public class WaiterDashboardView extends JFrame {
     private final Waiter loggedWaiter;
 
     private JTabbedPane tabbedPane;
+
+    private WaiterOrdersPanel waiterordersPanel;
+    private WaiterServedOrdersPanel waiterservedOrdersPanel;
+    private WaiterStatisticsPanel statisticsPanel;
+
 
     public WaiterDashboardView(Waiter waiter) {
 
@@ -51,7 +53,12 @@ public class WaiterDashboardView extends JFrame {
 
         tabbedPane.addTab(
                 "Orders",
-                new WaiterOrdersPanel(loggedWaiter)
+                waiterordersPanel
+        );
+
+        tabbedPane.addTab(
+                "Served",
+                waiterservedOrdersPanel
         );
 
         tabbedPane.addTab(
@@ -122,4 +129,9 @@ public class WaiterDashboardView extends JFrame {
 
     }
 
+    public void refreshAllPanels() {
+        waiterordersPanel.reload();
+
+        waiterservedOrdersPanel.reload();
+    }
 }

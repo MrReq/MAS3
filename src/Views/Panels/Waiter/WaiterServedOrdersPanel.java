@@ -2,16 +2,14 @@ package Views.Panels.Waiter;
 
 import Enums.OrderStatus;
 import Models.Order;
+import Models.Product;
 import Models.Waiter;
-import Views.Employee.WaiterDashboardView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class WaiterOrdersPanel extends JPanel {
-
-    private final Waiter loggedWaiter;
+public class WaiterServedOrdersPanel extends JPanel {
 
     private JTable ordersTable;
 
@@ -19,16 +17,10 @@ public class WaiterOrdersPanel extends JPanel {
 
     private JButton refreshButton;
 
-    private JButton serveButton;
+    private final Waiter waiter;
 
-    private JButton detailsButton;
-    private WaiterDashboardView parent;
-
-    public WaiterOrdersPanel(Waiter loggedWaiter, WaiterDashboardView parent  ) {
-
-        this.loggedWaiter = loggedWaiter;
-        this.parent = parent;
-
+    public WaiterServedOrdersPanel(Waiter waiter) {
+        this.waiter = waiter;
         initializeComponents();
 
         initializeLayout();
@@ -52,20 +44,14 @@ public class WaiterOrdersPanel extends JPanel {
                 "Order ID",
                 "Client",
                 "Table",
-                "Status",
+                "Products",
                 "Value"
 
         });
 
         ordersTable = new JTable(tableModel);
 
-        ordersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
         refreshButton = new JButton("Refresh");
-
-        serveButton = new JButton("Serve Order");
-
-        detailsButton = new JButton("Details");
 
     }
 
@@ -77,15 +63,21 @@ public class WaiterOrdersPanel extends JPanel {
 
         setLayout(new BorderLayout());
 
-        add(new JScrollPane(ordersTable), BorderLayout.CENTER);
+        JLabel title = new JLabel(
+                "Served Orders",
+                SwingConstants.CENTER
+        );
+
+        title.setFont(new Font("Arial", Font.BOLD, 22));
+
+        add(title, BorderLayout.NORTH);
+
+        add(new JScrollPane(ordersTable),
+                BorderLayout.CENTER);
 
         JPanel bottom = new JPanel();
 
         bottom.add(refreshButton);
-
-        bottom.add(detailsButton);
-
-        bottom.add(serveButton);
 
         add(bottom, BorderLayout.SOUTH);
 
@@ -99,10 +91,6 @@ public class WaiterOrdersPanel extends JPanel {
 
         refreshButton.addActionListener(e -> refreshTable());
 
-        detailsButton.addActionListener(e -> showDetails());
-
-        serveButton.addActionListener(e -> serveOrder());
-
     }
 
     //=================================================
@@ -115,24 +103,37 @@ public class WaiterOrdersPanel extends JPanel {
 
         for (Order order : Order.getOrderExtent()) {
 
-            if (order.getOrderStatus() != OrderStatus.READY) {
+            if (order.getOrderStatus() != OrderStatus.SERVED) {
                 continue;
+            }
+
+            StringBuilder products = new StringBuilder();
+
+            for (Product product : order.getProducts()) {
+
+                if (products.length() > 0) {
+                    products.append(", ");
+                }
+
+                products.append(product.getProductName());
+
             }
 
             String client = "-";
 
             if (order.getClient() != null) {
+
                 client = order.getClient().getPersonName()
                         + " "
                         + order.getClient().getPeronSurname();
+
             }
 
             tableModel.addRow(new Object[]{
 
                     order.getOrderID(),
                     client,
-                    order.getTableNumber(),
-                    order.getOrderStatus(),
+                    products.toString(),
                     order.countOrderValue()
 
             });
@@ -142,60 +143,8 @@ public class WaiterOrdersPanel extends JPanel {
     }
 
     //=================================================
-    // DETAILS
+    // PUBLIC
     //=================================================
-
-    private void showDetails() {
-
-        int row = ordersTable.getSelectedRow();
-
-        if(row==-1){
-
-            JOptionPane.showMessageDialog(this,"Select order.");
-
-            return;
-
-        }
-
-        JOptionPane.showMessageDialog(
-
-                this,
-
-                "Order ID: "
-                        + tableModel.getValueAt(row,0)
-                        + "\nClient: "
-                        + tableModel.getValueAt(row,1)
-
-        );
-
-    }
-
-    //=================================================
-    // SERVE
-    //=================================================
-
-    private void serveOrder() {
-
-        int row = ordersTable.getSelectedRow();
-
-        if (row == -1) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Select order."
-            );
-
-            return;
-        }
-
-        int orderId = (Integer) tableModel.getValueAt(row, 0);
-
-        Order order = Order.findById(orderId);
-
-        loggedWaiter.serveOrder(order);
-
-        parent.refreshAllPanels();
-    }
 
     public void reload() {
 

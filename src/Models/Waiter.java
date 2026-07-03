@@ -151,6 +151,16 @@ public class Waiter extends Employee {
         );
 
     }
+    public void serveOrder(Order order) {
+
+        if (order == null) {
+            throw new IllegalArgumentException(
+                    "Order cannot be null."
+            );
+        }
+
+        order.serveOrder();
+    }
 
     private int calculateAverageGrade() {
 

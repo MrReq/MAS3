@@ -27,14 +27,15 @@ public class ManageEmployeesView extends JPanel {
     private JButton removeButton;
 
     private JButton refreshButton;
+    private JButton manageEmployeesButton;
 
     //=================================================
     // CONSTRUCTOR
     //=================================================
 
-    public ManageEmployeesView(Boss boss) {
+    public ManageEmployeesView(Boss loggedBoss) {
 
-        this.loggedBoss = boss;
+        this.loggedBoss = loggedBoss;
 
         initializeComponents();
 
@@ -85,6 +86,8 @@ public class ManageEmployeesView extends JPanel {
 
         refreshButton = new JButton("Refresh");
 
+        manageEmployeesButton = new JButton("Manage Employees");
+
     }
 
     //=================================================
@@ -112,6 +115,7 @@ public class ManageEmployeesView extends JPanel {
         buttons.add(editButton);
         buttons.add(removeButton);
         buttons.add(refreshButton);
+        buttons.add(manageEmployeesButton);
 
         add(buttons, BorderLayout.SOUTH);
 
@@ -130,6 +134,8 @@ public class ManageEmployeesView extends JPanel {
         editButton.addActionListener(e -> editEmployee());
 
         removeButton.addActionListener(e -> removeEmployee());
+
+        manageEmployeesButton.addActionListener(e -> Boss.manageEmployees());
 
     }
 
