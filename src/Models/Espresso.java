@@ -1,8 +1,6 @@
 package Models;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import Enums.CoffeeCountry;
 import Enums.TemperatureOfTheService;
 import Interfaces.Preparable;
@@ -21,29 +19,33 @@ public class Espresso extends Coffee  implements Preparable {
     public String toString() {
         return "Espresso: " + productName + ", id: " + super.toString();
     }
-    private static List<Espresso> extent = new ArrayList<>();
-    private static void addEspresso(Espresso espresso) {
-        extent.add(espresso);
-    }
-    private static void removeEspresso(Espresso espresso) {
-        extent.remove(espresso);
-    }
-    public static void showExtent() {
-        System.out.println("Extent of the class: " + Espresso.class.getName());
-        for (Espresso espresso : extent) {
-            System.out.println(espresso);
-        }
-    }
     //EXTENT SESSION END
     //FIELDS SESSION START
-
+    int shotOfEspressoCount;
+    int extractionTime;
+    double presure;
     //FIELDS SESSION END
     //CONSTRUCTORS, GETTERS, SETTERS SESSION START
     public Espresso(String name, float cost, boolean availability, String description
             , TemperatureOfTheService temperatureOfService, CoffeeCountry coffeeCountry) {
         super(name, cost, availability, description, temperatureOfService, coffeeCountry);
     }
+    public Espresso(String name, float cost, boolean availability, String description
+            , TemperatureOfTheService temperatureOfService, CoffeeCountry coffeeCountry, int shotOfEspressoCount
+            , int extractionTime, double presure) {
+        super(name, cost, availability, description, temperatureOfService, coffeeCountry);
+        this.shotOfEspressoCount = shotOfEspressoCount;
+        this.extractionTime = extractionTime;
+        this.presure = presure;
+    }
+
+    @Override
+    public String countPowerOfCoffee() {
+        return "Power of this coffee is "+shotOfEspressoCount*presure/extractionTime;
+    }
     //CONSTRUCTORS, GETTERS, SETTERS SESSION END
     //METHODS SESSION START
     //METHODS SESSION END
+
+
 }

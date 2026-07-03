@@ -52,6 +52,17 @@ public class CafeLatte extends Coffee implements Preparable {
             , TemperatureOfTheService temperatureOfService, CoffeeCountry coffeeCountry) {
         super(name, cost, availability, description, temperatureOfService, coffeeCountry);
     }
+
+    public CafeLatte(String name, float cost, boolean availability, String description
+            , TemperatureOfTheService temperatureOfService, CoffeeCountry coffeeCountry,TypeOfMilk typeOfMilk,
+                     double milkAmount,double milkFoamLevel,int espressoShotCount) {
+        super(name, cost, availability, description, temperatureOfService, coffeeCountry);
+        this.typeOfMilk =typeOfMilk;
+        this.milkAmount = milkAmount;
+        this.milkFoamLevel = milkFoamLevel;
+        this.espressoShotCount = espressoShotCount;
+
+    }
     //CONSTRUCTORS, GETTERS, SETTERS SESSION END
 
     //METHODS SESSION START

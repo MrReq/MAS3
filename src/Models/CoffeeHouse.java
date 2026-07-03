@@ -33,25 +33,25 @@ public class CoffeeHouse extends ObjectPlus {
     //FIELDS SESSION START
     /**Simple, Single, Required, Object, Concrete Attribute "CoffeeHouseID" typed {@linkplain Integer}
      */
-    int coffeeHouseID;
+    private int coffeeHouseID;
     /**Simple, Single, Required, Object, Concrete Attribute "coffeeHouseName" typed {@linkplain String}
      */
-    String coffeeHouseName;
+    private String coffeeHouseName;
     /**Simple, Single, Required, Object, Concrete Attribute "coffeeHouseAddress" typed {@linkplain String}
      */
-    String coffeeHouseAddress;
+    private String coffeeHouseAddress;
     /**Complex, Repeatable, Optional, Object, Concrete Attribute "coffeeHousePhoneNumberList" typed {@linkplain List}
      */
-    List<Long> coffeeHousePhoneNumberList;
+    private List<Long> coffeeHousePhoneNumberList;
     /**Simple, Single, Required, Class, Concrete Attribute "openingTime" typed {@linkplain String}
      */
-    static String openingTime = "8:00";
+    public static String openingTime = "8:00";
     /**Simple, Single, Required, Class, Concrete Attribute "closingTime" typed {@linkplain String}
      */
-    static String closingTime = "20:00";
+    public static String closingTime = "20:00";
     /**Simple, Single, Required, Class, Concrete Attribute "howManyWorkersMax" typed {@linkplain Byte}
      */
-    static byte howManyWorkersMax = 9;
+    public static byte howManyWorkersMax = 9;
     public CoffeeHouse() {
         System.out.println("Its just default CoffeeHouse");
     }

@@ -32,6 +32,7 @@ public class Order extends ObjectPlus{
     //=========================================================
     private static int counter = 1;
     private final int orderID;
+    private Preparation preparation;
     private int tableNumber;
     private final OrderType orderType;
     private OrderStatus orderStatus;
@@ -179,6 +180,10 @@ public class Order extends ObjectPlus{
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    public Preparation getPreparation() {
+        return preparation;
+    }
     //=========================================================
     // BUSINESS METHODS
     //=========================================================
@@ -250,6 +255,11 @@ public class Order extends ObjectPlus{
         }
         this.orderStatus = status;
     }
+
+    public void setPreparation(Preparation preparation) {
+        this.preparation = preparation;
+    }
+
     /**
      * Returns true if order is completed.
      */
@@ -262,79 +272,36 @@ public class Order extends ObjectPlus{
     public boolean isCancelled() {
         return orderStatus == OrderStatus.CANCELLED;
     }
-    /**
-     * Returns true if order is currently being prepared.
-     */
-    public boolean isPreparing() {
-        return orderStatus == OrderStatus.PREPARING;
-    }
-    /**
-     * Returns true if order is ready.
-     */
-    public boolean isReady() {
-        return orderStatus == OrderStatus.READY;
-    }
-    /**
-     * Returns true if order has been accepted.
-     */
-    public boolean isAccepted() {
-        return orderStatus == OrderStatus.ACCEPTED;
-    }
-    /**
-     * Returns true if order is new.
-     */
     public boolean isNew() {
-
         return orderStatus == OrderStatus.NEW;
-
     }
-
-//Static methods
-
-    /**
-     * Returns all active orders.
-     */
     public static List<Order> getActiveOrders() {
         return getOrderExtent().stream()
                 .filter(order -> !order.isCompleted())
                 .filter(order -> !order.isCancelled())
                 .toList();
     }
-
     public static List<Order> getPreparingOrders() {
         return getOrderExtent().stream()
                 .filter(order -> order.getOrderStatus() == OrderStatus.PREPARING)
                 .toList();
     }
-
     public static List<Order> getNewOrders() {
         return getOrderExtent().stream().filter(order -> order.getOrderStatus() == OrderStatus.NEW).toList();
     }
-
-    /**
-     * Returns all completed orders.
-     */
     public static List<Order> getCompletedOrders() {
         return getOrderExtent().stream()
                 .filter(Order::isCompleted)
                 .toList();
     }
-
-    /**
-     * Returns total income.
-     */
     public static double calculateTotalIncome() {
         return getOrderExtent().stream()
                 .mapToDouble(Order::countOrderValue)
                 .sum();
     }
-    /**
-     * Returns total number of ordered products.
-     */
     public int getNumberOfProducts() {
         return products.size();
     }
-
     public static Order findById(int orderID) {
         System.out.println("Searching for order ID = " + orderID);
         System.out.println("Orders in extent: " + getOrderExtent().size());
@@ -348,7 +315,6 @@ public class Order extends ObjectPlus{
         System.out.println("NOT FOUND");
         return null;
     }
-
     @Override
     public String toString() {
 

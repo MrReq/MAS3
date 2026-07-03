@@ -9,7 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-public abstract class Coffee extends Drink implements Preparable {
+public abstract class Coffee extends Drink  {
     private static final long serialVersionUID = 1L;
     //EXTENT SESSION
     /** Extent session contains:
@@ -25,7 +25,6 @@ public abstract class Coffee extends Drink implements Preparable {
     }
     CoffeeCountry coffeeCountry;
     double power;
-    double waterToCoffeeRatio;
     public Coffee() {
         super();
     }
@@ -35,14 +34,6 @@ public abstract class Coffee extends Drink implements Preparable {
         this.coffeeCountry=coffeeCountry;
 
     }
-    public String countPowerOfCoffee(){
-        if (this.coffeeCountry== CoffeeCountry.Arabia){
-            this.power =  (1 - waterToCoffeeRatio + 0.3);
-        }else if(this.coffeeCountry== CoffeeCountry.Kenia){
-            this.power =  (1 - waterToCoffeeRatio + 0.38);
-        }else {
-            this.power =  (1 - waterToCoffeeRatio + 0.17);
-        }
-        return "Power of the coffee is "+power;
-    }
+    public abstract String countPowerOfCoffee();
+
 }

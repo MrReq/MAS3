@@ -156,4 +156,7 @@ public class Client extends Person {
                 OrderType.Liquid
         );
     }
+    public int countOrders() {
+        return getOrders().size() - 1;
+    }
 }

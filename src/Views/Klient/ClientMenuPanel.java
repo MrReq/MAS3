@@ -10,8 +10,10 @@ public class ClientMenuPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JButton refreshButton;
     private JButton addToCartButton;
-    public ClientMenuPanel(Client loggedClient) {
+    private ClientDashboardView parent;
+    public ClientMenuPanel(Client loggedClient, ClientDashboardView parent) {
         this.loggedClient = loggedClient;
+        this.parent = parent;
         initializeComponents();
         initializeLayout();
         initializeListeners();
@@ -93,6 +95,7 @@ public class ClientMenuPanel extends JPanel {
         loggedClient.getShoppingCart().addProduct(selectedProduct);
         JOptionPane.showMessageDialog(this, "Product added to shopping cart."
         );
+        parent.refreshAllPanels();
     }
     public void reload() {
         refreshTable();

@@ -12,48 +12,22 @@ public class Delivery extends ObjectPlus {
      * <br>Private Static method "removeDelivery" which removes instance of {@linkplain Delivery} from extent collection</br>
      * <br>Public Static method "showExtent" which displays all instances of {@linkplain Delivery} line by line.</br>
      */
-//    @Override
-//    public String toString() {
-//        return "Delivery: " + deliveryID;
-//    }
-    private static List<Delivery> extent = new ArrayList<>();
-    private static void addDelivery(Delivery delivery) {
-        extent.add(delivery);
+    // EXTENT
+    @SuppressWarnings("unchecked")
+    public static List<Delivery> getDeliveryExtent() {
+        return (List<Delivery>) (List<?>) ObjectPlus.getExtent(Delivery.class);
     }
-    private static void removeDelivery(Delivery delivery) {
-        extent.remove(delivery);
-    }
-    public static void showExtent() {
-        System.out.println("Extent of the class: " + Delivery.class.getName());
-        for (Delivery delivery : extent) {
-            System.out.println(delivery);
-        }
-    }
-    //EXTENT SESSION END
-    //FIELDS SESSION START
-    /**Simple, Single, Required, Class, Concrete Attribute "counter" typed {@linkplain Integer}
-     */
     private static int counter = 1;
-    /**Simple, Single, Required, Object, Concrete Attribute "deliveryID" typed {@linkplain Integer}
-     */
     int deliveryID;
-    /**Simple, Single, Required, Object, Concrete Attribute "clientID" typed {@linkplain Integer}
-     */
-//    int clientID;
-//    /**Simple, Single, Required, Object, Concrete Attribute "orderID" typed {@linkplain Integer}
-//     */
-//    int orderID;
-    //FIELDS SESSION END
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION START
-    public Delivery(Order order) {
-        this.order = order;
+    private Order order;
+    private Delivery(Order order) {
+        if (order == null) {
+            throw new IllegalArgumentException(
+                    "Order cannot be null."
+            );
+        }
         this.deliveryID = counter++;
-//        this.clientID = clientID;
-//        this.orderID = orderID;
-    }
-    public Delivery(){
-        this.deliveryID = counter;
-        counter++;
+        this.order = order;
     }
     static Delivery create(Order order) {
         if (order == null) {
@@ -61,11 +35,6 @@ public class Delivery extends ObjectPlus {
         }
         return new Delivery(order);
     }
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION END
-    //METHODS SESSION START
-    //METHODS SESSION END
-    //COMPOSITION
-    private Order order;
     public void setOrder(Order o) {
         if (this.order == o) return;
         this.order = o;
@@ -80,17 +49,5 @@ public class Delivery extends ObjectPlus {
     public String toString() {
         return "Delivery: " + deliveryID +
                 (order != null ? ", order=" + order.getOrderID() : ", NO ORDER");
-    }
-
-    public void assignOrder(Order order){
-
-        setOrder(order);
-
-    }
-
-    public static Delivery registerDelivery(Order order){
-
-        return Delivery.create(order);
-
     }
 }

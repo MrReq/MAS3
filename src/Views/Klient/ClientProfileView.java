@@ -72,8 +72,7 @@ public class ClientProfileView extends JPanel {
         birthDateLabel.setText(loggedClient.getPersonDateOfBirth().toString());
         sexLabel.setText(loggedClient.getPersonSex().toString());
         clubCardLabel.setText(loggedClient.hasClubCard() ? "Yes" : "No");
-        ordersLabel.setText(String.valueOf(loggedClient.getOrders().size())
-        );
+        ordersLabel.setText(String.valueOf(loggedClient.countOrders()));
     }
 
     public void reload(){

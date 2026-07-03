@@ -36,7 +36,7 @@ public class Americano extends Coffee implements Preparable {
     double waterToCoffeeRatio;
     /**Simple, Single, Required, Object, Concrete, Attribute "power" typed {@linkplain Double}
      */
-    double power;
+
 //    public Americano() {
 //        super();
 //    }

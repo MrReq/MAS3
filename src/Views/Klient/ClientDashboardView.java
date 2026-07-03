@@ -15,8 +15,8 @@ public class ClientDashboardView extends JFrame {
 
     public ClientDashboardView(Client client) {
         this.loggedClient = client;
-        clientmenuPanel = new ClientMenuPanel(loggedClient);
-        clientShoppingCartView = new ClientShoppingCartView(loggedClient);
+        clientmenuPanel = new ClientMenuPanel(loggedClient,this);
+        clientShoppingCartView = new ClientShoppingCartView(loggedClient,this);
         clientProfileView = new ClientProfileView(loggedClient);
         clientOrderHistoryView = new ClientOrderHistoryPanel(loggedClient);
         initializeFrame();

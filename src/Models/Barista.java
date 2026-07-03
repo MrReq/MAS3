@@ -63,6 +63,11 @@ public class Barista extends Employee {
             order.acceptOrder();
         }
     public void startPreparing(Order order){
+        Preparation preparation =
+                new Preparation(this, order);
+
+        order.setPreparation(preparation);
+
         order.startPreparation();
     }
     public void prepareDrink(Drink drink) {

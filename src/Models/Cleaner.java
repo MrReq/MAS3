@@ -34,31 +34,24 @@ public class Cleaner extends Employee {
     /**Simple, Single, Required, Object, Concrete Attribute "assignedArea" typed {@linkplain String}
      */
     String assignedArea;
-    //FIELDS SESSION END
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION START
+    //CONSTRUCTORS
     public Cleaner(String name, String surname, LocalDate dateOfBirth, Sex sex, Shift shift, String assignedArea, float salary) {
         super(name, surname, dateOfBirth, sex, salary);
         this.shift = shift;
         this.assignedArea = assignedArea;
     }
+    //GETERS
     public Shift getShift() {
         return shift;
     }
-
-    public void setShift(Shift shift) {
-        this.shift = shift;
-    }
-
     public String getAssignedArea() {
         return assignedArea;
     }
-
+    //SETERS
     public void setAssignedArea(String assignedArea) {
         this.assignedArea = assignedArea;
     }
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION END
-
-
-    //METHODS SESSION START
-    //METHODS SESSION END
+    public void setShift(Shift shift) {
+        this.shift = shift;
+    }
 }

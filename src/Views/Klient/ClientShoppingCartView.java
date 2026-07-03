@@ -15,9 +15,11 @@ public class ClientShoppingCartView extends JPanel {
     private JButton refreshButton;
     private JButton removeButton;
     private JButton placeOrderButton;
+    private ClientDashboardView parent;
 
-    public ClientShoppingCartView(Client loggedClient) {
+    public ClientShoppingCartView(Client loggedClient, ClientDashboardView parent) {
         this.loggedClient = loggedClient;
+        this.parent = parent;
         initializeComponents();
         initializeLayout();
         initializeListeners();
@@ -102,6 +104,7 @@ public class ClientShoppingCartView extends JPanel {
         System.out.println("========== CLIENT ORDERS ==========");
         for (Order order : loggedClient.getOrders())
             System.out.println("ID = " + order.getOrderID() + " STATUS = " + order.getOrderStatus() + " PRODUCTS = " + order.getProducts().size());
+        parent.refreshAllPanels();
     }
     public void reload() {
         refreshTable();

@@ -2,8 +2,8 @@ package Views.Barista;
 import Enums.OrderStatus;
 import Models.Barista;
 import Models.Order;
+import Models.Preparation;
 import Models.Product;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -15,6 +15,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
     private JButton startPreparationButton;
     private JButton finishPreparationButton;
     private BaristaDashboardView parent;
+    private Preparation preparation;
     public BaristaPrepareCoffeePanel(Barista loggedBarista, BaristaDashboardView parent) {
         this.loggedBarista = loggedBarista;
         this.parent = parent;
@@ -26,7 +27,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
     // COMPONENTS
     private void initializeComponents() {
         tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"Order ID", "Products", "Quantity", "Temperature", "Status"});
+        tableModel.setColumnIdentifiers(new String[]{"Order ID", "Person Name","Products", "Quantity", "Price", "StartTime","PreparationTime","My Barista's Name", "Status"});
         coffeeTable = new JTable(tableModel);
         coffeeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         coffeeTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -57,30 +58,30 @@ public class BaristaPrepareCoffeePanel extends JPanel {
     private void refreshTable() {
         tableModel.setRowCount(0);
         for (Order order : Order.getOrderExtent()) {
-            if (order.getOrderStatus() == OrderStatus.PREPARING) {
-                String products = "";
-                for (Product product : order.getProducts()) {
-                    if (!products.isEmpty())
-                        products += ", ";
-                    products += product.getProductName();
-                }
-                String temperature = "-";
-                if (!order.getProducts().isEmpty()) {
-                    Product firstProduct = order.getProducts().get(0);
-                    if (firstProduct.getTemperatureOfTheService() != null) {
-                        temperature = firstProduct
-                                .getTemperatureOfTheService()
-                                .toString();
-                    }
-                }
-                tableModel.addRow(new Object[]{
-                        order.getOrderID(),
-                        products,
-                        order.getProducts().size(),
-                        temperature,
-                        order.getOrderStatus()
-                });
+            // Przykład - wyświetlamy tylko ACCEPTED
+            if (order.getOrderStatus() != OrderStatus.ACCEPTED)
+                continue;
+            String clientName = "-";
+            if (order.getClient() != null) {
+                clientName = order.getClient().getPersonName()
+                        + " "
+                        + order.getClient().getPeronSurname();
             }
+            String productsText;
+            if (order.getProducts().isEmpty())
+                productsText = "No products";
+             else {
+                StringBuilder builder = new StringBuilder();
+                for (Product product : order.getProducts()) {
+                    if (builder.length() > 0)
+                        builder.append(", ");
+                    builder.append(product.getProductName());
+                }
+                productsText = builder.toString();
+            }
+            tableModel.addRow(new Object[]{order.getOrderID(), clientName, productsText, order.getProducts().size(),
+                    order.countOrderValue()
+            });
         }
     }
     // START PREPARATION
@@ -90,8 +91,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Please select coffee.");
             return;
         }
-        tableModel.setValueAt("Preparing", row, 4
-        );
+        tableModel.setValueAt("Preparing", row, 4);
         JOptionPane.showMessageDialog(this, "Coffee preparation started.");
     }
     // FINISH PREPARATION
@@ -107,7 +107,5 @@ public class BaristaPrepareCoffeePanel extends JPanel {
         JOptionPane.showMessageDialog(this, "Coffee is ready to serve.");
         parent.refreshAllPanels();
     }
-    public void reload() {
-        refreshTable();
-    }
+    public void reload() {refreshTable();}
 }
