@@ -66,7 +66,7 @@ public class BaristaMenuPanel extends JPanel {
         setLayout(new BorderLayout());
 
         JLabel title = new JLabel(
-                "Coffee House Menu",
+                "Coffee House Menu (BaristaMenuPanel)",
                 SwingConstants.CENTER
         );
 

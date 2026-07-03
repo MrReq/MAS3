@@ -3,11 +3,12 @@ package Models;
 import Enums.CoffeeCountry;
 import Enums.TemperatureOfTheService;
 import Enums.TypeOfMilk;
+import Interfaces.Preparable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CafeLatte extends Coffee {
+public class CafeLatte extends Coffee implements Preparable {
     public CafeLatte() {
     }
     //EXTENT SESSION
@@ -100,6 +101,11 @@ public class CafeLatte extends Coffee {
     @Override
     public String countPowerOfCoffee() {
         return "To kawa z mlekiem ona nie jest mocna ;)";
+    }
+
+    @Override
+    public void prepare() {
+        System.out.println("Steaming milk and preparing Cafe Latte...");
     }
     //METHODS SESSION END
 }

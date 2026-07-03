@@ -14,47 +14,61 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
+
+        final String FILE_NAME = "extents.dat";
+
+        File file = new File(FILE_NAME);
+
         try {
-            ObjectPlus.loadExtents("data/extents.dat");
-        } catch (Exception ignored) {
-            System.out.println("First application start.");
+
+            if (file.exists() && file.length() > 0) {
+
+                ObjectPlus.loadExtents(FILE_NAME);
+
+                System.out.println("Extents loaded.");
+
+            } else {
+
+                System.out.println("First application start.");
+
+                generateSampleData();
+
+                ObjectPlus.saveExtents(FILE_NAME);
+
+                System.out.println("Sample data generated.");
+
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
+
+            e.printStackTrace();
+
         }
 
         Runtime.getRuntime().addShutdownHook(
                 new Thread(() -> {
+
                     try {
-                        ObjectPlus.saveExtents("data/extents.dat");
+
+                        ObjectPlus.saveExtents(FILE_NAME);
+
                         System.out.println("All extents saved.");
-                    } catch (Exception e) {
+
+                    } catch (IOException e) {
+
                         e.printStackTrace();
+
                     }
+
                 })
         );
-        File file = new File("extents.dat");
-        try {
-            if (file.exists() && file.length() > 0) {
-                ObjectPlus.loadExtents("extents.dat");
-                System.out.println("Orders: " + Order.getOrderExtent().size());
-                System.out.println("Registered classes: " + ObjectPlus.getRegisteredClasses());
-                // Jeżeli plik był pusty lub nie zawiera żadnych zamówień
-                if (Order.getOrderExtent().isEmpty()) {
-                    generateSampleData();
-                    ObjectPlus.saveExtents("extents.dat");
-                }
-            } else {
-                generateSampleData();
-                ObjectPlus.saveExtents("extents.dat");
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
         SwingUtilities.invokeLater(() ->
                 new LoginSelectionView().setVisible(true)
         );
     }
     private static void generateSampleData() {
-
+        System.out.println("=== GENERATING SAMPLE DATA ===");
         //=================================================
         // CLIENTS
         //=================================================
@@ -147,5 +161,8 @@ public class Main {
 
         order5.cancelOrder();
 
+        System.out.println("Orders: " + Order.getOrderExtent().size());
+        System.out.println("Clients: " + Client.getClientExtent().size());
+        System.out.println("Products: " + Product.getExtent().size());
     }
 }

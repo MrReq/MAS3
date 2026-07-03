@@ -4,6 +4,7 @@ import Enums.OrderStatus;
 import Models.Barista;
 import Models.Order;
 import Models.Product;
+import Views.Employee.BaristaDashboardView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -22,8 +23,11 @@ public class BaristaOrdersPanel extends JPanel {
     private JButton prepareButton;
 
     private JButton detailsButton;
+    private JButton acceptOrderButton;
 
-    public BaristaOrdersPanel(Barista loggedBarista) {
+    private final BaristaDashboardView parent;
+
+    public BaristaOrdersPanel(Barista loggedBarista, BaristaDashboardView parent) {
 
         this.loggedBarista = loggedBarista;
 
@@ -32,6 +36,8 @@ public class BaristaOrdersPanel extends JPanel {
         initializeLayout();
 
         initializeListeners();
+
+        this.parent = parent;
 
         refreshTable();
 
@@ -59,12 +65,14 @@ public class BaristaOrdersPanel extends JPanel {
         ordersTable.setSelectionMode(
                 ListSelectionModel.SINGLE_SELECTION
         );
+        acceptOrderButton = new JButton("Accept");
 
         refreshButton = new JButton("Refresh back to the start");
 
         prepareButton = new JButton("Prepare Order");
 
         detailsButton = new JButton("Details");
+
 
     }
 
@@ -90,11 +98,14 @@ public class BaristaOrdersPanel extends JPanel {
 
         JPanel bottomPanel = new JPanel();
 
+        bottomPanel.add(acceptOrderButton);
+
         bottomPanel.add(refreshButton);
 
         bottomPanel.add(detailsButton);
 
         bottomPanel.add(prepareButton);
+
 
         add(bottomPanel,
                 BorderLayout.SOUTH);
@@ -106,6 +117,11 @@ public class BaristaOrdersPanel extends JPanel {
     //=================================================
 
     private void initializeListeners() {
+
+        acceptOrderButton.addActionListener(e ->
+        {
+            acceptOrder();
+        });
 
         refreshButton.addActionListener(
                 e -> refreshTable()
@@ -229,7 +245,89 @@ public class BaristaOrdersPanel extends JPanel {
 
         loggedBarista.startPreparing(order);
 
+        parent.refreshAllPanels();
+    }
+
+    public void acceptOrder(Order order) {
+
+        if(order == null){
+
+            throw new IllegalArgumentException(
+                    "Order cannot be null."
+            );
+
+        }
+
+        //------------------------------------------------
+        // Check availability
+        //------------------------------------------------
+        for(Product product : order.getProducts()){
+            if(!product.isProductAvailability()){
+                throw new IllegalStateException(
+                        "Some products are unavailable."
+                );
+            }
+        }
+        order.acceptOrder();
+    }
+
+    public void reload() {
         refreshTable();
+    }
+
+    private void acceptOrder() {
+
+        int row = ordersTable.getSelectedRow();
+
+        if(row == -1){
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Select order."
+            );
+
+            return;
+
+        }
+
+        int orderId =
+                (Integer) tableModel.getValueAt(row,0);
+
+        Order order =
+                Order.findById(orderId);
+
+        try{
+
+            loggedBarista.acceptOrder(order);
+
+            JOptionPane.showMessageDialog(
+
+                    this,
+
+                    "Order accepted."
+
+            );
+
+            refreshTable();
+
+        }
+
+        catch(Exception ex){
+
+            JOptionPane.showMessageDialog(
+
+                    this,
+
+                    ex.getMessage(),
+
+                    "Error",
+
+                    JOptionPane.ERROR_MESSAGE
+
+            );
+
+        }
+
     }
 
 }

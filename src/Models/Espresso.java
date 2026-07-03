@@ -5,7 +5,9 @@ import java.util.List;
 
 import Enums.CoffeeCountry;
 import Enums.TemperatureOfTheService;
-public class Espresso extends Coffee {
+import Interfaces.Preparable;
+
+public class Espresso extends Coffee  implements Preparable {
     //EXTENT SESSION
     /** Extent session contains:
      * <br>to String method</br>

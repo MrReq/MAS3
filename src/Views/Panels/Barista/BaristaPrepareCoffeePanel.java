@@ -80,7 +80,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
         setLayout(new BorderLayout());
 
         JLabel title = new JLabel(
-                "Coffee Preparation",
+                "Coffee Preparation (BaristaPrepareCoffeePanel)",
                 SwingConstants.CENTER
         );
 
@@ -253,6 +253,10 @@ public class BaristaPrepareCoffeePanel extends JPanel {
                 "Coffee is ready to serve."
 
         );
+        refreshTable();
+    }
+
+    public void reload() {
         refreshTable();
     }
 

@@ -11,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BaristaDashboardView extends JFrame {
+    private BaristaOrdersPanel ordersPanel;
+    private BaristaPrepareCoffeePanel prepareCoffeePanel;
 
     private final Barista loggedBarista;
 
@@ -25,6 +27,10 @@ public class BaristaDashboardView extends JFrame {
         initializeComponents();
 
         initializeLayout();
+
+        ordersPanel = new BaristaOrdersPanel(loggedBarista, this);
+        prepareCoffeePanel = new BaristaPrepareCoffeePanel(loggedBarista);
+
 
     }
 
@@ -52,7 +58,7 @@ public class BaristaDashboardView extends JFrame {
 
         tabbedPane.addTab(
                 "Orders",
-                new BaristaOrdersPanel(loggedBarista)
+                new BaristaOrdersPanel(loggedBarista, this)
         );
 
         tabbedPane.addTab(
@@ -120,6 +126,14 @@ public class BaristaDashboardView extends JFrame {
         panel.add(logoutButton, BorderLayout.EAST);
 
         return panel;
+
+    }
+
+    public void refreshAllPanels() {
+
+        ordersPanel.reload();
+
+        prepareCoffeePanel.reload();
 
     }
 

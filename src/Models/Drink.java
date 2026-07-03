@@ -2,6 +2,7 @@ package Models;
 
 import Enums.Size;
 import Enums.TemperatureOfTheService;
+import Interfaces.Preparable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Drink extends Product {
+public class Drink extends Product implements Preparable {
     //EXTENT SESSION
     /** Extent session contains:
      * <br>to String method</br>

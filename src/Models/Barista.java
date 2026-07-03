@@ -151,11 +151,36 @@ public class Barista extends Employee {
 
     }
 
-    public void acceptOrder(Order order){
+    public void acceptOrder(Order order) {
+
+        if(order == null){
+
+            throw new IllegalArgumentException(
+                    "Order cannot be null."
+            );
+
+        }
+
+        //------------------------------------------------
+        // Check availability
+        //------------------------------------------------
+
+        for(Product product : order.getProducts()){
+
+            if(!product.isProductAvailability()){
+
+                throw new IllegalStateException(
+                        "Some products are unavailable."
+                );
+
+            }
+
+        }
 
         order.acceptOrder();
 
     }
+
 
     public void startPreparing(Order order){
 
@@ -163,8 +188,12 @@ public class Barista extends Employee {
 
     }
 
-    public void prepareDrink(Product product){
-        product.prepare();
+    public void prepareDrink(Drink drink) {
+        if (drink == null) {
+            throw new IllegalArgumentException("Drink cannot be null.");
+        }
+        System.out.println("Preparing " + drink.getProductName() + "...");
+        drink.prepare();
     }
 
     public void markOrderAsReady(Order order) {

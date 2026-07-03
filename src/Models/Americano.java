@@ -2,6 +2,7 @@ package Models;
 
 import Enums.CoffeeCountry;
 import Enums.TemperatureOfTheService;
+import Interfaces.Preparable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Americano extends Coffee {
+public class Americano extends Coffee implements Preparable {
     public Americano(String name, float price, boolean available, String description, TemperatureOfTheService temperature) {
     }
 
@@ -116,6 +117,11 @@ public class Americano extends Coffee {
             this.power =  (1 - waterToCoffeeRatio + 0.17);
         }
         return "Power of the coffee is "+power;
+    }
+
+    @Override
+    public void prepare() {
+        System.out.println("Brewing Americano...");
     }
     //METHODS SESSION END
 }

@@ -2,13 +2,14 @@ package Models;
 
 import Enums.CoffeeCountry;
 import Enums.TemperatureOfTheService;
+import Interfaces.Preparable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-public abstract class Coffee extends Drink {
+public abstract class Coffee extends Drink implements Preparable {
     //EXTENT SESSION
     /** Extent session contains:
      * <br>to String method</br>
