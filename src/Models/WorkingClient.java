@@ -1,11 +1,8 @@
 package Models;
-
 import Enums.Sex;
 import Interfaces.IClient;
-
 import java.time.LocalDate;
 import java.util.Random;
-
 public class WorkingClient extends Employee implements IClient {
     private static final long serialVersionUID = 1L;
     Client client;
@@ -13,10 +10,6 @@ public class WorkingClient extends Employee implements IClient {
         super(firstName, lastName, birthDate, sex,  salary);
         client = new Client(null,null,null,null,hasClubCard);
     }
-//    public WorkingClient(String firstName, String lastName, LocalDate birthDate, Sex sex, float salary, int[] coffeeHouseIDs, boolean hasClubCard) {
-//        super(firstName, lastName, birthDate, sex, salary, coffeeHouseIDs);
-//        client = new Client(null,null,null,null,null,hasClubCard);
-//    }
     @Override
     public String toString() {
         return "I am the Working client";

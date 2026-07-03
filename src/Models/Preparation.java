@@ -1,68 +1,63 @@
 package Models;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
+import SecondaryClasses.ObjectPlus;
+import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
-
-public class Preparation {
+public class Preparation extends ObjectPlus implements Serializable {
     private static final long serialVersionUID = 1L;
-    //EXTENT SESSION
+    // ATTRIBUTES
+
+    private Barista barista;
+    private Order order;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    // CONSTRUCTOR
+
+    public Preparation(Barista barista, Order order) {
+        if (barista == null) {
+            throw new IllegalArgumentException("Barista cannot be null.");
+        }
+        if (order == null) {
+            throw new IllegalArgumentException("Order cannot be null.");
+        }
+        this.barista = barista;
+        this.order = order;
+        this.startTime = LocalDateTime.now();
+    }
+    // EXTENT
+
+    @SuppressWarnings("unchecked")
+    public static List<Preparation> getPreparationExtent() {
+        return (List<Preparation>)(List<?>) ObjectPlus.getExtent(Preparation.class);
+
+    }
+    // BUSINESS METHODS
+
+    public void finishPreparation() {endTime = LocalDateTime.now();}
+    public Duration getPreparationTime() {
+        if (endTime == null) {
+            return Duration.between(startTime, LocalDateTime.now());
+        }
+        return Duration.between(startTime, endTime);
+    }
+    // GETTERS
+    public Barista getBarista() {
+        return barista;
+    }
+    public Order getOrder() {
+        return order;
+    }
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+    // OBJECT METHODS
     @Override
     public String toString() {
-        return "Preparation: " + preparationID;
+        return "Preparation{" + "barista=" + barista.getPersonName() +
+                ", order=" + order.getOrderID() + ", started=" + startTime + ", finished=" + endTime + '}';
     }
-    private static List<Preparation> extent = new ArrayList<>();
-    private static void addPreparation(Preparation preparation) {
-        extent.add(preparation);
-    }
-    private static void removePreparation(Preparation preparation) {
-        extent.remove(preparation);
-    }
-    public static void showExtent() {
-        System.out.println("Extent of the class: " + Preparation.class.getName());
-        for (Preparation preparation : extent) {
-            System.out.println(preparation);
-        }
-    }
-    private void write(DataOutputStream stream) throws IOException {
-        stream.writeInt(preparationID);
-    }
-    private void read(DataInputStream stream) throws IOException {
-        preparationID = stream.readInt();
-    }
-    public static void writeExtent(DataOutputStream stream) throws IOException {
-        // Number of objects
-        stream.writeInt(extent.size());
-        for (Preparation preparation : extent) {
-            preparation.write(stream);
-        }
-    }
-    public static void readExtent(DataInputStream stream) throws IOException {
-        Preparation preparation = null;
-        // Get the number of written objects
-        int objectCount = stream.readInt();
-        // remove the current extent
-        extent.clear();
-        for (int i = 0; i < objectCount; i++) {
-            preparation = new Preparation();
-            preparation.read(stream);
-        }
-    }
-    //EXTENT SESSION END
-    //FIELDS SESSION
-    /**Simple, Single, Required, Object, Concrete Attribute "preparationID" typed {@linkplain Integer}
-     */
-    int preparationID;
-    //FIELDS SESSION END
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION START
-    public Preparation(int preparationID) {
-        this.preparationID = preparationID;
-    }
-    public Preparation(){
-    }
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION END
-    //METHODS SESSION START
-
-    //METHODS SESSION END
 }

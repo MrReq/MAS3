@@ -1,14 +1,9 @@
 package Models;
-
 import Enums.AllPersonTypes;
 import Enums.Citizenship;
 import Enums.OrderType;
 import Enums.Sex;
 import SecondaryClasses.ObjectPlus;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -17,29 +12,9 @@ public class Client extends Person {
     // ====================================================ATTRIBUTES====================================================
     private int clientID;
     private Order shoppingCart;
-
     private boolean hasClubCard;
-
-    /**
-     * Service satisfaction (1-5)
-     */
     private int satisfactionOfTheService;
-
-    /**
-     * Optional attribute.
-     * Null means that citizenship has not been specified.
-     */
     private Citizenship citizenship;
-
-    /**
-     * Overlapping
-     */
-    private final EnumSet<AllPersonTypes> personKind =
-            EnumSet.of(AllPersonTypes.Client);
-
-    /**
-     * Qualified association Client -> Order
-     */
     private final Map<Integer, Order> orders =
             new TreeMap<>();
 
@@ -116,24 +91,13 @@ public class Client extends Person {
     }
     // ====================================================GETTERS====================================================
 
-    public int getClientID() {
-        return clientID;
-    }
-
     public boolean hasClubCard() {
         return hasClubCard;
     }
 
-    public int getSatisfactionOfTheService() {
-        return satisfactionOfTheService;
-    }
 
     public Optional<Citizenship> getCitizenship() {
         return Optional.ofNullable(citizenship);
-    }
-
-    public EnumSet<AllPersonTypes> getPersonKind() {
-        return EnumSet.copyOf(personKind);
     }
 
     public Collection<Order> getOrders() {
@@ -153,13 +117,6 @@ public class Client extends Person {
         waiter.setGrade(satisfaction);
     }
     // ====================SETTERS=================
-    public void setHasClubCard(boolean hasClubCard) {
-        this.hasClubCard = hasClubCard;
-    }
-
-    public void setCitizenship(Citizenship citizenship) {
-        this.citizenship = citizenship;
-    }
 
     public void setSatisfactionOfTheService(int satisfaction) {
         if (satisfaction < 1 || satisfaction > 5) {
@@ -170,63 +127,12 @@ public class Client extends Person {
         this.satisfactionOfTheService = satisfaction;
     }
 
-    // BUSINESS METHODS
-
-
-
-    // QUALIFIED ASSOCIATION
-
-
     public void addOrder(Order order) {
         Objects.requireNonNull(order);
         if (orders.containsKey(order.getOrderID()))
             return;
         orders.put(order.getOrderID(), order);
         order.setClient(this);
-    }
-
-    public void removeOrder(Order order) {
-        if (order == null)
-            return;
-        orders.remove(order.getOrderID());
-    }
-
-    public Order findOrder(int orderID) throws Exception {
-        Order order = orders.get(orderID);
-        if (order == null) {
-            throw new Exception(
-                    "Order with ID " + orderID + " not found."
-            );
-        }
-        return order;
-    }
-
-    // SERIALIZATION
-    @Override
-    protected void write(DataOutputStream stream)
-            throws IOException {
-        super.write(stream);
-        stream.writeInt(clientID);
-        stream.writeBoolean(hasClubCard);
-        stream.writeInt(satisfactionOfTheService);
-        stream.writeBoolean(citizenship != null);
-        if (citizenship != null) {
-            stream.writeUTF(citizenship.name());
-        }
-    }
-    @Override
-    protected void read(DataInputStream stream)
-            throws IOException {
-        super.read(stream);
-        clientID = stream.readInt();
-        hasClubCard = stream.readBoolean();
-        satisfactionOfTheService = stream.readInt();
-        if (stream.readBoolean()) {
-            citizenship =
-                    Citizenship.valueOf(stream.readUTF());
-        } else {
-            citizenship = null;
-        }
     }
 
     @Override
@@ -240,34 +146,14 @@ public class Client extends Person {
                 citizenship
         );
     }
-    public List<Order> viewOrderHistory(){
-        return new ArrayList<>(orders.values());
-    }
-
-    public Order createOrder(OrderType type){
-        Order order = Order.createOrder(this,type);
-        return order;
-    }
-
-    public double calculateSpentMoney(){
-        double sum = 0;
-        for(Order order : orders.values()){
-            sum += order.countOrderValue();
-        }
-        return sum;
-    }
 
     public Order getShoppingCart() {
-
         return shoppingCart;
-
     }
     public void createNewShoppingCart() {
-
         shoppingCart = Order.createOrder(
                 this,
                 OrderType.Liquid
         );
-
     }
 }

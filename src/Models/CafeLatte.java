@@ -4,6 +4,7 @@ import Enums.CoffeeCountry;
 import Enums.TemperatureOfTheService;
 import Enums.TypeOfMilk;
 import Interfaces.Preparable;
+import SecondaryClasses.ObjectPlus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +21,9 @@ public class CafeLatte extends Coffee implements Preparable {
      * <br>Private Static method "removeCafeLatte" which removes instance of {@linkplain CafeLatte} from extent collection</br>
      * <br>Public Static method "showExtent" which displays all instances of {@linkplain CafeLatte} line by line.</br>
      */
-    @Override
-    public String toString() {
-        return "CafeLatte: " + productName + ", id: " + super.toString();
-    }
-    private static List<CafeLatte> extent = new ArrayList<>();
-    private static void addCafeLatte(CafeLatte cafeLatte) {
-        extent.add(cafeLatte);
-    }
-    private static void removeCafeLatte(CafeLatte cafeLatte) {
-        extent.remove(cafeLatte);
-    }
-    public static void showExtent() {
-        System.out.println("Extent of the class: " + CafeLatte.class.getName());
-        for (CafeLatte cafeLatte : extent) {
-            System.out.println(cafeLatte);
-        }
+    // EXTENT
+    public static List<CafeLatte> getCafeLatteExtent() {
+        return (List<CafeLatte>) (List<?>) ObjectPlus.getExtent(CafeLatte.class);
     }
     //EXTENT SESSION END
     //FIELDS SESSION START
@@ -65,38 +53,6 @@ public class CafeLatte extends Coffee implements Preparable {
         super(name, cost, availability, description, temperatureOfService, coffeeCountry);
     }
     //CONSTRUCTORS, GETTERS, SETTERS SESSION END
-
-    public TypeOfMilk getTypeOfMilk() {
-        return typeOfMilk;
-    }
-
-    public void setTypeOfMilk(TypeOfMilk typeOfMilk) {
-        this.typeOfMilk = typeOfMilk;
-    }
-
-    public double getMilkAmount() {
-        return milkAmount;
-    }
-
-    public void setMilkAmount(double milkAmount) {
-        this.milkAmount = milkAmount;
-    }
-
-    public double getMilkFoamLevel() {
-        return milkFoamLevel;
-    }
-
-    public void setMilkFoamLevel(double milkFoamLevel) {
-        this.milkFoamLevel = milkFoamLevel;
-    }
-
-    public int getEspressoShotCount() {
-        return espressoShotCount;
-    }
-
-    public void setEspressoShotCount(int espressoShotCount) {
-        this.espressoShotCount = espressoShotCount;
-    }
 
     //METHODS SESSION START
     @Override

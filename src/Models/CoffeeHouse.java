@@ -1,5 +1,7 @@
 package Models;
 
+import SecondaryClasses.ObjectPlus;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -8,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CoffeeHouse {
+public class CoffeeHouse extends ObjectPlus {
     private static final long serialVersionUID = 1L;
     //EXTENT SESSION
     /** Extent session contains:
@@ -26,46 +28,7 @@ public class CoffeeHouse {
                 + super.toString();
     }
     private static List<CoffeeHouse> extent = new ArrayList<>();
-    private static void addCoffeeHouse(CoffeeHouse coffeeHouse) {
-        extent.add(coffeeHouse);
-    }
-    private static void removeCoffeeHouse(CoffeeHouse coffeeHouse) {
-        extent.remove(coffeeHouse);
-    }
-    public static void showExtent() {
-        System.out.println("Extent of the class: " + CoffeeHouse.class.getName());
-        for (CoffeeHouse coffeeHouse : extent) {
-            System.out.println(coffeeHouse);
-        }
-    }
-    private void write(DataOutputStream stream) throws IOException {
-        stream.writeInt(coffeeHouseID);
-        stream.writeUTF(coffeeHouseName);
-        stream.writeUTF(coffeeHouseAddress);
-    }
-    private void read(DataInputStream stream) throws IOException {
-        coffeeHouseID = stream.readInt();
-        coffeeHouseName=stream.readUTF();
-        coffeeHouseAddress=stream.readUTF();
-    }
-    public static void writeExtent(DataOutputStream stream) throws IOException {
-        // Number of objects
-        stream.writeInt(extent.size());
-        for (CoffeeHouse coffeeHouse : extent) {
-            coffeeHouse.write(stream);
-        }
-    }
-    public static void readExtent(DataInputStream stream) throws IOException {
-        CoffeeHouse coffeeHouse = null;
-        // Get the number of written objects
-        int objectCount = stream.readInt();
-        // remove the current extent
-        extent.clear();
-        for (int i = 0; i < objectCount; i++) {
-            coffeeHouse = new CoffeeHouse();
-            coffeeHouse.read(stream);
-        }
-    }
+
     //EXTENT SESSION END
     //FIELDS SESSION START
     /**Simple, Single, Required, Object, Concrete Attribute "CoffeeHouseID" typed {@linkplain Integer}
@@ -89,36 +52,20 @@ public class CoffeeHouse {
     /**Simple, Single, Required, Class, Concrete Attribute "howManyWorkersMax" typed {@linkplain Byte}
      */
     static byte howManyWorkersMax = 9;
-    //FIELDS SESSION END
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION START
     public CoffeeHouse() {
-        addCoffeeHouse(this);
         System.out.println("Its just default CoffeeHouse");
     }
     public CoffeeHouse(int coffeeHouseID, String coffeeHouseName, String coffeeHouseAddress, List<Long> coffeeHousePhoneNumberList) {
-        addCoffeeHouse(this);
         this.coffeeHouseID = coffeeHouseID;
         this.coffeeHouseName = coffeeHouseName;
         this.coffeeHouseAddress = coffeeHouseAddress;
         this.coffeeHousePhoneNumberList = coffeeHousePhoneNumberList;
     }
-    public void setCoffeeHouseID(int coffeeHouseID) {
-        this.coffeeHouseID = coffeeHouseID;
-    }
-    public void changeCoffeeHouseID(byte newID){
-        this.setCoffeeHouseID(newID);
-    }
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION END
-    //METHODS SESSION START
-    //METHODS SESSION END
-    //BINARY ASSOCIATION
-//    public ArrayList<Employee> hiredEmployees = new ArrayList<>();
     public int[] employeesIDs;
     private static ArrayList<CoffeeHouse> extentForBinaryAssociation = new ArrayList<>();
     private static Map<Integer, CoffeeHouse> extentMapForBinaryAssociation = new TreeMap<>();
     public CoffeeHouse(int coffeeHouseID, String coffeeHouseName, String coffeeHouseAddress, List<Long> coffeeHousePhoneNumberList
             , int[] employeesIDs) {
-        addCoffeeHouse(this);
         this.coffeeHouseID = coffeeHouseID;
         this.coffeeHouseName = coffeeHouseName;
         this.coffeeHouseAddress = coffeeHouseAddress;
@@ -127,23 +74,13 @@ public class CoffeeHouse {
         extentForBinaryAssociation.add(this);
         extentMapForBinaryAssociation.put(coffeeHouseID,this);
     }
-    public static CoffeeHouse findCoffeeHouse(int id) throws Exception {
-        for(CoffeeHouse coffeeHouse : extentForBinaryAssociation) {
-            if(coffeeHouse.coffeeHouseID == id) {
-                return coffeeHouse;
-            }
-        }
-        throw new Exception("Unable to find a CoffeeHouse with the coffeeHouseID = " + id);
-    }
     private List<Employee> employees = new ArrayList<>();
     public void addEmployee(Employee employee) {
         if (!employees.contains(employee)) {
             employees.add(employee);
-            employee.addCoffeeHouse(this); // 🔁 połączenie zwrotne
+            employee.addCoffeeHouse(this);
         }
     }
-    /**ASSOCIATION WITH ATTRIBUTE
-     */
     private List<Employment_CoffeeHouse_Employee> employments = new ArrayList<>();
     public void addEmployment(Employment_CoffeeHouse_Employee employment) {
         if (!employments.contains(employment)) {
@@ -153,10 +90,7 @@ public class CoffeeHouse {
     public String getCoffeeHouseName() {
         return coffeeHouseName;
     }
-    public List<Employment_CoffeeHouse_Employee> getEmployments() {
-        return employments;
-    }
-    //Removing connections
+
     public void removeEmployee(Employee employeeToRemove) {
         if(employees.contains(employeeToRemove)) {
             employees.remove(employeeToRemove);

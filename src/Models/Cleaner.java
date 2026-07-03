@@ -22,19 +22,6 @@ public class Cleaner extends Employee {
     public String toString() {
         return "Cleaner: " + personName + ", id: " + super.toString();
     }
-    private static List<Cleaner> extent = new ArrayList<>();
-    private static void addCleaner(Cleaner cleaner) {
-        extent.add(cleaner);
-    }
-    private static void removeCleaner(Cleaner cleaner) {
-        extent.remove(cleaner);
-    }
-    public static void showExtent() {
-        System.out.println("Extent of the class: " + Cleaner.class.getName());
-        for (Cleaner cleaner : extent) {
-            System.out.println(cleaner);
-        }
-    }
     @SuppressWarnings("unchecked")
     public static List<Cleaner> getCleanerExtent() {
         return (List<Cleaner>) (List<?>) ObjectPlus.getExtent(Cleaner.class);
@@ -54,10 +41,6 @@ public class Cleaner extends Employee {
         this.shift = shift;
         this.assignedArea = assignedArea;
     }
-    public static void setExtent(List<Cleaner> extent) {
-        Cleaner.extent = extent;
-    }
-
     public Shift getShift() {
         return shift;
     }

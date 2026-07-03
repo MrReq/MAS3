@@ -6,8 +6,12 @@ import SecondaryClasses.ObjectPlus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 public class Order extends ObjectPlus{
     private static final long serialVersionUID = 1L;
     //=========================================================
@@ -66,6 +70,9 @@ public class Order extends ObjectPlus{
         }
         return new Order(client, type);
     }
+
+
+
     //=========================================================
     // PRODUCTS
     //=========================================================
@@ -292,6 +299,16 @@ public class Order extends ObjectPlus{
                 .filter(order -> !order.isCompleted())
                 .filter(order -> !order.isCancelled())
                 .toList();
+    }
+
+    public static List<Order> getPreparingOrders() {
+        return getOrderExtent().stream()
+                .filter(order -> order.getOrderStatus() == OrderStatus.PREPARING)
+                .toList();
+    }
+
+    public static List<Order> getNewOrders() {
+        return getOrderExtent().stream().filter(order -> order.getOrderStatus() == OrderStatus.NEW).toList();
     }
 
     /**

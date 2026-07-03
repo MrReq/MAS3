@@ -1,9 +1,8 @@
 package Models;
-
+import SecondaryClasses.ObjectPlus;
 import java.util.ArrayList;
 import java.util.List;
-
-public class Delivery {
+public class Delivery extends ObjectPlus {
     private static final long serialVersionUID = 1L;
     //EXTENT SESSION
     /** Extent session contains:

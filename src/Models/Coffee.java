@@ -23,17 +23,9 @@ public abstract class Coffee extends Drink implements Preparable {
     public String toString() {
         return "Coffee: " + super.productName + ", id: " + super.toString();
     }
-
-    //EXTENT SESSION END
-
-    //FIELDS SESSION START
-    /**Simple, Single, Required, Object, Concrete Attribute "coffeeCountry" typed {@linkplain CoffeeCountry}
-     */
     CoffeeCountry coffeeCountry;
     double power;
     double waterToCoffeeRatio;
-    //FIELDS SESSION END
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION START
     public Coffee() {
         super();
     }
@@ -43,9 +35,6 @@ public abstract class Coffee extends Drink implements Preparable {
         this.coffeeCountry=coffeeCountry;
 
     }
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION END
-
-    //METHODS SESSION START
     public String countPowerOfCoffee(){
         if (this.coffeeCountry== CoffeeCountry.Arabia){
             this.power =  (1 - waterToCoffeeRatio + 0.3);
@@ -56,5 +45,4 @@ public abstract class Coffee extends Drink implements Preparable {
         }
         return "Power of the coffee is "+power;
     }
-    //METHODS SESSION END
 }

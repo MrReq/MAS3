@@ -412,17 +412,10 @@ public class AddEmployeeView extends JFrame {
             JOptionPane.showMessageDialog(
 
                     this,
-
                     ex.getMessage(),
-
-                    "Error",
-
-                    JOptionPane.ERROR_MESSAGE
+                    "Error", JOptionPane.ERROR_MESSAGE
 
             );
-
         }
-
     }
-
 }
