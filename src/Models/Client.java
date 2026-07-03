@@ -16,6 +16,7 @@ public class Client extends Person {
     private static final long serialVersionUID = 1L;
     // ====================================================ATTRIBUTES====================================================
     private int clientID;
+    private Order shoppingCart;
 
     private boolean hasClubCard;
 
@@ -59,6 +60,7 @@ public class Client extends Person {
         this.clientID = Person.getCounter();
 
         this.hasClubCard = hasClubCard;
+        shoppingCart = Order.createOrder(this, OrderType.Liquid);
     }
 
     public Client(String name,
@@ -76,6 +78,7 @@ public class Client extends Person {
         this.hasClubCard = hasClubCard;
 
         this.citizenship = citizenship;
+        shoppingCart = Order.createOrder(this, OrderType.Liquid);
     }
 
 
@@ -252,5 +255,19 @@ public class Client extends Person {
             sum += order.countOrderValue();
         }
         return sum;
+    }
+
+    public Order getShoppingCart() {
+
+        return shoppingCart;
+
+    }
+    public void createNewShoppingCart() {
+
+        shoppingCart = Order.createOrder(
+                this,
+                OrderType.Liquid
+        );
+
     }
 }

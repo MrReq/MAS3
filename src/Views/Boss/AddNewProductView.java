@@ -13,17 +13,16 @@ public class AddNewProductView extends JFrame {
     // COMPONENTS
     //=================================================
 
-    private JTextField nameField;
+    private JComboBox<String> productComboBox;
 
-    private JTextField priceField;
+    private JComboBox<String> descriptionComboBox;
 
-    private JTextArea descriptionArea;
+    private JComboBox<Float> priceComboBox;
 
     private JCheckBox availabilityCheckBox;
 
     private JComboBox<TemperatureOfTheService> temperatureComboBox;
 
-    private JComboBox<String> typeComboBox;
     private JComboBox<CoffeeCountry> coffeeCountryComboBox;
 
     private JButton createButton;
@@ -52,7 +51,7 @@ public class AddNewProductView extends JFrame {
 
     private void initializeFrame() {
 
-        setTitle("Create Product");
+        setTitle("Create Product  (AddNewProductView)");
 
         setSize(600, 500);
 
@@ -62,6 +61,8 @@ public class AddNewProductView extends JFrame {
 
         setResizable(false);
 
+        setExtendedState(MAXIMIZED_BOTH);
+
     }
 
     //=================================================
@@ -70,24 +71,31 @@ public class AddNewProductView extends JFrame {
 
     private void initializeComponents() {
 
-        nameField = new JTextField();
+        productComboBox = new JComboBox<>();
 
-        priceField = new JTextField();
+        productComboBox.addItem("Espresso");
+        productComboBox.addItem("Cafe Latte");
+        productComboBox.addItem("Tea");
+        productComboBox.addItem("Cheesecake");
 
-        descriptionArea = new JTextArea(5,20);
+        descriptionComboBox = new JComboBox<>();
 
-        availabilityCheckBox = new JCheckBox("Available");
+        descriptionComboBox.addItem("Coffee");
+        descriptionComboBox.addItem("Coffee with milk");
+        descriptionComboBox.addItem("Tea");
+        descriptionComboBox.addItem("Dessert");
+
+        priceComboBox = new JComboBox<>();
+
+        priceComboBox.addItem(5f);
+        priceComboBox.addItem(10f);
+        priceComboBox.addItem(17f);
+        priceComboBox.addItem(24f);
+
+        availabilityCheckBox = new JCheckBox("Available", true);
 
         temperatureComboBox =
                 new JComboBox<>(TemperatureOfTheService.values());
-
-        typeComboBox = new JComboBox<>();
-
-        typeComboBox.addItem("Americano");
-
-        typeComboBox.addItem("Cafe Latte");
-
-        typeComboBox.addItem("Tea");
 
         coffeeCountryComboBox =
                 new JComboBox<>(CoffeeCountry.values());
@@ -118,21 +126,21 @@ public class AddNewProductView extends JFrame {
         panel.add(new JLabel("Product name:"), gbc);
 
         gbc.gridx = 1;
-        panel.add(nameField, gbc);
+        panel.add(productComboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy++;
         panel.add(new JLabel("Price:"), gbc);
 
         gbc.gridx = 1;
-        panel.add(priceField, gbc);
+        panel.add(priceComboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy++;
         panel.add(new JLabel("Description:"), gbc);
 
         gbc.gridx = 1;
-        panel.add(new JScrollPane(descriptionArea), gbc);
+        panel.add(descriptionComboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy++;
@@ -144,9 +152,6 @@ public class AddNewProductView extends JFrame {
         gbc.gridx = 0;
         gbc.gridy++;
         panel.add(new JLabel("Product type:"), gbc);
-
-        gbc.gridx = 1;
-        panel.add(typeComboBox, gbc);
 
         gbc.gridx = 1;
         gbc.gridy++;
@@ -190,13 +195,12 @@ public class AddNewProductView extends JFrame {
 
         try {
 
-            String name = nameField.getText().trim();
+            String name = (String) productComboBox.getSelectedItem();
 
             String description =
-                    descriptionArea.getText().trim();
+                    (String) descriptionComboBox.getSelectedItem();
 
-            float price =
-                    Float.parseFloat(priceField.getText());
+            float price = (Float) priceComboBox.getSelectedItem();
 
             boolean available =
                     availabilityCheckBox.isSelected();
@@ -206,7 +210,7 @@ public class AddNewProductView extends JFrame {
                             temperatureComboBox.getSelectedItem();
 
             String type =
-                    (String) typeComboBox.getSelectedItem();
+                    (String) productComboBox.getSelectedItem();
 
             CoffeeCountry coffeeCountry = (CoffeeCountry) coffeeCountryComboBox.getSelectedItem();
 
@@ -254,7 +258,28 @@ public class AddNewProductView extends JFrame {
 
                     break;
 
+                case "Espresso":
 
+                    product = new Espresso(
+                            name,
+                            price,
+                            available,
+                            description,
+                            temperature,
+                            coffeeCountry
+                    );
+                    break;
+
+                case "Milk":
+
+                    product = new Milk(
+                            name,
+                            price,
+                            available,
+                            description,
+                            temperature
+                    );
+                    break;
             }
 
             JOptionPane.showMessageDialog(

@@ -115,10 +115,20 @@ public abstract class Product extends ObjectPlus implements Preparable {
     //FIELDS SESSION END
     //CONSTRUCTORS, GETTERS, SETTERS SESSION START
 
-    public static List<Product> getExtent() {
-        return extent;
-    }
+    @SuppressWarnings("unchecked")
+    List<Product> productsExtent =
+            (List<Product>)(List<?>)ObjectPlus.getExtent(Product.class);
 
+    public static List<Product> getProductExtent() {
+
+        List<Product> result = new ArrayList<>();
+
+        result.addAll((List<Product>)(List<?>)ObjectPlus.getExtent(Americano.class));
+        result.addAll((List<Product>)(List<?>)ObjectPlus.getExtent(CafeLatte.class));
+        result.addAll((List<Product>)(List<?>)ObjectPlus.getExtent(Espresso.class));
+
+        return result;
+    }
     public static void setExtent(List<Product> extent) {
         Product.extent = extent;
     }
@@ -214,7 +224,7 @@ public abstract class Product extends ObjectPlus implements Preparable {
     }
     public static List<Product> getAvailableProducts() {
 
-        return getExtent()
+        return getProductExtent()
                 .stream()
                 .filter(Product::isProductAvailability)
                 .toList();

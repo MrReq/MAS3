@@ -30,11 +30,13 @@ public class LoginSelectionView extends JFrame {
         JButton employeeButton = new JButton("Zaloguj jako pracownik");
         JButton createBossButton = new JButton("Utwórz szefa");
         JButton clearextensionButton = new JButton("Wyczyśc całą ekstensję");
+        JButton exitProgram = new JButton("Wyłącz Program");
 
         buttonsPanel.add(clientButton);
         buttonsPanel.add(employeeButton);
         buttonsPanel.add(createBossButton);
         buttonsPanel.add(clearextensionButton);
+        buttonsPanel.add(exitProgram);
 
         panel.add(title, BorderLayout.NORTH);
         panel.add(buttonsPanel, BorderLayout.CENTER);
@@ -62,6 +64,22 @@ public class LoginSelectionView extends JFrame {
         clearextensionButton.addActionListener(e -> {
             ObjectPlus.clearExtents();
         });
+
+        exitProgram.addActionListener(e-> {
+            exitApplication();
+        });
+    }
+    private void exitApplication() {
+        int option = JOptionPane.showConfirmDialog(
+                this,
+                "Do you really want to exit the application?",
+                "Exit",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+        if (option == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }
 
 }

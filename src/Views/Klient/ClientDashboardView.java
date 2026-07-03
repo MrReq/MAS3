@@ -19,9 +19,13 @@ public class ClientDashboardView extends JFrame {
 
     private JTabbedPane tabbedPane;
 
+    private ClientMenuPanel menuPanel;
+
     public ClientDashboardView(Client client) {
 
         this.loggedClient = client;
+
+        menuPanel = new ClientMenuPanel(loggedClient);
 
         initializeFrame();
 
@@ -65,7 +69,7 @@ public class ClientDashboardView extends JFrame {
 
         tabbedPane = new JTabbedPane();
 
-        tabbedPane.addTab("Menu", new JPanel());
+        tabbedPane.addTab("Menu", menuPanel);
 
         tabbedPane.addTab("Shopping Cart", new JPanel());
 
@@ -92,6 +96,9 @@ public class ClientDashboardView extends JFrame {
     }
 
     private void initializeListeners() {
+
+
+
 
         logoutButton.addActionListener(e->{
 

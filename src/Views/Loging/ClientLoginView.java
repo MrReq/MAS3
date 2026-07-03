@@ -161,6 +161,11 @@ public class ClientLoginView extends JFrame {
 
     private void initializeListeners() {
 
+        loginButton.addActionListener(e->
+        {
+            login();
+        });
+
         backButton.addActionListener(e -> {
 
             dispose();

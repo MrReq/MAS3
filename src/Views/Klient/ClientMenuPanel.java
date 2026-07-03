@@ -1,0 +1,212 @@
+package Views.Klient;
+
+import Models.Client;
+import Models.Product;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+
+public class ClientMenuPanel extends JPanel {
+
+    private final Client loggedClient;
+
+    private JTable productsTable;
+
+    private DefaultTableModel tableModel;
+
+    private JButton refreshButton;
+
+    private JButton addToCartButton;
+
+    public ClientMenuPanel(Client loggedClient) {
+
+        this.loggedClient = loggedClient;
+
+        initializeComponents();
+
+        initializeLayout();
+
+        initializeListeners();
+
+        refreshTable();
+
+    }
+
+    //=================================================
+    // COMPONENTS
+    //=================================================
+
+    private void initializeComponents() {
+
+        tableModel = new DefaultTableModel(
+                new Object[]{
+                        "ID",
+                        "Name",
+                        "Price",
+                        "Temperature",
+                        "Available"
+                }, 0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        productsTable = new JTable(tableModel);
+
+        productsTable.setSelectionMode(
+                ListSelectionModel.SINGLE_SELECTION
+        );
+
+        refreshButton = new JButton("Refresh");
+
+        addToCartButton = new JButton("Add to cart");
+
+    }
+
+    //=================================================
+    // LAYOUT
+    //=================================================
+
+    private void initializeLayout() {
+
+        setLayout(new BorderLayout());
+
+        JLabel title = new JLabel(
+                "MENU",
+                SwingConstants.CENTER
+        );
+
+        title.setFont(new Font("Arial", Font.BOLD, 22));
+
+        add(title, BorderLayout.NORTH);
+
+        add(new JScrollPane(productsTable),
+                BorderLayout.CENTER);
+
+        JPanel bottom = new JPanel();
+
+        bottom.add(refreshButton);
+
+        bottom.add(addToCartButton);
+
+        add(bottom, BorderLayout.SOUTH);
+
+    }
+
+    //=================================================
+    // LISTENERS
+    //=================================================
+
+    private void initializeListeners() {
+
+        refreshButton.addActionListener(e -> refreshTable());
+
+        addToCartButton.addActionListener(e -> addToCart());
+
+    }
+
+    //=================================================
+    // TABLE
+    //=================================================
+
+    public void refreshTable() {
+
+        System.out.println(Product.getExtent().size());
+
+        tableModel.setRowCount(0);
+
+        for (Product product : Product.getExtent()) {
+
+            if (!product.isProductAvailability()) {
+                continue;
+            }
+
+            tableModel.addRow(new Object[]{
+
+                    product.getProductID(),
+
+                    product.getProductName(),
+
+                    product.getProductCost(),
+
+                    product.getTemperatureOfTheService(),
+
+                    "Available"
+
+            });
+
+        }
+
+    }
+
+    //=================================================
+    // ADD TO CART
+    //=================================================
+
+    private void addToCart() {
+
+        int row = productsTable.getSelectedRow();
+
+        if (row == -1) {
+
+            JOptionPane.showMessageDialog(
+
+                    this,
+
+                    "Please select a product."
+
+            );
+
+            return;
+
+        }
+
+        int productId =
+                (Integer) tableModel.getValueAt(row, 0);
+
+        Product selectedProduct = null;
+
+        for (Product product : Product.getExtent()) {
+
+            if (product.getProductID() == productId) {
+
+                selectedProduct = product;
+
+                break;
+
+            }
+
+        }
+
+        if (selectedProduct == null) {
+
+            JOptionPane.showMessageDialog(
+
+                    this,
+
+                    "Product not found."
+
+            );
+
+            return;
+
+        }
+
+
+         loggedClient.getShoppingCart().addProduct(selectedProduct);
+
+        JOptionPane.showMessageDialog(
+
+                this,
+
+                selectedProduct.getProductName()
+                        + " added to cart."
+
+        );
+
+    }
+
+}
