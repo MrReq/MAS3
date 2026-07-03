@@ -12,6 +12,8 @@ import java.util.List;
 
 public abstract class Product extends ObjectPlus implements Preparable {
     private static final long serialVersionUID = 1L;
+
+
     //EXTENT SESSION
     /**
      * Extent session contains:
@@ -191,6 +193,18 @@ public abstract class Product extends ObjectPlus implements Preparable {
         }
         return null;
     }
+
+    public static void productRebuildCounter() {
+        int maxId = 0;
+        for (Product product : getProductExtent()) {
+
+            if (product.getProductID() > maxId) {
+                maxId = product.getProductID();
+            }
+        }
+        staticProductID = maxId + 1;
+    }
+
 
     //METHODS SESSION END
 }

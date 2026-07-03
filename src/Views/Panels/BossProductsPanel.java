@@ -27,6 +27,7 @@ public class BossProductsPanel extends JPanel {
     private JButton editButton;
 
     private JButton deleteButton;
+    private JButton manageButton;
 
     //=================================================
     // CONSTRUCTOR
@@ -77,6 +78,8 @@ public class BossProductsPanel extends JPanel {
 
         deleteButton = new JButton("Delete Product");
 
+        manageButton = new JButton("Manage Product");
+
     }
 
     //=================================================
@@ -112,6 +115,8 @@ public class BossProductsPanel extends JPanel {
 
         bottomPanel.add(refreshButton);
 
+        bottomPanel.add(manageButton);
+
         add(bottomPanel, BorderLayout.SOUTH);
 
     }
@@ -129,6 +134,8 @@ public class BossProductsPanel extends JPanel {
         editButton.addActionListener(e -> editProduct());
 
         deleteButton.addActionListener(e -> deleteProduct());
+        
+        manageButton.addActionListener(e -> Boss.manageProducts());
 
     }
 

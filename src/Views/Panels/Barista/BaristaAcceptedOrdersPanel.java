@@ -19,7 +19,8 @@ public class BaristaAcceptedOrdersPanel extends JPanel {
 
     private JButton refreshButton;
 
-    private JButton prepareButton;
+    private JButton prepareOrderButton;
+    private JButton prepareOrdersButton;
 
     BaristaDashboardView parent;
 
@@ -63,10 +64,15 @@ public class BaristaAcceptedOrdersPanel extends JPanel {
         ordersTable.setSelectionMode(
                 ListSelectionModel.SINGLE_SELECTION
         );
+        ordersTable.setSelectionMode(
+                ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
+        );
 
         refreshButton = new JButton("Refresh");
 
-        prepareButton = new JButton("Prepare Order");
+        prepareOrderButton = new JButton("Prepare Order");
+
+        prepareOrdersButton = new JButton("Prepare Orders");
 
     }
 
@@ -93,7 +99,9 @@ public class BaristaAcceptedOrdersPanel extends JPanel {
 
         bottomPanel.add(refreshButton);
 
-        bottomPanel.add(prepareButton);
+        bottomPanel.add(prepareOrderButton);
+
+        bottomPanel.add(prepareOrdersButton);
 
         add(bottomPanel, BorderLayout.SOUTH);
 
@@ -107,7 +115,9 @@ public class BaristaAcceptedOrdersPanel extends JPanel {
 
         refreshButton.addActionListener(e -> refreshTable());
 
-        prepareButton.addActionListener(e -> prepareOrder());
+        prepareOrderButton.addActionListener(e -> prepareOrder());
+
+        prepareOrdersButton.addActionListener(e -> prepareOrders());
 
     }
 
@@ -183,6 +193,41 @@ public class BaristaAcceptedOrdersPanel extends JPanel {
 
         parent.refreshAllPanels();
 
+    }
+    private void prepareOrders() {
+
+        int[] rows = ordersTable.getSelectedRows();
+
+        if (rows.length == 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Select at least one order."
+            );
+
+            return;
+        }
+
+        for (int row : rows) {
+
+            int orderId =
+                    (Integer) tableModel.getValueAt(row, 0);
+
+            Order order = Order.findById(orderId);
+
+            if (order != null) {
+
+                loggedBarista.startPreparing(order);
+
+            }
+        }
+
+        JOptionPane.showMessageDialog(
+                this,
+                rows.length + " orders moved to Preparing."
+        );
+
+        parent.refreshAllPanels();
     }
     public void reload() {
         refreshTable();

@@ -227,18 +227,33 @@ public class ManageEmployeesView extends JPanel {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Select employee first."
+                    "Select employee."
             );
 
             return;
+        }
 
+        int employeeId =
+                (Integer) tableModel.getValueAt(row, 0);
+
+        Employee employee =
+                Employee.findById(employeeId);
+
+        if (employee == null) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Employee not found."
+            );
+
+            return;
         }
 
         int option = JOptionPane.showConfirmDialog(
 
                 this,
 
-                "Remove selected employee?",
+                "Delete selected employee?",
 
                 "Confirmation",
 
@@ -252,12 +267,17 @@ public class ManageEmployeesView extends JPanel {
 
         }
 
-        Employee employee =
-                Employee.getEmployeeExtent().get(row);
-
-        Employee.removeEmployee(employee);
+        employee.removeEmployee();
 
         refreshTable();
+
+        JOptionPane.showMessageDialog(
+
+                this,
+
+                "Employee removed."
+
+        );
 
     }
 

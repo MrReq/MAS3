@@ -34,8 +34,9 @@ public class Employee extends Person {
     private static void addEmployee(Employee employee) {
         extent.add(employee);
     }
-    public static void removeEmployee(Employee employee){
-        ObjectPlus.getExtent(Employee.class).remove(employee);
+    public void removeEmployee() {
+
+        removeFromExtent();
     }
     public static void showExtent() {
         System.out.println("Extent of the class: " + Employee.class.getName());
@@ -239,6 +240,27 @@ public class Employee extends Person {
             coffeeHouseToRemove.removeEmployee(this);
         }
     }
+    public static Employee findById(int id) {
+        for (Employee employee : getEmployeeExtent()) {
+            if (employee.getEmployeeID() == id) {
+                return employee;
+            }
+        }
+        return null;
+
+    }
+
+    public static void employeerebuildCounter() {
+        int maxId = 0;
+        for (Employee employee : getEmployeeExtent()) {
+
+            if (employee.getEmployeeID() > maxId) {
+                maxId = employee.getEmployeeID();
+            }
+        }
+        staticEmployeeIDcounter = maxId + 1;
+    }
+
     //OVERLAPPING
     private final EnumSet<AllPersonTypes> personKind =  EnumSet.of(AllPersonTypes.Employee);
 

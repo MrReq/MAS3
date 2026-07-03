@@ -175,12 +175,12 @@ public class ClientShoppingCartView extends JPanel {
 
             return;
         }
-        cart.acceptOrder();
-        cart.setStatus(OrderStatus.ACCEPTED);
+//        cart.acceptOrder();
+//        cart.setStatus(OrderStatus.ACCEPTED);
 
         System.out.println("Orders before new cart: " + loggedClient.getOrders().size());
 
-        loggedClient.createNewShoppingCart();
+//        loggedClient.createNewShoppingCart();
 
         System.out.println("Orders after new cart: " + loggedClient.getOrders().size());
 

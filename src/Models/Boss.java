@@ -3,6 +3,7 @@ package Models;
 import Enums.Sex;
 import SecondaryClasses.ObjectPlus;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -82,9 +83,44 @@ public class Boss extends Person {
     /**
      * Use Case: Manage Products
      */
-    public void manageProducts() {
+    public static void manageProducts() {
 
-        System.out.println("Managing products...");
+        Product mostExpensive = null;
+
+        for (Product product : Product.getProductExtent()) {
+
+            if (mostExpensive == null
+                    || product.getProductCost() > mostExpensive.getProductCost()) {
+
+                mostExpensive = product;
+
+            }
+
+        }
+
+        if (mostExpensive != null) {
+
+            JOptionPane.showMessageDialog(
+
+                    null,
+
+                    "Most expensive product:\n\n" +
+                            "Name: " + mostExpensive.getProductName() +
+                            "\nPrice: " + mostExpensive.getProductCost() + " zł"
+
+            );
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+
+                    null,
+
+                    "No products available."
+
+            );
+
+        }
 
     }
 
