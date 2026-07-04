@@ -1,4 +1,4 @@
-package Views.Barista;
+package Views.Cleaner;
 import Models.Cleaner;
 import Views.Loging.*;
 import Views.Cleaner.CleanerRoomsPanel;

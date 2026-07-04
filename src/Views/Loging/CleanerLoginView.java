@@ -2,7 +2,7 @@ package Views.Loging;
 import Enums.Sex;
 import Models.Boss;
 import Models.Cleaner;
-import Views.Barista.CleanerDashboardView;
+import Views.Cleaner.CleanerDashboardView;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;

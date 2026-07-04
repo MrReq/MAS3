@@ -80,21 +80,32 @@ public class BaristaPrepareCoffeePanel extends JPanel {
                 productsText = builder.toString();
             }
             tableModel.addRow(new Object[]{order.getOrderID(), clientName, productsText, order.getProducts().size(),
-                    order.countOrderValue()
+                    order.countOrderValue(), order.getTotalPrice(),
+                    preparation != null
+                    ? preparation.getStartTime()
+                    : "-",
+
+                    preparation != null
+                            ? preparation.getPreparationTime()
+                            : "-",
+
+                    preparation != null && preparation.getBarista() != null
+                            ? preparation.getBarista().getPersonName()
+                            : "-",
             });
         }
     }
     // START PREPARATION
-    private void startPreparation() {
-        int row = coffeeTable.getSelectedRow();
-        if (row == -1) {JOptionPane.showMessageDialog(this, "Please select order.");
-            return;
-        }
-        int orderId = (Integer) tableModel.getValueAt(row, 0);
-        Order order = Order.findById(orderId);
-        loggedBarista.startPreparing(order);
-        parent.refreshAllPanels();
-    }
+//    private void startPreparation() {
+//        int row = coffeeTable.getSelectedRow();
+//        if (row == -1) {JOptionPane.showMessageDialog(this, "Please select order.");
+//            return;
+//        }
+//        int orderId = (Integer) tableModel.getValueAt(row, 0);
+//        Order order = Order.findById(orderId);
+//        loggedBarista.startPreparing(order);
+//        parent.refreshAllPanels();
+//    }
     // FINISH PREPARATION
     private void finishPreparation() {
         int row = coffeeTable.getSelectedRow();

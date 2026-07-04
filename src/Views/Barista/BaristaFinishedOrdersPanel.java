@@ -39,7 +39,7 @@ public class BaristaFinishedOrdersPanel extends JPanel {
         ordersTable = new JTable(tableModel);
         ordersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
-        completeButton = new JButton("Complete Order");
+//        completeButton = new JButton("Complete Order");
     }
     // LAYOUT
     private void initializeLayout() {
@@ -50,13 +50,13 @@ public class BaristaFinishedOrdersPanel extends JPanel {
         add(new JScrollPane(ordersTable), BorderLayout.CENTER);
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(refreshButton);
-        bottomPanel.add(completeButton);
+//        bottomPanel.add(completeButton);
         add(bottomPanel, BorderLayout.SOUTH);
     }
     // LISTENERS
     private void initializeListeners() {
         refreshButton.addActionListener(e -> refreshTable());
-        completeButton.addActionListener(e -> completeOrder());
+//        completeButton.addActionListener(e -> completeOrder());
     }
     // TABLE
     public void refreshTable() {
@@ -77,16 +77,16 @@ public class BaristaFinishedOrdersPanel extends JPanel {
         }
     }
     // COMPLETE
-    private void completeOrder() {
-        int row = ordersTable.getSelectedRow();
-        if (row == -1) {JOptionPane.showMessageDialog(this, "Please select an order.");
-            return;
-        }
-        int orderId = (Integer) tableModel.getValueAt(row, 0);
-        Order order = Order.findById(orderId);
-        loggedBarista.completeOrder(order);
-        parent.refreshAllPanels();
-    }
+//    private void completeOrder() {
+//        int row = ordersTable.getSelectedRow();
+//        if (row == -1) {JOptionPane.showMessageDialog(this, "Please select an order.");
+//            return;
+//        }
+//        int orderId = (Integer) tableModel.getValueAt(row, 0);
+//        Order order = Order.findById(orderId);
+//        loggedBarista.completeOrder(order);
+//        parent.refreshAllPanels();
+//    }
     public void reload() {
         refreshTable();
     }
