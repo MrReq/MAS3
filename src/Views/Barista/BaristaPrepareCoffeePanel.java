@@ -79,7 +79,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
                 productsText = builder.toString();
             }
             tableModel.addRow(new Object[]{order.getOrderID(), order.getClient(), productsText, order.getProducts().size(),
-                    order.countOrderValue(), order.getTotalPrice(),
+                     order.getTotalPrice(),
                     preparation != null
                     ? preparation.getStartTime()
                     : "-",
@@ -91,6 +91,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
                     preparation != null && preparation.getBarista() != null
                             ? preparation.getBarista().getPersonName()
                             : "-",
+                    order.getOrderStatus()
             });
         }
     }

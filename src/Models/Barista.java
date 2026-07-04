@@ -100,24 +100,58 @@ public class Barista extends Employee {
         order.completeOrder();
     }
 
+//    public int countNewOrders() {
+//        return (int) Order.getOrderExtent()
+//                .stream()
+//                .filter(order -> order.getOrderStatus() == OrderStatus.NEW)
+//                .count();
+//    }
+
     public int countNewOrders() {
-        return (int) Order.getOrderExtent()
-                .stream()
-                .filter(order -> order.getOrderStatus() == OrderStatus.NEW)
+        return (int) preparations.stream()
+                .filter(p -> p.getBarista() == this)
+                .filter(p -> p.getOrder().getOrderStatus() == OrderStatus.NEW)
                 .count();
+
     }
+
+    public int countAcceptedOrders() {
+
+        return (int) preparations.stream()
+                .filter(p -> p.getBarista() == this)
+                .filter(p -> p.getOrder().getOrderStatus() == OrderStatus.ACCEPTED)
+                .count();
+
+    }
+
+//    public int countPreparingOrders() {
+//        return (int) Order.getOrderExtent()
+//                .stream()
+//                .filter(order -> order.getOrderStatus() == OrderStatus.PREPARING)
+//                .count();
+//    }
 
     public int countPreparingOrders() {
-        return (int) Order.getOrderExtent()
-                .stream()
-                .filter(order -> order.getOrderStatus() == OrderStatus.PREPARING)
+        return (int) preparations.stream()
+                .filter(p -> p.getBarista() == this)
+                .filter(p -> p.getOrder().getOrderStatus() == OrderStatus.PREPARING)
                 .count();
     }
 
+
+
+//    public int countReadyOrders() {
+//        return (int) Order.getOrderExtent()
+//                .stream()
+//                .filter(order -> order.getOrderStatus() == OrderStatus.READY)
+//                .count();
+//    }
+
     public int countReadyOrders() {
-        return (int) Order.getOrderExtent()
+        return (int) Preparation.getPreparationExtent()
                 .stream()
-                .filter(order -> order.getOrderStatus() == OrderStatus.READY)
+                .filter(p -> p.getBarista() == this)
+                .filter(p -> p.getOrder().getOrderStatus() == OrderStatus.READY)
                 .count();
     }
 
