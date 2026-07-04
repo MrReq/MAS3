@@ -220,8 +220,12 @@ public class Employee extends Person {
     }
     /**ASSOCIATION WITH ATTRIBUTE
      */
-    private List<Employment> employments = new ArrayList<>();
+    private final List<Employment> employments = new ArrayList<>();
     public void addEmployment(Employment employment) {
+
+        System.out.println("Employee.addEmployment()");
+        System.out.println(employments);
+
         if (!employments.contains(employment)) {
             employments.add(employment);
         }

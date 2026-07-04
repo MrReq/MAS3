@@ -180,7 +180,11 @@ public String countPowerOfCoffee() {
 method addProduct(Product product) is overloaded by method that takes in parameters many of Products
 method addProduct(Product... product)
 
+11.Binary Association: Client 1 -> * Orders.
+Client can make a lot of orders. But every order belongs to one concrete client.
+There is reverse connection. In Client we have client.addOrder(Order order) and in Order we have order.setClient(Client client)
 
+12.
 ✔ Inheritance
 
 ✔ Abstract classes

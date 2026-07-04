@@ -3,10 +3,7 @@ package Views.Boss;
 import Enums.CoffeeCountry;
 import Enums.Sex;
 import Enums.Shift;
-import Models.Barista;
-import Models.Cleaner;
-import Models.Employee;
-import Models.Waiter;
+import Models.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +12,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class AddEmployeeView extends JFrame {
-
+    private final Boss loggedBoss;
     private final ManageEmployeesView parent;
 
     private JTextField firstNameField;
@@ -37,9 +34,10 @@ public class AddEmployeeView extends JFrame {
     private JButton createButton;
     private JButton cancelButton;
 
-    public AddEmployeeView(ManageEmployeesView parent) {
+    public AddEmployeeView(ManageEmployeesView parent, Boss loggedBoss) {
 
         this.parent = parent;
+        this.loggedBoss = loggedBoss;
 
         initializeFrame();
         initializeComponents();
@@ -330,7 +328,7 @@ public class AddEmployeeView extends JFrame {
                     CoffeeCountry coffeeCountry =
                             (CoffeeCountry) coffeeCountryComboBox.getSelectedItem();
 
-                    new Barista(
+                    Employee b = new Barista(
                             firstName,
                             lastName,
                             birthDate,
@@ -338,18 +336,20 @@ public class AddEmployeeView extends JFrame {
                             salary,
                             coffeeCountry
                     );
-
+                    loggedBoss.addEmployee(b);
                 }
 
-                case "Waiter" ->
+                case "Waiter" ->{
 
-                        new Waiter(
+                        Employee w = new Waiter(
                                 firstName,
                                 lastName,
                                 birthDate,
                                 sex,
                                 salary
                         );
+                loggedBoss.addEmployee(w);
+                }
 
                 case "Cleaner" -> {
 
@@ -359,7 +359,7 @@ public class AddEmployeeView extends JFrame {
                     String assignedArea =
                             (String) assignedAreaComboBox.getSelectedItem();
 
-                    new Cleaner(
+                    Employee c = new  Cleaner(
                             firstName,
                             lastName,
                             birthDate,
@@ -368,7 +368,7 @@ public class AddEmployeeView extends JFrame {
                             assignedArea,
                             salary
                     );
-
+                    loggedBoss.addEmployee(c);
                 }
 
             }

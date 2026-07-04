@@ -1,6 +1,7 @@
 package Views.Waiter;
 import Enums.OrderStatus;
 import Models.Order;
+import Models.Delivery;
 import Models.Product;
 import Models.Waiter;
 import javax.swing.*;
@@ -10,6 +11,7 @@ public class WaiterServedOrdersPanel extends JPanel {
     private JTable ordersTable;
     private DefaultTableModel tableModel;
     private JButton refreshButton;
+    private JButton showDeliveriesButton;
     private final Waiter waiter;
     public WaiterServedOrdersPanel(Waiter waiter) {
         this.waiter = waiter;
@@ -21,10 +23,11 @@ public class WaiterServedOrdersPanel extends JPanel {
     // COMPONENTS
     private void initializeComponents() {
         tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"Order ID", "Client", "Table", "Products", "Value"
+        tableModel.setColumnIdentifiers(new String[]{"Order ID", "Client", "Products", "Value", "Status"
         });
         ordersTable = new JTable(tableModel);
         refreshButton = new JButton("Refresh");
+        showDeliveriesButton = new JButton("Show Deliveries");
     }
     // LAYOUT
     private void initializeLayout() {
@@ -35,12 +38,14 @@ public class WaiterServedOrdersPanel extends JPanel {
         add(new JScrollPane(ordersTable), BorderLayout.CENTER);
         JPanel bottom = new JPanel();
         bottom.add(refreshButton);
+        bottom.add(showDeliveriesButton);
         add(bottom, BorderLayout.SOUTH);
     }
     // LISTENERS
 
     private void initializeListeners() {
         refreshButton.addActionListener(e -> refreshTable());
+        showDeliveriesButton.addActionListener(e -> showDeliveries());
     }
     // TABLE
     private void refreshTable() {
@@ -58,8 +63,24 @@ public class WaiterServedOrdersPanel extends JPanel {
             if (order.getClient() != null) {
                 client = order.getClient().getPersonName() + " " + order.getClient().getPeronSurname();
             }
-            tableModel.addRow(new Object[]{order.getOrderID(), client, products.toString(), order.countOrderValue()});
+            tableModel.addRow(new Object[]{order.getOrderID(), client, products.toString(), order.countOrderValue(),
+            order.getOrderStatus()});
         }
+    }
+    private void showDeliveries() {
+        StringBuilder sb = new StringBuilder();
+        for (Order order : Order.getOrderExtent()) {
+            for (Delivery delivery : order.getDeliveries()) {
+                sb.append("Order ID: ")
+                        .append(order.getOrderID())
+                        .append("    Delivery ID: ")
+                        .append(delivery.getDeliveryID())
+                        .append("\n");
+            }
+        }
+        if (sb.length() == 0)
+            sb.append("No deliveries found.");
+        JOptionPane.showMessageDialog(this, sb.toString(), "Deliveries", JOptionPane.INFORMATION_MESSAGE);
     }
     public void reload() {
         refreshTable();

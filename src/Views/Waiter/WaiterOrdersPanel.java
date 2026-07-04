@@ -1,5 +1,6 @@
 package Views.Waiter;
 import Enums.OrderStatus;
+import Models.Delivery;
 import Models.Order;
 import Models.Waiter;
 
@@ -88,8 +89,14 @@ public class WaiterOrdersPanel extends JPanel {
             return;
         }
         int orderId = (Integer) tableModel.getValueAt(row, 0);
-        Order order = Order.findById(orderId);
-        loggedWaiter.serveOrder(order);
+        Order selectedOrder = Order.findById(orderId);
+        loggedWaiter.serveOrder(selectedOrder);
+        try {
+            Delivery.createDelivery(selectedOrder, "Standard Delivery");
+            JOptionPane.showMessageDialog(null, "Order served.\nDelivery created.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
         parent.refreshAllPanels();
     }
     public void reload() {

@@ -2,6 +2,8 @@ package Views.Boss;
 import Models.Barista;
 import Models.Boss;
 import Models.Employee;
+import Models.Employment;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -15,6 +17,7 @@ public class ManageEmployeesView extends JPanel {
     private JButton removeButton;
     private JButton refreshButton;
     private JButton manageEmployeesButton;
+    private JButton EmploymentsButton;
     // CONSTRUCTOR
     public ManageEmployeesView(Boss loggedBoss) {
         this.loggedBoss = loggedBoss;
@@ -40,6 +43,7 @@ public class ManageEmployeesView extends JPanel {
         removeButton = new JButton("Remove Employee");
         refreshButton = new JButton("Refresh");
         manageEmployeesButton = new JButton("Manage Employees");
+        EmploymentsButton = new JButton("Show All Emplyments");
     }
     // LAYOUT
     private void initializeLayout() {
@@ -54,6 +58,7 @@ public class ManageEmployeesView extends JPanel {
         buttons.add(removeButton);
         buttons.add(refreshButton);
         buttons.add(manageEmployeesButton);
+        buttons.add(EmploymentsButton);
         add(buttons, BorderLayout.SOUTH);
     }
     // LISTENERS
@@ -63,6 +68,7 @@ public class ManageEmployeesView extends JPanel {
         editButton.addActionListener(e -> editEmployee());
         removeButton.addActionListener(e -> removeEmployee());
         manageEmployeesButton.addActionListener(e -> Boss.manageEmployees());
+        EmploymentsButton.addActionListener(e -> Employment.showEmployments());
     }
     // TABLE
     public void refreshTable() {
@@ -81,7 +87,7 @@ public class ManageEmployeesView extends JPanel {
     }
     // ADD
     private void addEmployee() {
-        new AddEmployeeView(this).setVisible(true);
+        new AddEmployeeView(this,loggedBoss).setVisible(true);
         refreshTable();
     }
     // EDIT

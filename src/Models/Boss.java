@@ -2,18 +2,32 @@ package Models;
 import Enums.Sex;
 import SecondaryClasses.ObjectPlus;
 import javax.swing.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 public class Boss extends Person {
     private static final long serialVersionUID = 1L;
     // FIELDS
     private String password;
-    private final List<Employment> employments = new ArrayList<>();
 
     public static LocalTime start = LocalTime.of(8,0);
     public static LocalTime end = LocalTime.of(20,0);
+    private  List<Employment> employments = new ArrayList<>();
+    //działa zostaje
+    private void readObject(ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+
+        in.defaultReadObject();
+
+        if (employments == null) {
+            employments = new ArrayList<>();
+        }
+    }
+
     // CONSTRUCTORS
     public Boss() {
         super();
@@ -40,6 +54,36 @@ public class Boss extends Person {
         return "ALL";
     }
     // BUSINESS METHODS
+    public void addEmployment(Employment employment) {
+
+        System.out.println("Boss.addEmployment()");
+        System.out.println(employments);
+
+        if (!employments.contains(employment)) {
+            employments.add(employment);
+        }
+    }
+
+    public List<Employment> getEmployments() {
+        return Collections.unmodifiableList(employments);
+    }
+
+    public void addEmployee(Employee employee) {
+
+        if (employee == null) {
+            throw new IllegalArgumentException("Employee cannot be null.");
+        }
+
+        try {
+            new Employment(
+                    this,
+                    employee,
+                    LocalDate.now()
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     /**
      * Use Case: Manage Products
      */

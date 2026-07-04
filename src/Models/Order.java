@@ -1,12 +1,9 @@
 package Models;
-
 import Enums.OrderStatus;
 import Enums.OrderType;
 import SecondaryClasses.ObjectPlus;
-
 import java.time.LocalDateTime;
 import java.util.*;
-
 import static java.util.stream.Collectors.toList;
 
 public class Order extends ObjectPlus{
@@ -75,21 +72,7 @@ public class Order extends ObjectPlus{
 
     //Do kompozycji
 
-    public void addDelivery(Delivery delivery) throws Exception {
-        if(!deliveries.contains(delivery)) {
-            deliveries.add(delivery);
-        }
-    }
 
-    @Override
-    public String toString() {
-        String info = "Order: " + orderName + "\n";
-        for(Delivery delivery : deliveries) {
-            info += "   " + delivery. + "\n";
-        }
-
-        return info;
-    }
     public void addPart(Delivery delivery) throws Exception {
         if(!deliveries.contains(delivery)) {
             // Check if the part has been already added to any wholes
@@ -174,38 +157,28 @@ public class Order extends ObjectPlus{
     //=========================================================
     // DELIVERY (COMPOSITION)
     //=========================================================
+
     public Delivery addDelivery() {
-        Delivery delivery = Delivery.create(this);
-        deliveries.add(delivery);
-        return delivery;
+        Delivery d = Delivery.create(this);
+        deliveries.add(d);
+        return d;
     }
-    public void addDelivery(Delivery delivery) {
-        if (delivery == null) {
-            throw new IllegalArgumentException(
-                    "Delivery cannot be null."
-            );
+    public void addDelivery(Delivery d) {
+        if (d.getOrder() != null && d.getOrder() != this) {
+            throw new IllegalStateException("Delivery already belongs to another Order!");
         }
-        if (delivery.getOrder() != null &&
-                delivery.getOrder() != this) {
-            throw new IllegalStateException(
-                    "Delivery already belongs to another order."
-            );
-        }
-        if (!deliveries.contains(delivery)) {
-            deliveries.add(delivery);
-            delivery.setOrder(this);
+        if (!deliveries.contains(d)) {
+            deliveries.add(d);
+            d.setOrder(this);
         }
     }
-    public void removeDelivery(Delivery delivery) {
-        if (delivery == null) {
-            return;
-        }
-        if (deliveries.remove(delivery)) {
-            delivery.setOrder(null);
+    public void removeDelivery(Delivery d) {
+        if (deliveries.remove(d)) {
+            d.setOrder(null); // OR: „destroy” logic in stricter version
         }
     }
     public List<Delivery> getDeliveries() {
-        return Collections.unmodifiableList(deliveries);
+        return deliveries;
     }
     //=========================================================
     // GETTERS
@@ -364,7 +337,6 @@ public class Order extends ObjectPlus{
     }
     @Override
     public String toString() {
-
         return String.format(
                 """
                 Order #%d
@@ -390,27 +362,29 @@ public class Order extends ObjectPlus{
     }
 
     public static void rebuildCounter() {
-
         int maxId = 0;
-
         for (Order order : getOrderExtent()) {
-
             if (order.getOrderID() > maxId) {
                 maxId = order.getOrderID();
             }
-
         }
-
         counter = maxId + 1;
     }
 
     public void serveOrder() {
+        System.out.println(orderStatus);
         if (orderStatus != OrderStatus.READY) {
             throw new IllegalStateException(
                     "Only READY orders can be served."
             );
         }
         orderStatus = OrderStatus.SERVED;
+        System.out.println("Current status = " + orderStatus);
+        try {
+            Delivery.createDelivery(this, "Delivery");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static List<Order> getReadyOrders() {

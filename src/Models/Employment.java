@@ -1,83 +1,115 @@
 package Models;
 
+import SecondaryClasses.ObjectPlus;
+
+import javax.swing.*;
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Employment {
-    private static final long serialVersionUID = 1L;
-    //EXTENT SESSION
-    /** Extent session contains:
-     * <br>to String method</br>
-     * <br>{@linkplain List} in implementation as {@linkplain ArrayList} called extent that holds all instances</br>
-     * <br>Private Static method "addEmployment" which adds instance of {@linkplain Employment} to extent collection</br>
-     * <br>Private Static method "removeEmployment" which removes instance of {@linkplain Employment} from extent collection</br>
-     * <br>Public Static method "showExtent" which displays all instances of {@linkplain Employment} line by line.</br>
-     */
-//    @Override
-//    public String toString() {
-//        return "Employment: " + employmentID + ", id: " + super.toString();
-//    }
-    private static List<Employment> extent = new ArrayList<>();
-    private static void addEmployment(Employment employment) {
-        extent.add(employment);
-    }
-    private static void removeEmployment(Employment employment) {
-        extent.remove(employment);
-    }
-    public static void showExtent() {
-        System.out.println("Extent of the class: " + Employment.class.getName());
-        for (Employment employment : extent) {
-            System.out.println(employment);
-        }
-    }
-    //EXTENT SESSION END
-    //FIELDS SESSION START
-    /**Simple, Single, Required, Object, Concrete Attribute "employmentID" typed {@linkplain Integer}
-     */
-    int employmentID;
-    /**Complex, Single, Required, Object, Concrete Attribute "employee" typed {@linkplain Employee}
-     */
-    private Employee employee;
-    /**Complex, Single, Required, Object, Concrete Attribute "startOfWorking" typed {@linkplain LocalDate}
-     */
-    LocalDate startOfWorking;
-    //FIELDS SESSION END
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION START
-    public Employment(int employmentID, Employee employee, LocalDate startOfWorking) {
-        this.employmentID = employmentID;
-        this.employee = employee;
-        this.startOfWorking = startOfWorking;
-    }
-    //CONSTRUCTORS, GETTERS, SETTERS SESSION END
-    //METHODS SESSION START
+public class Employment extends ObjectPlus implements Serializable {
 
-    //METHODS SESSION END
-    //ASSOCIATION WITH ATTRIBUTE
-    private CoffeeHouse coffeeHouse;
-    private LocalDate hireDate;
-    private String position;
-    private float hourlyRate;
-    public Employment(Employee employee, CoffeeHouse coffeeHouse,
-                      LocalDate hireDate, String position, float hourlyRate) {
-        this.employee = employee;
-        this.coffeeHouse = coffeeHouse;
-        this.hireDate = hireDate;
-        this.position = position;
-        this.hourlyRate = hourlyRate;
-        employee.addEmployment(this);
-        coffeeHouse.addEmployment(this);
+    private static final long serialVersionUID = 1L;
+
+    //=========================================================
+    // ATTRIBUTES OF ASSOCIATION
+    //=========================================================
+
+    private final Boss boss;
+
+    private final Employee employee;
+
+    /**
+     * Attribute of the association.
+     * Date when employee was hired by the boss.
+     */
+    private final LocalDate employmentDate;
+    @SuppressWarnings("unchecked")
+    public static List<Employment> getEmploymentExtent() {
+        return (List<Employment>) (List<?>) ObjectPlus.getExtent(Employment.class);
     }
+
+    //=========================================================
+    // CONSTRUCTOR
+    //=========================================================
+
+    public Employment(Boss boss,
+                      Employee employee,
+                      LocalDate employmentDate) {
+
+        if (boss == null) {
+            throw new IllegalArgumentException("Boss cannot be null.");
+        }
+
+        if (employee == null) {
+            throw new IllegalArgumentException("Employee cannot be null.");
+        }
+
+        if (employmentDate == null) {
+            throw new IllegalArgumentException("Employment date cannot be null.");
+        }
+
+        this.boss = boss;
+        this.employee = employee;
+        this.employmentDate = employmentDate;
+
+        // automatic reverse links
+        boss.addEmployment(this);
+        employee.addEmployment(this);
+    }
+
+    //=========================================================
+    // GETTERS
+    //=========================================================
+
+    public Boss getBoss() {
+        return boss;
+    }
+
     public Employee getEmployee() {
         return employee;
     }
-    public CoffeeHouse getCoffeeHouse() {
-        return coffeeHouse;
+
+    public LocalDate getEmploymentDate() {
+        return employmentDate;
     }
+//METHODS
+
+    @Override
     public String toString() {
-        return employee.getName() + " works in " +
-                coffeeHouse.getCoffeeHouseName() +
-                " as " + position +
-                " since " + hireDate;
+
+        return "Employment{" +
+                "boss=" + boss.getPersonName() + " " + boss.getPeronSurname() +
+                ", employee=" + employee.getPersonName() + " " + employee.getPeronSurname() +
+                ", employmentDate=" + employmentDate +
+                '}';
+    }
+    public static void showEmployments() {
+        if (getEmploymentExtent().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null, "No employments found.", "Employments", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("========== EMPLOYMENTS ==========\n\n");
+        for (Employment employment : getEmploymentExtent()) {
+            sb.append("Boss: ")
+                    .append(employment.getBoss().getPersonName())
+                    .append(" ")
+                    .append(employment.getBoss().getPeronSurname())
+                    .append("\nEmployee: ")
+                    .append(employment.getEmployee().getPersonName())
+                    .append(" ")
+                    .append(employment.getEmployee().getPeronSurname())
+                    .append("\nEmployment date: ")
+                    .append(employment.getEmploymentDate())
+                    .append("\n\n");
+        }
+        JOptionPane.showMessageDialog(
+                null,
+                sb.toString(),
+                "Employments",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }
 }
