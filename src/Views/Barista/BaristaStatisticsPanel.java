@@ -84,7 +84,7 @@ public class BaristaStatisticsPanel extends JPanel {
         AcceptedCoffeeLabel.setText(String.valueOf(loggedBarista.countAcceptedOrders()));
         PreparingOrdersLabel.setText(String.valueOf(loggedBarista.countPreparingOrders()));
         ReadyOrdersLabel.setText(String.valueOf(loggedBarista.countReadyOrders()));
-        workedHoursLabel.setText("Its hard to implement this one");
+        workedHoursLabel.setText(String.valueOf(loggedBarista.getCurrentEmployment().getEmploymentPeriod()));
         if(loggedBarista.getFavouriteCoffeeCountry() != null){
             favouriteCoffeeCountryLabel.setText(loggedBarista.getFavouriteCoffeeCountry().name());
         }else{

@@ -15,6 +15,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static Models.Employment.getEmploymentExtent;
+
 public class Employee extends Person {
     private static final long serialVersionUID = 1L;
     //EXTENT SESSION
@@ -180,8 +182,11 @@ public class Employee extends Person {
             employments.add(employment);
         }
     }
-    public List<Employment> getEmployments() {
-        return employments;
+    public Employment getCurrentEmployment() {
+        return getEmploymentExtent().stream()
+                .filter(Employment::isActive)
+                .findFirst()
+                .orElse(null);
     }
     public Employee getRecommendedBy(){
         return recommender;

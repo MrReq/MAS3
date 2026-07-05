@@ -16,6 +16,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
     private DefaultTableModel tableModel;
     private JButton refreshButton;
     private JButton finishPreparationButton;
+    private JButton finishPreparationsButton;
     private JButton countPowerOfCoffeeButton;
     private JButton showallPreparationButton;
     private BaristaDashboardView parent;
@@ -39,6 +40,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
         refreshButton = new JButton("Refresh");
 //        startPreparationButton = new JButton("Start preparation");
         finishPreparationButton = new JButton("Coffee ready");
+        finishPreparationsButton = new JButton("Coffees are ready");
         countPowerOfCoffeeButton = new JButton("Count Power Of Coffee");
         showallPreparationButton = new JButton("Show all preparation");
     }
@@ -53,6 +55,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
         bottomPanel.add(refreshButton);
 //        bottomPanel.add(startPreparationButton);
         bottomPanel.add(finishPreparationButton);
+        bottomPanel.add(finishPreparationsButton);
         bottomPanel.add(countPowerOfCoffeeButton);
         bottomPanel.add(showallPreparationButton);
         add(bottomPanel, BorderLayout.SOUTH);
@@ -62,6 +65,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
         refreshButton.addActionListener(e -> refreshTable());
 //        startPreparationButton.addActionListener(e -> startPreparation());
         finishPreparationButton.addActionListener(e -> finishPreparation());
+        finishPreparationsButton.addActionListener(e -> finishPreparations());
         countPowerOfCoffeeButton.addActionListener(e -> finishPreparation());
         showallPreparationButton.addActionListener(e -> showAllPreparation());
     }
@@ -130,6 +134,22 @@ public class BaristaPrepareCoffeePanel extends JPanel {
         Order selectedOrder = Order.findById(orderID);
         loggedBarista.markOrderAsReady(selectedOrder);
         JOptionPane.showMessageDialog(this, "Coffee is ready to serve.");
+        parent.refreshAllPanels();
+    }
+
+    public void finishPreparations(){
+        int[] rows = coffeeTable.getSelectedRows();
+        if(rows.length == 0){
+            JOptionPane.showMessageDialog(this,"Select at least one order","ERRO",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        for(int row : rows){
+            int orderID = (Integer) tableModel.getValueAt(row,0);
+            Order selectedOrder = Order.findById(orderID);
+            if (selectedOrder != null)
+                loggedBarista.markOrderAsReady(selectedOrder);
+        }
+        JOptionPane.showMessageDialog(this,rows.length + " coffees are ready","OK",0);
         parent.refreshAllPanels();
     }
 
