@@ -44,6 +44,15 @@ public class Americano extends Coffee implements Preparable {
             , TemperatureOfTheService temperatureOfService, CoffeeCountry coffeeCountry) {
         super(name, cost, availability, description, temperatureOfService, coffeeCountry);
     }
+
+    public Americano(String name, float cost, boolean availability, String description
+            , TemperatureOfTheService temperatureOfService, CoffeeCountry coffeeCountry, double waterAmount
+            , int espressoShotCount, double waterToCoffeeRatio) {
+        super(name, cost, availability, description, temperatureOfService, coffeeCountry);
+        this.waterAmount = waterAmount;
+        this.espressoShotCount = espressoShotCount;
+        this.waterToCoffeeRatio = waterToCoffeeRatio;
+    }
     /**
      * Public object method "countPowerOfCoffee"
      * @param : none

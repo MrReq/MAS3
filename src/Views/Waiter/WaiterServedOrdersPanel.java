@@ -7,6 +7,7 @@ import Models.Waiter;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import javax.swing.table.TableRowSorter;
 public class WaiterServedOrdersPanel extends JPanel {
     private JTable ordersTable;
     private DefaultTableModel tableModel;
@@ -23,9 +24,10 @@ public class WaiterServedOrdersPanel extends JPanel {
     // COMPONENTS
     private void initializeComponents() {
         tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"Order ID", "Client", "Products", "Value", "Status"
-        });
+        tableModel.setColumnIdentifiers(new String[]{"Order ID", "Client", "Products", "Value", "Status"});
         ordersTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        ordersTable.setRowSorter(sorter);
         refreshButton = new JButton("Refresh");
         showDeliveriesButton = new JButton("Show Deliveries");
     }

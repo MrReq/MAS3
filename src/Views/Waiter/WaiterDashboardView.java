@@ -2,16 +2,12 @@ package Views.Waiter;
 import Models.Waiter;
 import Views.Loging.LoginSelectionView;
 import Views.Waiter.*;
-
+import javax.swing.table.TableRowSorter;
 import javax.swing.*;
 import java.awt.*;
-
 public class WaiterDashboardView extends JFrame {
-
     private final Waiter loggedWaiter;
-
     private JTabbedPane tabbedPane;
-
     private WaiterOrdersPanel waiterordersPanel;
     private WaiterServedOrdersPanel waiterservedOrdersPanel;
     private WaiterTablesPanel waitertablesPanel;
@@ -30,19 +26,11 @@ public class WaiterDashboardView extends JFrame {
     }
     // FRAME
     private void initializeFrame() {
-
         setTitle("Coffee House Management System - Waiter");
-
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
-
-    //=================================================
     // COMPONENTS
-    //=================================================
-
     private void initializeComponents() {
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Orders", waiterordersPanel);
@@ -75,7 +63,6 @@ public class WaiterDashboardView extends JFrame {
         waiterordersPanel.reload();
         waitertablesPanel.reload();
         waiterPaymentsPanel.reload();
-//        waiterstatisticsPanel.reload();
-
+        waiterstatisticsPanel.reload();
     }
 }

@@ -2,6 +2,7 @@ package Views.Cleaner;
 import Models.Cleaner;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 public class CleanerRoomsPanel extends JPanel {
     private final Cleaner cleaner;
@@ -20,6 +21,8 @@ public class CleanerRoomsPanel extends JPanel {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Day", "Shift", "Start", "End", "Assigned Area"});
         scheduleTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        scheduleTable.setRowSorter(sorter);
         scheduleTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
     }
@@ -46,39 +49,9 @@ public class CleanerRoomsPanel extends JPanel {
             for(Shift shift : cleaner.getSchedule())
         */
         tableModel.addRow(new Object[]{"Monday", "Morning", "06:00", "14:00", "Kitchen"});
-        tableModel.addRow(new Object[]{"Tuesday", "Morning", "06:00", "14:00", "Main Hall"
-        });
-
-        tableModel.addRow(new Object[]{
-
-                "Wednesday",
-                "Afternoon",
-                "14:00",
-                "22:00",
-                "Terrace"
-
-        });
-
-        tableModel.addRow(new Object[]{
-
-                "Thursday",
-                "Morning",
-                "06:00",
-                "14:00",
-                "Kitchen"
-
-        });
-
-        tableModel.addRow(new Object[]{
-
-                "Friday",
-                "Afternoon",
-                "14:00",
-                "22:00",
-                "Toilets"
-
-        });
-
+        tableModel.addRow(new Object[]{"Tuesday", "Morning", "06:00", "14:00", "Main Hall"});
+        tableModel.addRow(new Object[]{"Wednesday", "Afternoon", "14:00", "22:00", "Terrace"});
+        tableModel.addRow(new Object[]{"Thursday", "Morning", "06:00", "14:00", "Kitchen"});
+        tableModel.addRow(new Object[]{"Friday", "Afternoon", "14:00", "22:00", "Toilets"});
     }
-
 }

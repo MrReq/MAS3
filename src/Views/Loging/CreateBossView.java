@@ -58,19 +58,16 @@ public class CreateBossView extends JFrame {
             dispose();
             new LoginSelectionView().setVisible(true);
         });
-
     }
     // CREATE BOSS
-
     private void createBoss() {
         String name = firstNameField.getText().trim();
         String surname = lastNameField.getText().trim();
         String password = new String(passwordField.getPassword());
         // REQUIRED FIELDS
-
         if (name.isBlank() || surname.isBlank() || password.isBlank()) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Missing data",
-                    JOptionPane.ERROR_MESSAGE
+                JOptionPane.ERROR_MESSAGE
             );
             return;
         }
@@ -98,24 +95,16 @@ public class CreateBossView extends JFrame {
             }
         }
         // CREATE NEW BOSS
-        new Boss(
-                name,
-                surname,
-                password
-        );
-        JOptionPane.showMessageDialog(
-                this,
-                "Boss account has been created successfully.",
-                "Success",
-                JOptionPane.INFORMATION_MESSAGE);
+        new Boss(name, surname, password);
+        JOptionPane.showMessageDialog(this, "Boss account has been created successfully.",
+                "Success", JOptionPane.INFORMATION_MESSAGE);
         dispose();
         new BossLoginView().setVisible(true);
     }
     // PASSWORD VALIDATION
     private boolean isPasswordValid(String password) {
-        if (password == null) {
+        if (password == null)
             return false;
-        }
         return password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$");
     }
 }

@@ -1,6 +1,7 @@
 package Views.Loging;
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.table.TableRowSorter;
 public class ProjectDescriptionPanel extends JPanel {
     private JTextArea textArea;
     public ProjectDescriptionPanel() {
@@ -224,11 +225,8 @@ public class ProjectDescriptionPanel extends JPanel {
                                                                                                                         
                                                                                                                         ============================================================
                                                                                                                         Thank you!
-""");
-
-    }
+""");}
     // LAYOUT
-
     private void initializeLayout() {
         setLayout(new BorderLayout());
         JLabel title = new JLabel("Project Documentation", SwingConstants.CENTER);

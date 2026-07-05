@@ -2,6 +2,7 @@ package Views.Barista;
 import Models.Product;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 public class BaristaMenuPanel extends JPanel {
     private JTable menuTable;
@@ -20,6 +21,8 @@ public class BaristaMenuPanel extends JPanel {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Name", "Price", "Available", "Temperature"});
         menuTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        menuTable.setRowSorter(sorter);
         menuTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
         detailsButton = new JButton("Show Details");

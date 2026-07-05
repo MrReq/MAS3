@@ -5,6 +5,7 @@ import Models.Employee;
 import Models.Employment;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ public class ManageEmployeesView extends JPanel {
             }
         };
         employeesTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        employeesTable.setRowSorter(sorter);
         employeesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         employeesTable.getTableHeader().setReorderingAllowed(false);
         addButton = new JButton("Add Employee");
@@ -52,7 +55,6 @@ public class ManageEmployeesView extends JPanel {
         PromoteEmployeeButton = new JButton("Show all promoted employees");
         showNumberOfEmployees = new JButton("Show Number of Employees");
         showNumberOfClients = new JButton("Show Number of Clients");
-
     }
     // LAYOUT
     private void initializeLayout() {
@@ -71,7 +73,6 @@ public class ManageEmployeesView extends JPanel {
         buttons.add(PromoteEmployeeButton);
         buttons.add(showNumberOfEmployees);
         buttons.add(showNumberOfClients);
-
         add(buttons, BorderLayout.SOUTH);
     }
     // LISTENERS
@@ -94,11 +95,9 @@ public class ManageEmployeesView extends JPanel {
         tableModel.setRowCount(0);
         for (Employee employee : Employee.getEmployeeExtent()) {
             String favouriteCoffee = "-";
-            if (employee instanceof Barista barista) {
-                if (barista.getFavouriteCoffeeCountry() != null) {
+            if (employee instanceof Barista barista)
+                if (barista.getFavouriteCoffeeCountry() != null)
                     favouriteCoffee = String.valueOf(barista.getFavouriteCoffeeCountry().toString());
-                }
-            }
             tableModel.addRow(new Object[]{employee.getEmployeeID(), employee.getPersonName(), employee.getPeronSurname(),
                     employee.getPersonSex(), employee.getClass().getSimpleName(), employee.getEmployeeSalary(), favouriteCoffee
             });
@@ -146,37 +145,19 @@ public class ManageEmployeesView extends JPanel {
 
     public void showPromotedEmployees(){
         List<Employee> promoted = loggedBoss.evaluateEmployees();
-
         if (promoted.isEmpty()) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "No employee met the promotion requirements.",
-                    "Promotion",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-
+            JOptionPane.showMessageDialog(this, "No employee met the promotion requirements.", "Promotion", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-
         StringBuilder sb = new StringBuilder();
-
         sb.append("The following employees have been promoted:\n\n");
-
         for (Employee employee : promoted) {
-
             sb.append("• ")
-                    .append(employee.getPersonName())
-                    .append(" ")
-                    .append(employee.getPeronSurname())
-                    .append("\n");
+                .append(employee.getPersonName())
+                .append(" ")
+                .append(employee.getPeronSurname())
+                .append("\n");
         }
-
-        JOptionPane.showMessageDialog(
-                this,
-                sb.toString(),
-                "Promotion completed",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        JOptionPane.showMessageDialog(this, sb.toString(), "Promotion completed", JOptionPane.INFORMATION_MESSAGE);
     }
 }

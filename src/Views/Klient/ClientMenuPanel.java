@@ -3,6 +3,7 @@ import Models.Client;
 import Models.Product;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 public class ClientMenuPanel extends JPanel {
     private final Client loggedClient;
@@ -19,31 +20,22 @@ public class ClientMenuPanel extends JPanel {
         initializeListeners();
         refreshTable();
     }
-
     // COMPONENTS
-
     private void initializeComponents() {
-        tableModel = new DefaultTableModel(
-                new Object[]{
-                        "ID",
-                        "Name",
-                        "Price",
-                        "Temperature",
-                        "Available"
-                }, 0
-        ) {
+        tableModel = new DefaultTableModel(new Object[]{"ID", "Name", "Price", "Temperature", "Available"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
         productsTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        productsTable.setRowSorter(sorter);
         productsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
         addToCartButton = new JButton("Add to cart");
     }
     // LAYOUT
-
     private void initializeLayout() {
         setLayout(new BorderLayout());
         JLabel title = new JLabel("MENU", SwingConstants.CENTER);
@@ -56,13 +48,11 @@ public class ClientMenuPanel extends JPanel {
         add(bottom, BorderLayout.SOUTH);
     }
     // LISTENERS
-
     private void initializeListeners() {
         refreshButton.addActionListener(e -> refreshTable());
         addToCartButton.addActionListener(e -> addToCart());
     }
     // TABLE
-
     public void refreshTable() {
         System.out.println(Product.getProductExtent().size());
         tableModel.setRowCount(0);
@@ -73,26 +63,25 @@ public class ClientMenuPanel extends JPanel {
         }
     }
     // ADD TO CART
-
     private void addToCart() {
         int row = productsTable.getSelectedRow();
         if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Select product.");
+            JOptionPane.showMessageDialog(this, "Select product.","Error",0);
             return;
         }
         int productID = (Integer) tableModel.getValueAt(row, 0);
         Product selectedProduct = Product.findById(productID);
         if (selectedProduct == null) {
-            JOptionPane.showMessageDialog(this, "Product not found.");
+            JOptionPane.showMessageDialog(this, "Product not found.","Error",0);
             return;
         }
         if (!selectedProduct.isProductAvailability()) {
-            JOptionPane.showMessageDialog(this, "Product is unavailable.");
+            JOptionPane.showMessageDialog(this, "Product is unavailable.","Error",0);
             return;
         }
         loggedClient.getShoppingCart().addProduct(selectedProduct);
-        JOptionPane.showMessageDialog(this, "Product added to shopping cart."
-        );
+        JOptionPane.showMessageDialog(this, "Product added to shopping cart.","Accepted",
+                JOptionPane.INFORMATION_MESSAGE);
         parent.refreshAllPanels();
     }
     public void reload() {

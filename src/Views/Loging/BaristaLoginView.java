@@ -108,12 +108,12 @@ public class BaristaLoginView extends JFrame {
         }
         for (Barista barista : Barista.getBaristaExtent()) {
             if (barista.getPersonName().equalsIgnoreCase(name) && barista.getPeronSurname().equalsIgnoreCase(surname)
-                    && barista.getPersonDateOfBirth().equals(birthDate)
-                    && barista.getPersonSex() == sex && barista.getFavouriteCoffeeCountry() == country) {
-                JOptionPane.showMessageDialog(this, "Login successful.");
-                dispose();
-                new BaristaDashboardView(barista).setVisible(true);
-                return;
+                && barista.getPersonDateOfBirth().equals(birthDate)
+                && barista.getPersonSex() == sex && barista.getFavouriteCoffeeCountry() == country) {
+                    JOptionPane.showMessageDialog(this, "Login successful.");
+                    dispose();
+                    new BaristaDashboardView(barista).setVisible(true);
+                    return;
             }
         }
         JOptionPane.showMessageDialog(this, "Barista not found.", "Login error", JOptionPane.ERROR_MESSAGE);

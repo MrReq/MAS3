@@ -2,6 +2,7 @@ package Views.Loging;
 import SecondaryClasses.ObjectPlus;
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.table.TableRowSorter;
 public class LoginSelectionView extends JFrame {
     private JTabbedPane tabbedPane;
     public LoginSelectionView() {
@@ -28,16 +29,8 @@ public class LoginSelectionView extends JFrame {
         buttonsPanel.add(clearextensionButton);
         buttonsPanel.add(exitProgram);
         tabbedPane = new JTabbedPane();
-
-        tabbedPane.addTab(
-                "Project Description",
-                new ProjectDescriptionPanel()
-        );
-
-        tabbedPane.addTab(
-                "Login",
-                 panel
-        );
+        tabbedPane.addTab("Project Description", new ProjectDescriptionPanel());
+        tabbedPane.addTab("Login", panel);
         panel.add(title, BorderLayout.NORTH);
         panel.add(buttonsPanel, BorderLayout.CENTER);
         add(tabbedPane);
@@ -62,11 +55,8 @@ public class LoginSelectionView extends JFrame {
         });
     }
     private void exitApplication() {
-        int option = JOptionPane.showConfirmDialog(
-                this,
-                "Do you really want to exit the application?",
-                "Exit", JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
+        int option = JOptionPane.showConfirmDialog(this, "Do you really want to exit the application?",
+                "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (option == JOptionPane.YES_OPTION) {
             System.exit(0);
         }

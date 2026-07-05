@@ -1,6 +1,7 @@
 package Views.Loging;
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.table.TableRowSorter;
 public class TypeOfEmployeeLoginView extends JFrame {
     private JButton waiterButton;
     private JButton baristaButton;

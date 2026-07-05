@@ -7,6 +7,7 @@ import Models.Product;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
 public class BaristaOrdersPanel extends JPanel {
@@ -60,7 +61,8 @@ public class BaristaOrdersPanel extends JPanel {
         });
 
         ordersTable = new JTable(tableModel);
-
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        ordersTable.setRowSorter(sorter);
         ordersTable.setSelectionMode(
                 ListSelectionModel.SINGLE_SELECTION
         );

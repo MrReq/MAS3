@@ -4,6 +4,7 @@ import Models.Order;
 import Models.Product;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 public class ClientOrderHistoryPanel extends JPanel {
     private final Client loggedClient;
@@ -20,23 +21,20 @@ public class ClientOrderHistoryPanel extends JPanel {
         refreshTable();
     }
     // COMPONENTS
-
     private void initializeComponents() {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Order ID", "Date", "Products", "Status", "Value"});
         ordersTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        ordersTable.setRowSorter(sorter);
         ordersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
         detailsButton = new JButton("Details");
     }
     // LAYOUT
-
     private void initializeLayout() {
         setLayout(new BorderLayout());
-        JLabel title = new JLabel(
-                "ORDER HISTORY  (ClientOrderHistoryPanel)",
-                SwingConstants.CENTER
-        );
+        JLabel title = new JLabel("ORDER HISTORY  (ClientOrderHistoryPanel)", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 22));
         add(title, BorderLayout.NORTH);
         add(new JScrollPane(ordersTable), BorderLayout.CENTER);
@@ -46,13 +44,11 @@ public class ClientOrderHistoryPanel extends JPanel {
         add(bottom, BorderLayout.SOUTH);
     }
     // LISTENERS
-
     private void initializeListeners() {
         refreshButton.addActionListener(e -> refreshTable());
         detailsButton.addActionListener(e -> showDetails());
     }
     // REFRESH
-
     private void refreshTable() {
         tableModel.setRowCount(0);
         for (Order order : loggedClient.getOrders()) {
@@ -67,7 +63,7 @@ public class ClientOrderHistoryPanel extends JPanel {
                 value += product.getProductCost();
             }
             tableModel.addRow(new Object[]{order.getOrderID(), order.getCreatedAt(), products.toString(),
-                    order.getOrderStatus(), value
+                order.getOrderStatus(), value
             });
         }
     }
@@ -76,8 +72,7 @@ public class ClientOrderHistoryPanel extends JPanel {
     private void showDetails() {
         int row = ordersTable.getSelectedRow();
         if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Select order."
-            );
+            JOptionPane.showMessageDialog(this, "Select order.");
             return;
         }
         JOptionPane.showMessageDialog(this,
@@ -85,8 +80,7 @@ public class ClientOrderHistoryPanel extends JPanel {
                         "\nDate: " + tableModel.getValueAt(row,1) +
                         "\nProducts: " + tableModel.getValueAt(row,2) +
                         "\nStatus: " + tableModel.getValueAt(row,3) +
-                        "\nValue: " + tableModel.getValueAt(row,4) + " zł"
-        );
+                        "\nValue: " + tableModel.getValueAt(row,4) + " zł");
     }
     public void reload() {
         refreshTable();

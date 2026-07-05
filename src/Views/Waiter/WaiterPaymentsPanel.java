@@ -3,6 +3,7 @@ import Models.Waiter;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import javax.swing.table.TableRowSorter;
 public class WaiterPaymentsPanel extends JPanel {
     private final Waiter waiter;
     private JTable paymentsTable;
@@ -16,16 +17,16 @@ public class WaiterPaymentsPanel extends JPanel {
         initializeListeners();
         refreshTable();
     }
-
     private void initializeComponents() {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Payment ID", "Order", "Client", "Amount", "Status"});
         paymentsTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        paymentsTable.setRowSorter(sorter);
         paymentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
         acceptButton = new JButton("Accept Payment");
     }
-
     private void initializeLayout() {
         setLayout(new BorderLayout());
         add(new JScrollPane(paymentsTable),BorderLayout.CENTER);
@@ -34,7 +35,6 @@ public class WaiterPaymentsPanel extends JPanel {
         bottom.add(acceptButton);
         add(bottom,BorderLayout.SOUTH);
     }
-
     private void initializeListeners() {
         refreshButton.addActionListener(e->refreshTable());
         acceptButton.addActionListener(e->acceptPayment());
@@ -45,7 +45,6 @@ public class WaiterPaymentsPanel extends JPanel {
         tableModel.addRow(new Object[]{2,11,"Anna",25.00,"PAID"});
         tableModel.addRow(new Object[]{3,12,"Mark",18.50,"WAITING"});
     }
-
     private void acceptPayment() {
         int row = paymentsTable.getSelectedRow();
         if(row==-1){
@@ -53,8 +52,7 @@ public class WaiterPaymentsPanel extends JPanel {
             return;
         }
         tableModel.setValueAt("PAID",row,4);
-        JOptionPane.showMessageDialog(this, "Payment accepted."
-        );
+        JOptionPane.showMessageDialog(this, "Payment accepted.");
     }
     public void reload(){
         refreshTable();

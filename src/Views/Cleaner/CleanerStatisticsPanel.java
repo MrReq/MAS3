@@ -59,9 +59,6 @@ public class CleanerStatisticsPanel extends JPanel {
     }
     // REFRESH
     private void refreshStatistics() {
-        /*
-         Tutaj później podłączymy dane z modelu.
-         */
         completedTasksLabel.setText("12");
         pendingTasksLabel.setText("3");
         workedHoursLabel.setText("146 h");

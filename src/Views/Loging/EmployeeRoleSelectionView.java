@@ -1,6 +1,7 @@
 package Views.Loging;
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.table.TableRowSorter;
 public class EmployeeRoleSelectionView extends JFrame {
     public EmployeeRoleSelectionView() {
         setTitle("Logowanie pracownika (EmployeeRoleSelectionView)");
@@ -23,18 +24,15 @@ public class EmployeeRoleSelectionView extends JFrame {
         panel.add(buttonsPanel, BorderLayout.CENTER);
         add(panel);
         bossButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                    "Logowanie jako szef");
+            JOptionPane.showMessageDialog(this, "Logowanie jako szef");
             new BossLoginView().setVisible(true);
         });
         employeeButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                    "Logowanie jako podwładny");
+            JOptionPane.showMessageDialog(this, "Logowanie jako podwładny");
             new TypeOfEmployeeLoginView().setVisible(true);
         });
         backButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                    "Cofamy");
+            JOptionPane.showMessageDialog(this, "Cofamy");
             dispose();
             new LoginSelectionView().setVisible(true);
         });

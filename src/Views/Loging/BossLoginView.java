@@ -76,21 +76,17 @@ public class BossLoginView extends JFrame {
         String lastName = lastNameField.getText().trim();
         String password = new String(passwordField.getPassword());
         if(firstName.isBlank() || lastName.isBlank() || password.isBlank()){
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Wypełnij wszystkie pola.",
-                    "Błąd",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            JOptionPane.showMessageDialog(this, "Wypełnij wszystkie pola.", "Błąd",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
         for(Boss boss : Boss.getBossExtent()){
             if(boss.getPersonName().equalsIgnoreCase(firstName) && boss.getPeronSurname().equalsIgnoreCase(lastName)
-                    && boss.getPassword().equals(password)){
-                JOptionPane.showMessageDialog(this, "Logowanie zakończone sukcesem.");
-                dispose();
-                new BossDashboardView(boss).setVisible(true);
-                return;
+                && boss.getPassword().equals(password)){
+                    JOptionPane.showMessageDialog(this, "Logowanie zakończone sukcesem.");
+                    dispose();
+                    new BossDashboardView(boss).setVisible(true);
+                    return;
             }
         }
         JOptionPane.showMessageDialog(this, "Niepoprawne dane logowania.", "Błąd", JOptionPane.ERROR_MESSAGE);

@@ -20,7 +20,6 @@ public class ClientProfileView extends JPanel {
         initializeLayout();
         initializeListeners();
         refreshData();
-
     }
     // COMPONENTS
     private void initializeComponents() {
@@ -33,14 +32,11 @@ public class ClientProfileView extends JPanel {
         addressValueLabel = new JLabel("-");
         refreshButton = new JButton("Refresh");
         editButton = new JButton("Edit profile");
-
     }
     // LAYOUT
     private void initializeLayout() {
         setLayout(new BorderLayout());
-        JLabel title = new JLabel(
-                "CLIENT PROFILE",
-                SwingConstants.CENTER
+        JLabel title = new JLabel("CLIENT PROFILE", SwingConstants.CENTER
         );
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
@@ -69,8 +65,7 @@ public class ClientProfileView extends JPanel {
     // LISTENERS
     private void initializeListeners() {
         refreshButton.addActionListener(e -> refreshData());
-        editButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Profile editing will be implemented soon.")
-        );
+        editButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Profile editing will be implemented soon."));
     }
     // REFRESH
     private void refreshData() {
@@ -89,10 +84,7 @@ public class ClientProfileView extends JPanel {
             );
         }
     }
-
     public void reload(){
         refreshData();
     }
-
-
 }

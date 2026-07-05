@@ -3,6 +3,7 @@ import Models.Waiter;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import javax.swing.table.TableRowSorter;
 public class WaiterTablesPanel extends JPanel {
     private final Waiter loggedWaiter;
     private JTable tablesTable;
@@ -21,13 +22,14 @@ public class WaiterTablesPanel extends JPanel {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Table", "Seats", "Status", "Client"});
         tablesTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        tablesTable.setRowSorter(sorter);
         tablesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablesTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         refreshButton = new JButton("Refresh");
         reserveButton = new JButton("Reserve");
         freeButton = new JButton("Free Table");
     }
-
     private void initializeLayout() {
         setLayout(new BorderLayout());
         add(new JScrollPane(tablesTable), BorderLayout.CENTER);

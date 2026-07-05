@@ -101,7 +101,7 @@ public class CleanerLoginView extends JFrame {
         }
         for (Cleaner cleaner : Cleaner.getCleanerExtent()) {
             if (cleaner.getPersonName().equalsIgnoreCase(name) && cleaner.getPeronSurname().equalsIgnoreCase(surname)
-                    && cleaner.getPersonDateOfBirth().equals(birthDate) && cleaner.getPersonSex() == sex) {
+                && cleaner.getPersonDateOfBirth().equals(birthDate) && cleaner.getPersonSex() == sex) {
                 JOptionPane.showMessageDialog(this, "Login successful.");
                 dispose();
                 new CleanerDashboardView(cleaner).setVisible(true);

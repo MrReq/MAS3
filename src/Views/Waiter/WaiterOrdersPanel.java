@@ -3,7 +3,7 @@ import Enums.OrderStatus;
 import Models.Delivery;
 import Models.Order;
 import Models.Waiter;
-
+import javax.swing.table.TableRowSorter;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -29,6 +29,8 @@ public class WaiterOrdersPanel extends JPanel {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Order ID", "Client", "Status", "Value"});
         ordersTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        ordersTable.setRowSorter(sorter);
         ordersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
         serveButton = new JButton("Serve Order");
@@ -45,12 +47,10 @@ public class WaiterOrdersPanel extends JPanel {
         add(bottom, BorderLayout.SOUTH);
     }
     // LISTENERS
-
     private void initializeListeners() {
         refreshButton.addActionListener(e -> refreshTable());
         detailsButton.addActionListener(e -> showDetails());
         serveButton.addActionListener(e -> serveOrder());
-
     }
     // TABLE
     private void refreshTable() {
@@ -59,16 +59,10 @@ public class WaiterOrdersPanel extends JPanel {
             if (order.getOrderStatus() != OrderStatus.READY)
                 continue;
             String client = "-";
-            if (order.getClient() != null) {
+            if (order.getClient() != null)
                 client = order.getClient().getPersonName() + " " + order.getClient().getPeronSurname();
-            }
-
-            tableModel.addRow(new Object[]{
-                    order.getOrderID(),
-                    client,
-                    order.getOrderStatus(),
-                    order.countOrderValue()
-            });
+            tableModel.addRow(new Object[]{order.getOrderID(), client, order.getOrderStatus(),
+                    order.countOrderValue()});
         }
     }
     // DETAILS
@@ -79,7 +73,7 @@ public class WaiterOrdersPanel extends JPanel {
             return;
         }
         JOptionPane.showMessageDialog(this, "Order ID: " + tableModel.getValueAt(row,0)
-                        + "\nClient: " + tableModel.getValueAt(row,1));
+        + "\nClient: " + tableModel.getValueAt(row,1));
     }
     // SERVE
     private void serveOrder() {
@@ -93,16 +87,13 @@ public class WaiterOrdersPanel extends JPanel {
         try {
             loggedWaiter.serveOrder(selectedOrder);
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            throw new RuntimeException(e);}
         try {
             Delivery.createDelivery(selectedOrder, "Standard Delivery");
             JOptionPane.showMessageDialog(null, "Order served.\nDelivery created.");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        parent.refreshAllPanels();
-    }
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);}
+        parent.refreshAllPanels();}
     public void reload() {
         refreshTable();
     }

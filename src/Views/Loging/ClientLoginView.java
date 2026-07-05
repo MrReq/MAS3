@@ -17,7 +17,6 @@ public class ClientLoginView extends JFrame {
     private JCheckBox clubCardCheckBox;
     private JButton loginButton;
     private JButton backButton;
-
     public ClientLoginView() {
         initializeFrame();
         initializeComponents();
@@ -93,7 +92,6 @@ public class ClientLoginView extends JFrame {
         loginButton.addActionListener(e-> login());
         backButton.addActionListener(e -> {dispose();new LoginSelectionView().setVisible(true);});
     }
-
     private void login() {
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
@@ -108,12 +106,12 @@ public class ClientLoginView extends JFrame {
         boolean hasClubCard = clubCardCheckBox.isSelected();
         for (Client client : Client.getClientExtent()) {
             if (client.getPersonName().equalsIgnoreCase(firstName)
-                    && client.getPeronSurname().equalsIgnoreCase(lastName) && client.getPersonDateOfBirth().equals(birthDate)
-                    && client.getPersonSex() == sex && client.hasClubCard() == hasClubCard) {
-                JOptionPane.showMessageDialog(this, "Login successful!");
-                dispose();
-                new ClientDashboardView(client).setVisible(true);
-                return;
+                && client.getPeronSurname().equalsIgnoreCase(lastName) && client.getPersonDateOfBirth().equals(birthDate)
+                && client.getPersonSex() == sex && client.hasClubCard() == hasClubCard) {
+                    JOptionPane.showMessageDialog(this, "Login successful!");
+                    dispose();
+                    new ClientDashboardView(client).setVisible(true);
+                    return;
             }
         }
         JOptionPane.showMessageDialog(this, "Client not found.", "Error", JOptionPane.ERROR_MESSAGE);

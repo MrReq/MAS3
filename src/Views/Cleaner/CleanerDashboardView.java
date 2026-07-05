@@ -23,7 +23,6 @@ public class CleanerDashboardView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     // COMPONENTS
-
     private void initializeComponents() {
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Cleaning Tasks", new CleaningTasksPanel(loggedCleaner));
@@ -32,7 +31,6 @@ public class CleanerDashboardView extends JFrame {
         tabbedPane.addTab("Statistics", new CleanerStatisticsPanel(loggedCleaner));
     }
     // LAYOUT
-
     private void initializeLayout() {
         setLayout(new BorderLayout());
         add(createTopPanel(), BorderLayout.NORTH);

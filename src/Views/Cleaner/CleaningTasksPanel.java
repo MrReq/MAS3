@@ -2,6 +2,7 @@ package Views.Cleaner;
 import Models.Cleaner;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 public class CleaningTasksPanel extends JPanel {
     private final Cleaner cleaner;
@@ -22,6 +23,8 @@ public class CleaningTasksPanel extends JPanel {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Task ID", "Room", "Description", "Priority", "Status"});
         tasksTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        tasksTable.setRowSorter(sorter);
         tasksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
         completeTaskButton = new JButton("Mark as completed");
@@ -46,12 +49,6 @@ public class CleaningTasksPanel extends JPanel {
     // TABLE
     private void refreshTable() {
         tableModel.setRowCount(0);
-        /*
-         Tutaj później będzie:
-
-         for(CleaningTask task : CleaningTask.getExtent())
-
-         */
         tableModel.addRow(new Object[]{1, "Kitchen", "Clean floor", "HIGH", "TODO"});
         tableModel.addRow(new Object[]{2, "Hall", "Wash tables", "MEDIUM", "DONE"});
     }

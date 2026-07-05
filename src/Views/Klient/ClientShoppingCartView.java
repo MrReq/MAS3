@@ -4,19 +4,17 @@ import Models.Order;
 import Models.Product;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 public class ClientShoppingCartView extends JPanel {
     private final Client loggedClient;
     private JTable cartTable;
     private DefaultTableModel tableModel;
-
     private JLabel totalLabel;
-
     private JButton refreshButton;
     private JButton removeButton;
     private JButton placeOrderButton;
     private ClientDashboardView parent;
-
     public ClientShoppingCartView(Client loggedClient, ClientDashboardView parent) {
         this.loggedClient = loggedClient;
         this.parent = parent;
@@ -26,11 +24,12 @@ public class ClientShoppingCartView extends JPanel {
         refreshTable();
     }
     // COMPONENTS
-
     private void initializeComponents() {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"ID", "Product", "Price"});
         cartTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        cartTable.setRowSorter(sorter);
         cartTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         totalLabel = new JLabel("Total: 0.00 zł");
         refreshButton = new JButton("Refresh");
@@ -38,7 +37,6 @@ public class ClientShoppingCartView extends JPanel {
         placeOrderButton = new JButton("Place order");
     }
     // LAYOUT
-
     private void initializeLayout() {
         setLayout(new BorderLayout());
         JLabel title = new JLabel("SHOPPING CART", SwingConstants.CENTER);
@@ -73,7 +71,6 @@ public class ClientShoppingCartView extends JPanel {
         }
         totalLabel.setText(String.format("Total: %.2f zł", total));
     }
-
     // REMOVE PRODUCT
     private void removeProduct() {
         int row = cartTable.getSelectedRow();
@@ -87,7 +84,6 @@ public class ClientShoppingCartView extends JPanel {
         refreshTable();
     }
     // PLACE ORDER
-
     private void placeOrder() {
         Order cart = loggedClient.getShoppingCart();
         if (cart == null || cart.getProducts().isEmpty()) {

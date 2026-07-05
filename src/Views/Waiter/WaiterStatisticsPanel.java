@@ -17,7 +17,6 @@ public class WaiterStatisticsPanel extends JPanel {
         initializeListeners();
         refreshStatistics();
     }
-
     private void initializeComponents() {
         servedTables = new JLabel();
         completedOrders = new JLabel();
@@ -26,7 +25,6 @@ public class WaiterStatisticsPanel extends JPanel {
         workedHours = new JLabel();
         refreshButton = new JButton("Refresh");
     }
-
     private void initializeLayout() {
         setLayout(new BorderLayout());
         JLabel title = new JLabel("Waiter Statistics", SwingConstants.CENTER);
@@ -52,9 +50,7 @@ public class WaiterStatisticsPanel extends JPanel {
         add(bottom,BorderLayout.SOUTH);
     }
     private void initializeListeners() {
-        refreshButton.addActionListener(
-                e -> refreshStatistics()
-        );
+        refreshButton.addActionListener(e -> refreshStatistics());
     }
     private void refreshStatistics() {
         servedTables.setText(String.valueOf(loggedwaiter.countServedOrders()));

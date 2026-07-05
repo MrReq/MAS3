@@ -2,6 +2,7 @@ package Views.Cleaner;
 import Models.Cleaner;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 public class CleanerSchedulePanel extends JPanel {
     private final Cleaner cleaner;
@@ -20,6 +21,8 @@ public class CleanerSchedulePanel extends JPanel {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Day", "Shift", "Start", "End", "Assigned Area"});
         scheduleTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        scheduleTable.setRowSorter(sorter);
         scheduleTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
     }

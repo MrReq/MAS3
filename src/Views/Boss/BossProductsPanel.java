@@ -5,6 +5,7 @@ import Views.Boss.AddNewProductView;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import javax.swing.table.TableRowSorter;
 public class BossProductsPanel extends JPanel {
     // FIELDS
     private final Boss loggedBoss;
@@ -17,7 +18,6 @@ public class BossProductsPanel extends JPanel {
     private JButton manageButton;
     private JButton showIncomeButton;
     private JButton lookOrderHistoryButton;
-
     private JButton showNumberOfOrders;
     private JButton showNumberOfProducts;
     // CONSTRUCTOR
@@ -33,6 +33,8 @@ public class BossProductsPanel extends JPanel {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new Object[]{"ID", "Name", "Price", "Available"});
         productsTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        productsTable.setRowSorter(sorter);
         productsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         refreshButton = new JButton("Refresh");
         addButton = new JButton("Add Product");
@@ -80,10 +82,10 @@ public class BossProductsPanel extends JPanel {
     // TABLE
     private void refreshTable() {
         tableModel.setRowCount(0);
-        for(Product product : Product.getProductExtent()){
+        for(Product product : Product.getProductExtent())
             tableModel.addRow(new Object[]{product.getProductID(), product.getProductName(), product.getProductCost(),
                     product.isProductAvailability()});
-        }
+
     }
     // ADD PRODUCT
     private void createProduct() {

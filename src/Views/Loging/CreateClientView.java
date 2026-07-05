@@ -8,6 +8,7 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import javax.swing.table.TableRowSorter;
 public class CreateClientView extends JFrame {
     private JTextField firstNameField;
     private JTextField lastNameField;
@@ -102,7 +103,7 @@ public class CreateClientView extends JFrame {
         String surname = lastNameField.getText().trim();
         if(name.isBlank() || surname.isBlank()){
             JOptionPane.showMessageDialog(this, "Fill all required fields.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.ERROR_MESSAGE);
             return;
         }
         Date date = (Date) birthDateSpinner.getValue();
@@ -112,21 +113,13 @@ public class CreateClientView extends JFrame {
         boolean hasClubCard = clubCardCheckBox.isSelected();
         for (Client client : Client.getClientExtent()) {
             if (client.getPersonName().equalsIgnoreCase(name) && client.getPeronSurname().equalsIgnoreCase(surname)
-                    && client.getPersonSex().equals(sex) && client.hasClubCard() == hasClubCard)
-                    {
-                JOptionPane.showMessageDialog(this, "Client already exists!", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                && client.getPersonSex().equals(sex) && client.hasClubCard() == hasClubCard) {
+                    JOptionPane.showMessageDialog(this, "Client already exists!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
-        new Client(
-                name,
-                surname,
-                birthDate,
-                sex,
-                hasClubCard,
-                citizenship,
-                Person.getCounter());
+        new Client(name, surname, birthDate, sex, hasClubCard, citizenship, Client.getCounter());
         JOptionPane.showMessageDialog(this, "Client has been successfully registered.");
         dispose();
         new ClientLoginView().setVisible(true);

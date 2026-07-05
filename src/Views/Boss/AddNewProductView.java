@@ -35,11 +35,15 @@ public class AddNewProductView extends JFrame {
         productComboBox = new JComboBox<>();
         productComboBox.addItem("Espresso");
         productComboBox.addItem("Cafe Latte");
+        productComboBox.addItem("Americano");
         productComboBox.addItem("Tea");
         productComboBox.addItem("Cheesecake");
+        productComboBox.addItem("Water");
+        productComboBox.addItem("Sandwich");
         descriptionComboBox = new JComboBox<>();
         descriptionComboBox.addItem("Coffee");
-        descriptionComboBox.addItem("Coffee with milk");
+        descriptionComboBox.addItem("Cold Food");
+        descriptionComboBox.addItem("Cold Drink");
         descriptionComboBox.addItem("Tea");
         descriptionComboBox.addItem("Dessert");
         priceComboBox = new JComboBox<>();
@@ -117,7 +121,7 @@ public class AddNewProductView extends JFrame {
             Product product = null;
             switch (type){
                 case "Americano":
-                    product = new Americano(name, price, available, description, temperature, coffeeCountry);
+                    product = new Americano(name, price, available, description, temperature, coffeeCountry,0.1,2,0.5);
                     break;
                 case "Cafe Latte":
                     product = new CafeLatte(name, price, available, description, temperature, coffeeCountry);

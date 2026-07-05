@@ -94,5 +94,4 @@ public class ClientDashboardView extends JFrame {
             JOptionPane.showMessageDialog(this, "Address saved successfully.");
         }
     }
-
 }

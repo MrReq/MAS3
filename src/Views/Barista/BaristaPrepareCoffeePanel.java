@@ -4,6 +4,7 @@ import Models.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 public class BaristaPrepareCoffeePanel extends JPanel {
     private final Barista loggedBarista;
@@ -28,6 +29,8 @@ public class BaristaPrepareCoffeePanel extends JPanel {
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[]{"Order ID", "Person Name","Products", "Quantity", "Price", "StartTime","PreparationTime","My Barista's Name", "Status"});
         coffeeTable = new JTable(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        coffeeTable.setRowSorter(sorter);
         coffeeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         coffeeTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         refreshButton = new JButton("Refresh");
