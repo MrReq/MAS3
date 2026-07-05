@@ -271,7 +271,7 @@ public class Order extends ObjectPlus{
     /**
      * Generic status update.
      */
-    public void setStatus(OrderStatus status) {
+    public void setOrderStatus(OrderStatus status) {
         if (status == null) {
             throw new IllegalArgumentException(
                     "Status cannot be null."
@@ -395,6 +395,26 @@ public class Order extends ObjectPlus{
         List<Order> result = new ArrayList<>();
         for (Order order : getOrderExtent()) {
             if (order.getOrderStatus() == OrderStatus.READY) {
+                result.add(order);
+            }
+        }
+        return result;
+    }
+
+    public static List<Order> getPaidOrders() {
+        List<Order> result = new ArrayList<>();
+        for (Order order : getOrderExtent()) {
+            if (order.getOrderStatus() == OrderStatus.READY) {
+                result.add(order);
+            }
+        }
+        return result;
+    }
+
+    public static List<Order> getFinishedOrders() {
+        List<Order> result = new ArrayList<>();
+        for (Order order : getOrderExtent()) {
+            if (order.getOrderStatus() == OrderStatus.FINISHED) {
                 result.add(order);
             }
         }

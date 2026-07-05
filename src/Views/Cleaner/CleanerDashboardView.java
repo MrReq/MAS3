@@ -1,15 +1,15 @@
 package Views.Cleaner;
 import Models.Cleaner;
 import Views.Loging.*;
-import Views.Cleaner.CleanerRoomsPanel;
-import Views.Cleaner.CleanerSchedulePanel;
-import Views.Cleaner.CleanerStatisticsPanel;
-import Views.Cleaner.CleaningTasksPanel;
+
 import javax.swing.*;
 import java.awt.*;
 public class CleanerDashboardView extends JFrame {
     private final Cleaner loggedCleaner;
     private JTabbedPane tabbedPane;
+    private CleanerTasksPanel cleanerTasksPanel;
+
+    private CleanerStatisticsPanel cleanerStatisticsPanel;
     public CleanerDashboardView(Cleaner cleaner) {
         this.loggedCleaner = cleaner;
         initializeFrame();
@@ -18,6 +18,8 @@ public class CleanerDashboardView extends JFrame {
     }
     // FRAME
     private void initializeFrame() {
+        cleanerTasksPanel = new CleanerTasksPanel(loggedCleaner, this);
+        cleanerStatisticsPanel = new CleanerStatisticsPanel(loggedCleaner,this);
         setTitle("Coffee House Management System - Cleaner");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,10 +27,8 @@ public class CleanerDashboardView extends JFrame {
     // COMPONENTS
     private void initializeComponents() {
         tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Cleaning Tasks", new CleaningTasksPanel(loggedCleaner));
-        tabbedPane.addTab("Rooms", new CleanerRoomsPanel(loggedCleaner));
-        tabbedPane.addTab("Schedule", new CleanerSchedulePanel(loggedCleaner));
-        tabbedPane.addTab("Statistics", new CleanerStatisticsPanel(loggedCleaner));
+        tabbedPane.addTab("Cleaning Tasks", cleanerTasksPanel);
+        tabbedPane.addTab("Statistics", cleanerStatisticsPanel);
     }
     // LAYOUT
     private void initializeLayout() {
@@ -49,5 +49,9 @@ public class CleanerDashboardView extends JFrame {
         panel.add(title, BorderLayout.WEST);
         panel.add(logoutButton, BorderLayout.EAST);
         return panel;
+    }
+    public void refreshAllPanels(){
+        cleanerTasksPanel.reload();
+        cleanerStatisticsPanel.reload();
     }
 }

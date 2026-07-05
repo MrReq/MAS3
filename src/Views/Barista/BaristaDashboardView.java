@@ -1,8 +1,12 @@
 package Views.Barista;
 import Models.Barista;
+import Models.Client;
 import Views.Loging.*;
 import javax.swing.*;
 import java.awt.*;
+import Enums.Citizenship;
+
+
 public class BaristaDashboardView extends JFrame {
     private BaristaOrdersPanel ordersPanel;
     private BaristaMenuPanel baristaMenuPanel;
@@ -52,12 +56,15 @@ public class BaristaDashboardView extends JFrame {
         JLabel title = new JLabel("Logged as: " + loggedBarista.getPersonName() + " " + loggedBarista.getPeronSurname());
         title.setFont(new Font("Arial", Font.BOLD, 22));
         JButton logoutButton = new JButton("Logout");
+        JButton becomeClientButton = new JButton("Become Client");
         logoutButton.addActionListener(e -> {
             dispose();
             new LoginSelectionView().setVisible(true);
         });
+        becomeClientButton.addActionListener(e->{becomeClient();});
         panel.add(title, BorderLayout.WEST);
         panel.add(logoutButton, BorderLayout.EAST);
+        panel.add(becomeClientButton, BorderLayout.CENTER);
         return panel;
     }
     public void refreshAllPanels() {
@@ -66,5 +73,18 @@ public class BaristaDashboardView extends JFrame {
         prepareCoffeePanel.reload();
         finishedOrdersPanel.reload();
         baristaStatisticsPanel.reload();
+    }
+    private void becomeClient() {
+        if (Client.isClient(loggedBarista)) {
+            JOptionPane.showMessageDialog(this, "You are already a client.");
+            return;
+        }
+        int answer = JOptionPane.showConfirmDialog(this, "Do you want to become a client?",
+                "Overlapping", JOptionPane.YES_NO_OPTION);
+        if (answer != JOptionPane.YES_OPTION)
+            return;
+        loggedBarista.becomeClient(true, Citizenship.Native);
+        JOptionPane.showMessageDialog(this, "You are now both a Barista and a Client."
+        );
     }
 }

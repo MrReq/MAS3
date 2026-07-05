@@ -1,6 +1,7 @@
 package Models;
 
 import Enums.AllPersonTypes;
+import Enums.Citizenship;
 import Enums.Level;
 import Enums.Sex;
 import SecondaryClasses.ObjectPlus;
@@ -15,6 +16,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static Models.Client.getClientExtent;
 import static Models.Employment.getEmploymentExtent;
 
 public class Employee extends Person {
@@ -213,4 +215,10 @@ public class Employee extends Person {
     }
     //OVERLAPPING
     private final EnumSet<AllPersonTypes> personKind =  EnumSet.of(AllPersonTypes.Employee);
+
+    public Client becomeClient(boolean hasClubCard, Citizenship citizenship) {
+        return Client.createFromEmployee(this, hasClubCard, citizenship);
+    }
+
+
 }

@@ -49,7 +49,7 @@ public class Waiter extends Employee {
             throw new IllegalArgumentException("Order cannot be null.");
         if (order.getOrderStatus() != OrderStatus.READY)
             throw new IllegalStateException("Order is not ready.");
-        order.setStatus(OrderStatus.SERVED);
+        order.setOrderStatus(OrderStatus.SERVED);
         Delivery delivery = Delivery.createDelivery(order, "Delivery #" + order.getOrderID());
         delivery.setWaiter(this);
         System.out.println("Order served.");

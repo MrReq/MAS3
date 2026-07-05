@@ -2,6 +2,11 @@ package Views.Cleaner;
 import Models.Cleaner;
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
+
+import Enums.OrderStatus;
+import Models.Order;
+
 public class CleanerStatisticsPanel extends JPanel {
     private final Cleaner cleaner;
     private JLabel completedTasksLabel;
@@ -10,8 +15,10 @@ public class CleanerStatisticsPanel extends JPanel {
     private JLabel efficiencyLabel;
     private JLabel lastCleaningLabel;
     private JButton refreshButton;
-    public CleanerStatisticsPanel(Cleaner cleaner) {
+    private CleanerDashboardView parent;
+    public CleanerStatisticsPanel(Cleaner cleaner, CleanerDashboardView parent) {
         this.cleaner = cleaner;
+        this.parent=parent;
         initializeComponents();
         initializeLayout();
         initializeListeners();
@@ -59,10 +66,20 @@ public class CleanerStatisticsPanel extends JPanel {
     }
     // REFRESH
     private void refreshStatistics() {
-        completedTasksLabel.setText("12");
-        pendingTasksLabel.setText("3");
-        workedHoursLabel.setText("146 h");
-        efficiencyLabel.setText("80 %");
-        lastCleaningLabel.setText("Today 14:30");
+        completedTasksLabel.setText(String.valueOf(Order.getOrderExtent().stream()
+                        .filter(o -> o.getOrderStatus() == OrderStatus.FINISHED)
+                        .count()));
+        pendingTasksLabel.setText(String.valueOf(Order.getOrderExtent().stream()
+                        .filter(o -> o.getOrderStatus() == OrderStatus.PAID)
+                        .count()));
+        workedHoursLabel.setText(cleaner.getCurrentEmployment() != null
+                        ? cleaner.getCurrentEmployment().getEmploymentPeriodText()
+                        : "-");
+        efficiencyLabel.setText("100 %");
+        lastCleaningLabel.setText(LocalDate.now().toString());
     }
+    public void reload(){
+        refreshStatistics();
+    }
+
 }

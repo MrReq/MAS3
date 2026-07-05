@@ -4,15 +4,19 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-public class CleaningTasksPanel extends JPanel {
+import Models.Order;
+import Enums.OrderStatus;
+public class CleanerTasksPanel extends JPanel {
     private final Cleaner cleaner;
     private JTable tasksTable;
     private DefaultTableModel tableModel;
     private JButton refreshButton;
     private JButton completeTaskButton;
     private JButton detailsButton;
-    public CleaningTasksPanel(Cleaner cleaner) {
+    private CleanerDashboardView parent;
+    public CleanerTasksPanel(Cleaner cleaner,CleanerDashboardView parent) {
         this.cleaner = cleaner;
+        this.parent = parent;
         initializeComponents();
         initializeLayout();
         initializeListeners();
@@ -21,7 +25,7 @@ public class CleaningTasksPanel extends JPanel {
     // COMPONENTS
     private void initializeComponents() {
         tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"Task ID", "Room", "Description", "Priority", "Status"});
+        tableModel.setColumnIdentifiers(new String[]{"Task ID", "Client name", "Value", "Status"});
         tasksTable = new JTable(tableModel);
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         tasksTable.setRowSorter(sorter);
@@ -49,8 +53,18 @@ public class CleaningTasksPanel extends JPanel {
     // TABLE
     private void refreshTable() {
         tableModel.setRowCount(0);
-        tableModel.addRow(new Object[]{1, "Kitchen", "Clean floor", "HIGH", "TODO"});
-        tableModel.addRow(new Object[]{2, "Hall", "Wash tables", "MEDIUM", "DONE"});
+        for (Order order : Order.getOrderExtent()) {
+            if (order.getOrderStatus() != OrderStatus.PAID)
+                continue;
+            String client = "-";
+            if (order.getClient() != null) {
+                client = order.getClient().getPersonName() + " " + order.getClient().getPeronSurname();
+            }
+            tableModel.addRow(new Object[]{order.getOrderID(), client,
+                    order.countOrderValue(),
+                    order.getOrderStatus()
+            });
+        }
     }
     // DETAILS
 
@@ -65,11 +79,27 @@ public class CleaningTasksPanel extends JPanel {
     // COMPLETE TASK
     private void completeTask() {
         int row = tasksTable.getSelectedRow();
-        if(row == -1){
+        if (row == -1) {
             JOptionPane.showMessageDialog(this, "Select a task first.");
             return;
         }
-        tableModel.setValueAt("DONE", row, 4);
-        JOptionPane.showMessageDialog(this, "Task completed.");
+        int modelRow = tasksTable.convertRowIndexToModel(row);
+        int orderId = (Integer) tableModel.getValueAt(modelRow, 0);
+        Order order = Order.findById(orderId);
+        if (order == null) {
+            JOptionPane.showMessageDialog(this, "Order not found.");
+            return;
+        }
+        order.setOrderStatus(OrderStatus.FINISHED); // lub CLEANED, jeśli taki status masz
+        JOptionPane.showMessageDialog(
+                this,
+                "Cleaning completed successfully.",
+                "Completed",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+        parent.refreshAllPanels();
+    }
+    public void reload(){
+        refreshTable();
     }
 }

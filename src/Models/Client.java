@@ -138,4 +138,21 @@ public class Client extends Person {
     public int countOrders() {
         return getOrders().size() - 1;
     }
+
+    public static Client createFromEmployee(Employee employee, boolean hasClubCard, Citizenship citizenship) {
+        if (employee == null)
+            throw new IllegalArgumentException("Employee cannot be null.");
+
+        return new Client(employee.getPersonName(), employee.getPeronSurname(), employee.getPersonDateOfBirth(),
+                employee.getPersonSex(), hasClubCard, citizenship, Person.getCounter()
+        );
+    }
+    public static boolean isClient(Person person) {
+        return getClientExtent().stream().anyMatch(client ->
+                client.getPersonName().equalsIgnoreCase(person.getPersonName())
+                        && client.getPeronSurname().equalsIgnoreCase(person.getPeronSurname())
+                        && client.getPersonDateOfBirth().equals(person.getPersonDateOfBirth())
+                        && client.getPersonSex() == person.getPersonSex()
+        );
+    }
 }
