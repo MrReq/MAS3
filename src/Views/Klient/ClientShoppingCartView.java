@@ -90,16 +90,13 @@ public class ClientShoppingCartView extends JPanel {
             JOptionPane.showMessageDialog(this, "Shopping cart is empty.");
             return;
         }
-        System.out.println("Orders before new cart: " + loggedClient.getOrders().size());
-        System.out.println("Orders after new cart: " + loggedClient.getOrders().size());
-        for (Order o : loggedClient.getOrders())
-            System.out.println("Order " + o.getOrderID() + " status = " + o.getOrderStatus() + " products = " + o.getProducts().size());
+        cart.setShoppingCart(false);   // <-- zamówienie przestaje być koszykiem
+
         JOptionPane.showMessageDialog(this, "Order placed successfully.");
+
         loggedClient.createNewShoppingCart();
+
         refreshTable();
-        System.out.println("========== CLIENT ORDERS ==========");
-        for (Order order : loggedClient.getOrders())
-            System.out.println("ID = " + order.getOrderID() + " STATUS = " + order.getOrderStatus() + " PRODUCTS = " + order.getProducts().size());
         parent.refreshAllPanels();
     }
     public void reload() {

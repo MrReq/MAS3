@@ -1,12 +1,10 @@
 package Models;
-import Enums.AllPersonTypes;
 import Enums.Citizenship;
 import Enums.OrderType;
 import Enums.Sex;
 import SecondaryClasses.ObjectPlus;
 import java.time.LocalDate;
 import java.util.*;
-
 public class Client extends Person {
     private static final long serialVersionUID = 1L;
     // ====================================================ATTRIBUTES====================================================
@@ -20,34 +18,21 @@ public class Client extends Person {
             new TreeMap<>();
 
 //====================================================CONSTRUCTORS====================================================
-
     public Client() {
         super();
     }
-
-    public Client(String name,
-                  String surname,
-                  LocalDate dateOfBirth,
-                  Sex sex,
-                  boolean hasClubCard) {
+    public Client(String name, String surname, LocalDate dateOfBirth, Sex sex, boolean hasClubCard) {
         super(name, surname, dateOfBirth, sex);
         this.clientID = Person.getCounter();
         this.hasClubCard = hasClubCard;
         shoppingCart = Order.createOrder(this, OrderType.Liquid);
     }
-    public Client(String name,
-                  String surname,
-                  LocalDate birthDate,
-                  Sex sex,
-                  Address address,
-                  boolean hasClubCard,
-                  Citizenship citizenship) {
+    public Client(String name, String surname, LocalDate birthDate, Sex sex, Address address, boolean hasClubCard, Citizenship citizenship) {
         super(name, surname, birthDate, sex);
         this.address = address;
         this.hasClubCard = hasClubCard;
         this.citizenship = citizenship;
     }
-
     public Client(String name,
                   String surname,
                   LocalDate dateOfBirth,
@@ -55,21 +40,13 @@ public class Client extends Person {
                   boolean hasClubCard,
                   Citizenship citizenship,
                   int clientID) {
-
         super(name, surname, dateOfBirth, sex);
-
         this.clientID = clientID;
-
         this.hasClubCard = hasClubCard;
-
         this.citizenship = citizenship;
         shoppingCart = Order.createOrder(this, OrderType.Liquid);
     }
-
-
-//==================================================== EXTENT====================================================
-
-
+//EXTENT
     @SuppressWarnings("unchecked")
     public static List<Client> getClientExtent() {
         return (List<Client>)(List<?>) ObjectPlus.getExtent(Client.class);
@@ -83,14 +60,10 @@ public class Client extends Person {
                                        Sex sex,
                                        Citizenship citizenship) {
         for (Client client : getClientExtent()) {
-            if (client.getPersonName().equalsIgnoreCase(name)
-                    &&
-                    client.getPeronSurname().equalsIgnoreCase(surname)
-                    &&
-                    client.getPersonDateOfBirth().equals(birthDate)
-                    &&
-                    client.getPersonSex() == sex
-                    &&
+            if (client.getPersonName().equalsIgnoreCase(name) &&
+                client.getPeronSurname().equalsIgnoreCase(surname) &&
+                client.getPersonDateOfBirth().equals(birthDate) &&
+                client.getPersonSex() == sex &&
                     Objects.equals(
                             client.getCitizenship().orElse(null),
                             citizenship)) {
@@ -99,20 +72,16 @@ public class Client extends Person {
         }
         return false;
     }
-    // ====================================================GETTERS====================================================
-
+    //GETTERS
     public boolean hasClubCard() {
         return hasClubCard;
     }
-
     public Address getAddress() {
         return address;
     }
-
     public Optional<Citizenship> getCitizenship() {
         return Optional.ofNullable(citizenship);
     }
-
     public Collection<Order> getOrders() {
         return Collections.unmodifiableCollection(
                 orders.values()
@@ -122,15 +91,7 @@ public class Client extends Person {
     public String getPrivileges() {
         return "CLIENT";
     }
-    public void giveSatisfactionLevel(Waiter waiter,
-                                      int satisfaction) {
-        Objects.requireNonNull(waiter);
-        setSatisfactionOfTheService(satisfaction);
-        waiter.getWaitersGrades().add(satisfaction);
-        waiter.setGrade(satisfaction);
-    }
     // ====================SETTERS=================
-
 
     public void setAddress(Address address) {
         this.address = address;
@@ -166,6 +127,11 @@ public class Client extends Person {
     }
 
     public Order getShoppingCart() {
+        for (Order order : orders.values()) {
+            if (order.isShoppingCart())
+                return order;
+        }
+        createNewShoppingCart();
         return shoppingCart;
     }
     public void createNewShoppingCart() {

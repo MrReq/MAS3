@@ -35,6 +35,7 @@ public class Order extends ObjectPlus{
     private String orderName;
     private final List<Delivery> deliveries = new ArrayList<>();
     private static Set<Delivery> allDeliveries = new HashSet<>();
+    private boolean shoppingCart = true;
     //=========================================================
     // ASSOCIATIONS
     //=========================================================
@@ -68,6 +69,14 @@ public class Order extends ObjectPlus{
             );
         }
         return new Order(client, type);
+    }
+
+    public boolean isShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(boolean shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 
     //Do kompozycji
