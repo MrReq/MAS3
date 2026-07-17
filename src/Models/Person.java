@@ -55,7 +55,6 @@ public abstract class Person extends ObjectPlus {
         return (List<Person>) (List<?>) ObjectPlus.getExtent(Person.class);
     }
 
-    // ================================= GETTERS =================================
     public static int getCounter() {
         return counter;
     }
