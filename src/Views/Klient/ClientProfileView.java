@@ -79,7 +79,7 @@ public class ClientProfileView extends JPanel {
         gbc.gridx = 0;
         panel.add(new JLabel("Orders:"), gbc);
         gbc.gridx = 1;
-        panel.add(new JLabel(String.valueOf(loggedClient.getOrders().size())), gbc);
+        panel.add(new JLabel(String.valueOf(loggedClient.countRealOrdersDone())), gbc);
         gbc.gridx = 2;
         panel.add(new JLabel("Address:"), gbc);
         gbc.gridx = 3;

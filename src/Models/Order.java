@@ -7,6 +7,7 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 
 public class Order extends ObjectPlus {
+    private static final long serialVersionUID = 1L;
     private static int counter = 1;
     private final int orderID;
     private Preparation preparation;
@@ -171,6 +172,21 @@ public class Order extends ObjectPlus {
                 .filter(o -> !o.getProducts().isEmpty())
                 .toList();
     }
+    public static List<Order> getAcceptedOrders() {
+        return getOrderExtent().stream().filter(order -> order.getOrderStatus() == OrderStatus.ACCEPTED)
+                .filter(o -> !o.getProducts().isEmpty())
+                .toList();
+    }
+    public static List<Order> getServedOrders() {
+        return getOrderExtent().stream().filter(order -> order.getOrderStatus() == OrderStatus.SERVED)
+                .filter(o -> !o.getProducts().isEmpty())
+                .toList();
+    }
+    public static List<Order> getCancelledOrders() {
+        return getOrderExtent().stream().filter(order -> order.getOrderStatus() == OrderStatus.SERVED)
+                .filter(o -> !o.getProducts().isEmpty())
+                .toList();
+    }
     public static List<Order> getCompletedOrders() {
         return getOrderExtent().stream()
                 .filter(Order::isCompleted)
@@ -185,7 +201,7 @@ public class Order extends ObjectPlus {
         orderStatus = OrderStatus.ACCEPTED;
     }
     public boolean isCompleted() {
-        return orderStatus == OrderStatus.DELIVERED;
+        return orderStatus == OrderStatus.DELIVERED || orderStatus == OrderStatus.FINISHED;
     }
     public void startPreparation(Barista barista) {
         if (orderStatus != OrderStatus.ACCEPTED) {throw new IllegalStateException("Only accepted orders can be prepared.");}

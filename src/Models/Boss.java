@@ -104,11 +104,14 @@ public class Boss extends Person {
     public static void lookOrderHistory() {
         JOptionPane.showMessageDialog(null,
                 "Order history\n\n" + "Total orders: " + Order.getOrderExtent().size() +
-                        "\nCompleted: " + Order.getCompletedOrders().size() +
-                        "\nReady: " + Order.getReadyOrders().size() +
+                        "\nNew: " + Order.getNewOrders().size() +
+                        "\nAccepted: " + Order.getAcceptedOrders().size() +
                         "\nPreparing: " + Order.getPreparingOrders().size() +
-                        "\nNew: " + Order.getNewOrders().size(),
-                "Order History", JOptionPane.INFORMATION_MESSAGE
+                        "\nReady: " + Order.getReadyOrders().size() +
+                        "\nServed: " + Order.getServedOrders().size() +
+                        "\nPaid: " + Order.getPaidOrders().size() +
+                        "\nFinished: " + Order.getFinishedOrders().size() +
+                        "\nCanceled: " + Order.getCancelledOrders().size()
         );
     }
     public int showNumberOfEmployees() {return Employee.getEmployeeExtent().size();}

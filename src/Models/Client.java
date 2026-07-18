@@ -88,6 +88,12 @@ public class Client extends Person {
             throw new IllegalArgumentException("Satisfaction must be between 1 and 5.");
         this.satisfactionOfTheService = satisfaction;
     }
+    public int countRealOrdersDone(){
+        int count = (int) this.getOrders().stream()
+                .filter(order->!order.getProducts().isEmpty())
+                .count();
+        return count;
+    }
 
     public void addOrder(Order order) {
         Objects.requireNonNull(order);

@@ -42,6 +42,19 @@ public class Barista extends Employee {
                 "Barista{id=%d, name='%s %s', salary=%.2f, favouriteCoffeeCountry=%s}", employeeID, personName, peronSurname,
                 employeeSalary, favouriteCoffeeCountry);
     }
+    public void startPreparing(Order order){
+        order.startPreparation(this);
+    }
+    public void markOrderAsReady(Order order) {
+        if(order == null)
+            throw new IllegalArgumentException("Order cannot be null.");
+        order.markAsReady();
+    }
+    public int countNewOrders() {
+        return (int) Order.getOrderExtent().stream().filter(a->a.getOrderStatus() == OrderStatus.NEW)
+                .filter(o->!o.getProducts().isEmpty())
+                .count();
+    }
     public void acceptOrder(Order order) {
         if (order == null)
             throw new IllegalArgumentException("Order cannot be null.");
@@ -57,19 +70,6 @@ public class Barista extends Employee {
         preparations.add(preparation);
         addOrder(order);
         order.acceptOrder();
-    }
-    public void startPreparing(Order order){
-        order.startPreparation(this);
-    }
-    public void markOrderAsReady(Order order) {
-        if(order == null)
-            throw new IllegalArgumentException("Order cannot be null.");
-        order.markAsReady();
-    }
-    public int countNewOrders() {
-        return (int) Order.getOrderExtent().stream().filter(a->a.getOrderStatus() == OrderStatus.NEW)
-                .filter(o->!o.getProducts().isEmpty())
-                .count();
     }
     public int countAcceptedOrders() {
         return (int) preparations.stream()

@@ -69,7 +69,8 @@ public class ClientMenuPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Select product.","Error",0);
             return;
         }
-        int productID = (Integer) tableModel.getValueAt(row, 0);
+        int modelRow = productsTable.convertRowIndexToModel(row);
+        int productID = (Integer) tableModel.getValueAt(modelRow, 0);
         Product selectedProduct = Product.findById(productID);
         if (selectedProduct == null) {
             JOptionPane.showMessageDialog(this, "Product not found.","Error",0);
