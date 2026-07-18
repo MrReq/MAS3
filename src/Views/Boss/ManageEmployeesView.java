@@ -23,6 +23,7 @@ public class ManageEmployeesView extends JPanel {
     private JButton PromoteEmployeeButton;
     private JButton showNumberOfEmployees;
     private JButton showNumberOfClients;
+    private JButton showTheMethodOverload;
 
     // CONSTRUCTOR
     public ManageEmployeesView(Boss loggedBoss) {
@@ -51,10 +52,11 @@ public class ManageEmployeesView extends JPanel {
         removeEmployeeButton = new JButton("Remove Employee");
         refreshButton = new JButton("Refresh");
         manageEmployeesButton = new JButton("Manage Employees");
-        EmploymentsButton = new JButton("Show All Emplyments");
+        EmploymentsButton = new JButton("Show All Employments");
         PromoteEmployeeButton = new JButton("Show all promoted employees");
         showNumberOfEmployees = new JButton("Show Number of Employees");
         showNumberOfClients = new JButton("Show Number of Clients");
+        showTheMethodOverload = new JButton("Show The Overloaded Method");
     }
     // LAYOUT
     private void initializeLayout() {
@@ -73,6 +75,7 @@ public class ManageEmployeesView extends JPanel {
         buttons.add(PromoteEmployeeButton);
         buttons.add(showNumberOfEmployees);
         buttons.add(showNumberOfClients);
+        buttons.add(showTheMethodOverload);
         add(buttons, BorderLayout.SOUTH);
     }
     // LISTENERS
@@ -88,7 +91,7 @@ public class ManageEmployeesView extends JPanel {
             JOptionPane.showMessageDialog(this, "Number of Employees:\n\n" + loggedBoss.showNumberOfEmployees());});
         showNumberOfClients.addActionListener(e -> {
             JOptionPane.showMessageDialog(this, "Number of Clients:\n\n" + loggedBoss.showNumberOfClients());});
-
+        showTheMethodOverload.addActionListener();
     }
     // TABLE
     public void refreshTable() {
