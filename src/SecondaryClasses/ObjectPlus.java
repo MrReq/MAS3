@@ -14,6 +14,8 @@ public abstract class ObjectPlus implements Serializable {
     public static List<ObjectPlus> getExtent(Class<?> clazz) {
         return Collections.unmodifiableList(extents.getOrDefault(clazz, new ArrayList<>()));
     }
+
+    
     public static void showExtent(Class<? extends ObjectPlus> clazz) {
         System.out.println();
         System.out.println("========================================");
