@@ -90,21 +90,90 @@ public class LoginSelectionView extends JFrame {
                                 "</html>", JOptionPane.INFORMATION_MESSAGE)
         );
 
-        tabbedPane.addTab("Composite attribute", new JOptionPane("Here is the message about Composite attribute",JOptionPane.INFORMATION_MESSAGE));
+        tabbedPane.addTab("Composite attribute", new JOptionPane(
+                        "<html>" +
+                                "A composite attribute is an attribute that consists of multiple logically related sub-attributes.<br>" +
+                                "Instead of storing all values directly in one class, they are grouped into a separate class representing a single concept.<br><br>" +
+                                "In this project, the composite attribute is implemented as <b>Address address</b>.<br>" +
+                                "The Address class groups information such as street, house number, city, postal code and country into one reusable object.<br>" +
+                                "This improves readability, reusability. " +
+                                "</html>", JOptionPane.INFORMATION_MESSAGE));
 
-        tabbedPane.addTab("Optional attribute", new JOptionPane("Here is the message about Optional attribute",JOptionPane.INFORMATION_MESSAGE));
+        tabbedPane.addTab("Optional attribute", new JOptionPane(
+                "Optional attribute\n" +
+                        "An optional attribute is an attribute that is not required to have a value.\n"
+                        + "Unlike required attributes, it is acceptable for an optional attribute to be missing.\n"
+                        + "In Java, optional attributes are usually implemented using reference types that can store the value null.\n"
+                        + "Before using such an attribute, the program should always check whether a value is present to avoid runtime errors such as NullPointerException.\n"
+                        + "In this project, the customer's address (Address address) is an example of an optional attribute.\n"
+                        + "A customer can be created without providing an address.\n"
+                        + "This means that the address reference may remain null until it is assigned later.",
+                JOptionPane.INFORMATION_MESSAGE));
 
-        tabbedPane.addTab("Repeatable attribute", new JOptionPane("Here is the message about Repeatable attribute",JOptionPane.INFORMATION_MESSAGE));
+        tabbedPane.addTab("Repeatable attribute", new JOptionPane(
+                "Repeatable attribute\n" +
+                        "A repeatable attribute allows an object to store multiple values of the same type.\n" +
+                        "In this project, the repeatable attribute is the products field in the Order class.\n" +
+                        "It is implemented as a List<Product>, which allows one order to contain multiple products.\n" +
+                        "This means that a customer can order several different products within a single order.\n" +
+                        "For example, one order may include many Espresso, Cafe Latte, Americano.",
+                JOptionPane.INFORMATION_MESSAGE));
 
-        tabbedPane.addTab("Class attribute", new JOptionPane("Here is the message about Class attribute",JOptionPane.INFORMATION_MESSAGE));
+        tabbedPane.addTab("Class attribute", new JOptionPane(
+                "Class attribute\n" +
+                        "A class attribute is shared by all objects of the same class.\n"
+                        + "Unlike object attributes, only one copy of a class attribute exists in memory.\n"
+                        + "In Java, class attributes are implemented using the static keyword.\n"
+                        + "Every object accesses the same value instead of having its own separate copy.\n"
+                        + "In this project, the opening time of the coffee house (public static LocalTime start) is an example of a class attribute.\n"
+                        + "The opening time is the same for all objects of this class, so it is shared rather than stored individually in each object.",
+                JOptionPane.INFORMATION_MESSAGE));
 
-        tabbedPane.addTab("Derived attribute", new JOptionPane("Here is the message about Derived attribute",JOptionPane.INFORMATION_MESSAGE));
+        tabbedPane.addTab("Derived attribute", new JOptionPane(
+                "Derived attribute\n" +
+                        "A derived attribute is an attribute whose value is calculated from other attributes instead of being stored directly.\n"
+                        + "Its value is obtained whenever it is needed, which prevents storing redundant or outdated data.\n"
+                        + "In Java, derived attributes are usually implemented as getter methods that perform the required calculations.\n"
+                        + "This approach ensures that the value is always consistent with the current state of the object.\n"
+                        + "In this project, the person's age is a derived attribute.\n"
+                        + "The age is calculated from the person's date of birth using the getAge() method instead of being stored as a separate field.",
+                JOptionPane.INFORMATION_MESSAGE));
 
-        tabbedPane.addTab("Class method", new JOptionPane("Here is the message about Class method",JOptionPane.INFORMATION_MESSAGE));
+        tabbedPane.addTab("Class method", new JOptionPane(
+                "Class method\n" +
+                        "A class method is a method that belongs to the class rather than to a specific object.\n"
+                        + "In Java, class methods are declared using the static keyword.\n"
+                        + "They can be called directly using the class name without creating an instance of the class.\n"
+                        + "Class methods are commonly used to perform operations that are shared by all objects or that do not depend on the state of a particular object.\n"
+                        + "In this project, the manageProducts() method is an example of a class method.\n"
+                        + "It is declared as static and is used to manage products without requiring an instance of the class.\n" +
+                        "This method displays the most expensive product",
+                JOptionPane.INFORMATION_MESSAGE));
 
-        tabbedPane.addTab("Overridden method", new JOptionPane("Here is the message about Overridden method",JOptionPane.INFORMATION_MESSAGE));
+        tabbedPane.addTab("Method overriding",
+                new JOptionPane(
+                        "Method overriding is implemented in the Coffee hierarchy.\n" +
+                                "The abstract Coffee class declares the abstract method countPowerOfCoffee().\n" +
+                                "Each subclass provides its own implementation of this method,\n" +
+                                "calculating the coffee strength according to the specific coffee type.\n" +
+                                "This demonstrates runtime polymorphism, where the same method call\n" +
+                                "executes different implementations depending on the actual object type.\n" +
+                                "Method overriding allows subclasses to customize inherited behavior\n" +
+                                "while keeping the same method signature.\n",
+                        JOptionPane.INFORMATION_MESSAGE));
 
-        tabbedPane.addTab("Overloaded method", new JOptionPane("Here is the message about Overloaded method",JOptionPane.INFORMATION_MESSAGE));
+        tabbedPane.addTab("Method overloading",
+                new JOptionPane(
+                        "Method overloading\n" +
+                                "Method overloading is implemented in the Employee class.\n" +
+                                "The method findEmployeesWithLowerSalaryThan() exists in two versions.\n" +
+                                "The first version searches for employees whose salary is lower than the specified amount.\n" +
+                                "The overloaded version accepts an additional parameter (firstLetter),\n" +
+                                "allowing the search to be further filtered by the first letter of the employee's name.\n" +
+                                "Both methods have the same name but differ in the number of parameters,\n" +
+                                "which is the definition of method overloading in object-oriented programming.\n",
+                        JOptionPane.INFORMATION_MESSAGE));
+
 
         tabbedPane.addTab("Binary association", new JOptionPane("Here is the message about Binary association",JOptionPane.INFORMATION_MESSAGE));
 

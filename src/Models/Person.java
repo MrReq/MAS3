@@ -13,7 +13,7 @@ public abstract class Person extends ObjectPlus {
     protected String peronSurname;
     protected LocalDate personDateOfBirth;
     protected Sex personSex;
-    protected int age;
+
     public Person() {
         super();
     }
