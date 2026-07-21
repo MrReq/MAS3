@@ -12,6 +12,7 @@ public class CleanerTasksPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JButton refreshButton;
     private JButton completeTaskButton;
+    private JButton completeManyTasksButton;
     private JButton detailsButton;
     private CleanerDashboardView parent;
     public CleanerTasksPanel(Cleaner cleaner,CleanerDashboardView parent) {
@@ -30,8 +31,10 @@ public class CleanerTasksPanel extends JPanel {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         tasksTable.setRowSorter(sorter);
         tasksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tasksTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         refreshButton = new JButton("Refresh");
-        completeTaskButton = new JButton("Mark as completed");
+        completeTaskButton = new JButton("Mark Table as cleaned");
+        completeManyTasksButton = new JButton("Mark Many Tables as cleaned");
         detailsButton = new JButton("Details");
     }
     // LAYOUT
@@ -42,6 +45,7 @@ public class CleanerTasksPanel extends JPanel {
         bottomPanel.add(refreshButton);
         bottomPanel.add(detailsButton);
         bottomPanel.add(completeTaskButton);
+        bottomPanel.add(completeManyTasksButton);
         add(bottomPanel, BorderLayout.SOUTH);
     }
     // LISTENERS
@@ -49,6 +53,7 @@ public class CleanerTasksPanel extends JPanel {
         refreshButton.addActionListener(e -> refreshTable());
         detailsButton.addActionListener(e -> showDetails());
         completeTaskButton.addActionListener(e -> completeTask());
+        completeManyTasksButton.addActionListener(e -> completeManyTasks());
     }
     // TABLE
     private void refreshTable() {
@@ -87,8 +92,37 @@ public class CleanerTasksPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Order not found.");
             return;
         }
+        cleaner.addLink("orders", "cleaner", order);
         order.setOrderStatus(OrderStatus.FINISHED);
         JOptionPane.showMessageDialog(this, "Cleaning completed successfully.", "Completed",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+        parent.refreshAllPanels();
+    }
+
+    private void completeManyTasks() {
+        int counter = 0;
+        int[] rows = tasksTable.getSelectedRows();
+        if (rows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Select at least one task first.");
+            return;
+        }
+        for(int row : rows){
+            int modelRow = tasksTable.convertRowIndexToModel(row);
+            int orderId = (Integer) tableModel.getValueAt(modelRow, 0);
+            Order order = Order.findOrderById(orderId);
+            if (order == null) {
+                JOptionPane.showMessageDialog(this, "Order not found.");
+                return;
+            }
+            try {
+                cleaner.addLink("orders", "cleaner", order);
+            } catch (Exception ignored) {
+            }
+            order.setOrderStatus(OrderStatus.FINISHED);
+            counter++;
+        }
+        JOptionPane.showMessageDialog(this, "Cleaning " + counter + " tables completed successfully.", "Completed",
                 JOptionPane.INFORMATION_MESSAGE
         );
         parent.refreshAllPanels();

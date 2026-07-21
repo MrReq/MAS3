@@ -8,7 +8,7 @@ import Enums.OrderStatus;
 import Models.Order;
 
 public class CleanerStatisticsPanel extends JPanel {
-    private final Cleaner cleaner;
+    private final Cleaner loggedcleaner;
     private JLabel completedTasksLabel;
     private JLabel pendingTasksLabel;
     private JLabel workedHoursLabel;
@@ -16,8 +16,8 @@ public class CleanerStatisticsPanel extends JPanel {
     private JLabel lastCleaningLabel;
     private JButton refreshButton;
     private CleanerDashboardView parent;
-    public CleanerStatisticsPanel(Cleaner cleaner, CleanerDashboardView parent) {
-        this.cleaner = cleaner;
+    public CleanerStatisticsPanel(Cleaner loggedcleaner, CleanerDashboardView parent) {
+        this.loggedcleaner = loggedcleaner;
         this.parent=parent;
         initializeComponents();
         initializeLayout();
@@ -44,10 +44,10 @@ public class CleanerStatisticsPanel extends JPanel {
         statisticsPanel.setLayout(new GridLayout(6, 2, 10, 10));
         statisticsPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
         statisticsPanel.add(new JLabel("Cleaner:"));
-        statisticsPanel.add(new JLabel(cleaner.getPersonName() + " " + cleaner.getPeronSurname()));
-        statisticsPanel.add(new JLabel("Completed tasks:"));
+        statisticsPanel.add(new JLabel(loggedcleaner.getPersonName() + " " + loggedcleaner.getPeronSurname()));
+        statisticsPanel.add(new JLabel("Completed tasks / Cleaned Tables:"));
         statisticsPanel.add(completedTasksLabel);
-        statisticsPanel.add(new JLabel("Pending tasks:"));
+        statisticsPanel.add(new JLabel("Pending tasks / Tables that are still not cleaned:"));
         statisticsPanel.add(pendingTasksLabel);
         statisticsPanel.add(new JLabel("Worked hours:"));
         statisticsPanel.add(workedHoursLabel);
@@ -66,16 +66,27 @@ public class CleanerStatisticsPanel extends JPanel {
     }
     // REFRESH
     private void refreshStatistics() {
-        completedTasksLabel.setText(String.valueOf(Order.getOrderExtent().stream()
-                        .filter(o -> o.getOrderStatus() == OrderStatus.FINISHED)
+        completedTasksLabel.setText(String.valueOf(
+                loggedcleaner.getOrders().stream()
+                        .filter(order -> order.getOrderStatus() == OrderStatus.FINISHED)
                         .count()));
         pendingTasksLabel.setText(String.valueOf(Order.getOrderExtent().stream()
-                        .filter(o -> o.getOrderStatus() == OrderStatus.PAID)
+                        .filter(order -> order.getOrderStatus() == OrderStatus.PAID)
                         .count()));
-        workedHoursLabel.setText(cleaner.getCurrentEmployment() != null
-                        ? cleaner.getCurrentEmployment().getEmploymentPeriodText()
-                        : "-");
-        efficiencyLabel.setText("100 %");
+        workedHoursLabel.setText(loggedcleaner.getCurrentEmployment() != null
+                        ? loggedcleaner.getCurrentEmployment().getEmploymentPeriodText()
+                        : "-"
+        );
+        long completed = loggedcleaner.getOrders().stream()
+                .filter(o -> o.getOrderStatus() == OrderStatus.FINISHED)
+                .count();
+        long pending = loggedcleaner.getOrders().stream()
+                .filter(o -> o.getOrderStatus() == OrderStatus.PAID)
+                .count();
+        double efficiency = (completed + pending) == 0
+                ? 0
+                : completed * 100.0 / (completed + pending);
+        efficiencyLabel.setText(String.format("%.0f %%", efficiency));
         lastCleaningLabel.setText(LocalDate.now().toString());
     }
     public void reload(){

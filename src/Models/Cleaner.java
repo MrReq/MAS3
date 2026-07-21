@@ -4,6 +4,9 @@ import Enums.Sex;
 import Enums.Shift;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Cleaner extends Employee {
@@ -50,5 +53,15 @@ public class Cleaner extends Employee {
     @Override
     public String toString() {
         return "Cleaner: " + personName + ", id: " + super.toString();
+    }
+
+    public Collection<Order> getOrders() {
+        try {
+            return Arrays.stream(getLinks("orders"))
+                    .map(link -> (Order) link)
+                    .toList();
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
 }
