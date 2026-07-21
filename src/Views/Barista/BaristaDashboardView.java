@@ -10,7 +10,7 @@ public class BaristaDashboardView extends JFrame {
     private BaristaMenuPanel baristaMenuPanel;
     private BaristaAcceptedOrdersPanel acceptedOrdersPanel;
     private BaristaPrepareCoffeePanel prepareCoffeePanel;
-    private BaristaFinishedOrdersPanel finishedOrdersPanel;
+    private BaristaFinishedOrdersPanel readyOrdersPanel;
     private BaristaStatisticsPanel baristaStatisticsPanel;
     private final Barista loggedBarista;
     private JTabbedPane tabbedPane;
@@ -32,15 +32,15 @@ public class BaristaDashboardView extends JFrame {
         baristaMenuPanel = new BaristaMenuPanel(loggedBarista, this);
         acceptedOrdersPanel = new BaristaAcceptedOrdersPanel(loggedBarista,this);
         prepareCoffeePanel = new BaristaPrepareCoffeePanel(loggedBarista,this);
-        finishedOrdersPanel = new BaristaFinishedOrdersPanel(loggedBarista, this);
+        readyOrdersPanel = new BaristaFinishedOrdersPanel(loggedBarista, this);
         baristaStatisticsPanel = new BaristaStatisticsPanel(loggedBarista, this);
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Orders", ordersPanel);
         tabbedPane.addTab("Accepted", acceptedOrdersPanel);
         tabbedPane.addTab("Preparing Coffee", prepareCoffeePanel);
-        tabbedPane.addTab("Finished Orders", finishedOrdersPanel);
+        tabbedPane.addTab("Ready Orders", readyOrdersPanel);
         tabbedPane.addTab("Menu", baristaMenuPanel);
-        tabbedPane.addTab("Statistics", baristaStatisticsPanel);
+        tabbedPane.addTab("Current Statistics", baristaStatisticsPanel);
     }
     // LAYOUT
     private void initializeLayout() {
@@ -69,7 +69,7 @@ public class BaristaDashboardView extends JFrame {
         ordersPanel.reload();
         acceptedOrdersPanel.reload();
         prepareCoffeePanel.reload();
-        finishedOrdersPanel.reload();
+        readyOrdersPanel.reload();
         baristaStatisticsPanel.reload();
     }
     private void becomeClient() {

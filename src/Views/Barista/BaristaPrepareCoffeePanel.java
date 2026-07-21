@@ -69,9 +69,43 @@ public class BaristaPrepareCoffeePanel extends JPanel {
 //        startPreparationButton.addActionListener(e -> startPreparation());
         finishPreparationButton.addActionListener(e -> finishPreparation());
         finishPreparationsButton.addActionListener(e -> finishPreparations());
-        countPowerOfCoffeeButton.addActionListener(e -> finishPreparation());
+        countPowerOfCoffeeButton.addActionListener(e -> showPowerOfCoffee());
         showallPreparationButton.addActionListener(e -> showAllPreparations());
         showOnlyMyPreparationButton.addActionListener(e -> ShowOnlyMyPreparations());
+    }
+    private void showPowerOfCoffee() {
+        String[] coffees = {"Americano", "Cafe Latte", "Espresso"};
+        while (true) {
+            String selected = (String) JOptionPane.showInputDialog(
+                    this,
+                    "Select coffee type:",
+                    "Count Power Of Coffee", JOptionPane.QUESTION_MESSAGE, null, coffees, coffees[0]
+            );
+            if (selected == null)
+                return;
+            Coffee coffee = null;
+            switch (selected) {
+                case "Americano":
+                    if (!Americano.getAmericanoExtent().isEmpty())
+                        coffee = Americano.getAmericanoExtent().getFirst();
+                    break;
+                case "Cafe Latte":
+                    if (!CafeLatte.getCafeLatteExtent().isEmpty())
+                        coffee = CafeLatte.getCafeLatteExtent().getFirst();
+                    break;
+                case "Espresso":
+                    if (!Espresso.getEspressoExtent().isEmpty())
+                        coffee = Espresso.getEspressoExtent().getLast();
+                    break;
+            }
+            if (coffee == null) {
+                JOptionPane.showMessageDialog(this, "There is no " + selected + " in the system.");
+                return;
+            }
+            JOptionPane.showMessageDialog(
+                    this,
+                    selected + " power: " + coffee.countPowerOfCoffee());
+        }
     }
     // TABLE
     private void refreshTable() {

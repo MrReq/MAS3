@@ -31,14 +31,15 @@ public class Espresso extends Coffee implements Preparable {
                     TemperatureOfTheService temperatureOfTheService,
                     CoffeeCountry coffeeCountry,
                     int shotOfEspressoCount,
-                    int extractionTime,
-                    double pressure) {
+                    double pressure,
+                    int extractionTime
+                    ) {
 
         super(name, cost, availability, description, temperatureOfTheService, coffeeCountry);
 
         this.shotOfEspressoCount = shotOfEspressoCount;
-        this.extractionTime = extractionTime;
         this.pressure = pressure;
+        this.extractionTime = extractionTime;
     }
 
     // METHODS
@@ -50,8 +51,14 @@ public class Espresso extends Coffee implements Preparable {
 
     @Override
     public String countPowerOfCoffee() {
-        return "Power of this coffee is " +
-                shotOfEspressoCount * pressure / extractionTime;
+
+        if (extractionTime == 0) {
+            return "Cannot calculate coffee power (extraction time = 0).";
+        }
+
+        double power = shotOfEspressoCount * pressure / extractionTime;
+
+        return "Power of this coffee is " + power;
     }
 
     @Override

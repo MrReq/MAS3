@@ -129,7 +129,7 @@ public class AddNewProductView extends JFrame {
                     product = new CafeLatte(name, price, available, description, temperature, coffeeCountry);
                     break;
                 case "Espresso":
-                    product = new Espresso(name, price, available, description, temperature, coffeeCountry);
+                    product = new Espresso(name, price, available, description, temperature, coffeeCountry,6,20.0,10);
                     break;
                 case "Milk":
                     product = new Milk(name, price, available, description, temperature);
