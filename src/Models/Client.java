@@ -39,31 +39,18 @@ public class Client extends Person {
         this.citizenship = citizenship;
     }
 
-    public Client(String name,
-                  String surname,
-                  LocalDate dateOfBirth,
-                  Sex sex,
-                  boolean hasClubCard,
-                  Citizenship citizenship,
+    public Client(String name, String surname, LocalDate dateOfBirth, Sex sex, boolean hasClubCard, Citizenship citizenship,
                   int clientID) {
         super(name, surname, dateOfBirth, sex);
         this.clientID = clientID;
         this.hasClubCard = hasClubCard;
         this.citizenship = citizenship;
     }
-
     // EXTENT
-
     public static List<Client> getClientExtent() {
         return getExtent(Client.class);
     }
-
-    public static boolean clientExists(String name,
-                                       String surname,
-                                       LocalDate birthDate,
-                                       Sex sex,
-                                       Citizenship citizenship) {
-
+    public static boolean clientExists(String name, String surname, LocalDate birthDate, Sex sex, Citizenship citizenship) {
         for (Client client : getClientExtent()) {
             if (client.getPersonName().equalsIgnoreCase(name)
                     && client.getPeronSurname().equalsIgnoreCase(surname)
@@ -73,24 +60,18 @@ public class Client extends Person {
                 return true;
             }
         }
-
         return false;
     }
-
     // GETTERS
-
     public boolean hasClubCard() {
         return hasClubCard;
     }
-
     public Address getAddress() {
         return address;
     }
-
     public Optional<Citizenship> getCitizenship() {
         return Optional.ofNullable(citizenship);
     }
-
     public Collection<Order> getOrders() {
         try {
             return Arrays.stream(getLinks("orders"))
@@ -100,27 +81,20 @@ public class Client extends Person {
             return Collections.emptyList();
         }
     }
-
     @Override
     public String getPrivileges() {
         return "CLIENT";
     }
-
     // SETTERS
-
     public void setAddress(Address address) {
         this.address = address;
     }
-
     public void setSatisfactionOfTheService(int satisfaction) {
         if (satisfaction < 1 || satisfaction > 5)
             throw new IllegalArgumentException("Satisfaction must be between 1 and 5.");
-
         this.satisfactionOfTheService = satisfaction;
     }
-
     // BUSINESS METHODS
-
     public int countRealOrdersDone() {
         return (int) getOrders().stream()
                 .filter(order -> !order.getProducts().isEmpty())
@@ -128,27 +102,24 @@ public class Client extends Person {
     }
 
     public void addOrder(Order order) {
-        addLink(
-                "orders",
-                "client",
-                order,
-                order.getOrderID()
-        );
+        addLink("orders", "client", order, order.getOrderID());
     }
-
     @Override
     public String toString() {
-        return String.format(
-                "Client{id=%d, name='%s %s', clubCard=%s, citizenship=%s}",
-                clientID,
-                personName,
-                peronSurname,
-                hasClubCard,
-                citizenship
+        return String.format("Client{id=%d, name='%s %s', clubCard=%s, citizenship=%s}", clientID, personName,
+                peronSurname, hasClubCard, citizenship
         );
     }
-
     public Order getShoppingCart() {
+        System.out.println("------ SHOPPING CARTS ------");
+        for (Order order : getOrders()) {
+            System.out.println(
+                    "ID=" + order.getOrderID()
+                            + " cart=" + order.isShoppingCart()
+                            + " createdAt=" + order.getCreatedAt()
+                            + " status=" + order.getOrderStatus()
+            );
+        }
         for (Order order : getOrders()) {
             if (order.isShoppingCart()) {
                 return order;
@@ -156,33 +127,19 @@ public class Client extends Person {
         }
         return createNewShoppingCart();
     }
-
     public Order createNewShoppingCart() {
         return Order.createOrder(this, OrderType.Liquid);
     }
-
     public int countOrders() {
         return getOrders().size() - 1;
     }
-
-    public static Client createFromEmployee(Employee employee,
-                                            boolean hasClubCard,
-                                            Citizenship citizenship) {
-
+    public static Client createFromEmployee(Employee employee, boolean hasClubCard, Citizenship citizenship) {
         if (employee == null)
             throw new IllegalArgumentException("Employee cannot be null.");
-
-        return new Client(
-                employee.getPersonName(),
-                employee.getPeronSurname(),
-                employee.getPersonDateOfBirth(),
-                employee.getPersonSex(),
-                hasClubCard,
-                citizenship,
-                Person.getCounter()
+        return new Client(employee.getPersonName(), employee.getPeronSurname(), employee.getPersonDateOfBirth(), employee.getPersonSex(),
+                hasClubCard, citizenship, Person.getCounter()
         );
     }
-
     public static boolean isClient(Person person) {
         return getClientExtent().stream().anyMatch(client ->
                 client.getPersonName().equalsIgnoreCase(person.getPersonName())

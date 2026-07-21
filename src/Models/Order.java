@@ -20,6 +20,7 @@ public class Order extends ObjectPlusPlus {
     private final OrderType orderType;
     private OrderStatus orderStatus;
     private final LocalDateTime createdAt;
+    private  LocalDateTime placedAt;
     private Client client;
     private boolean shoppingCart = true;
 
@@ -55,6 +56,13 @@ public class Order extends ObjectPlusPlus {
 
     public int getOrderID() {
         return orderID;
+    }
+    public LocalDateTime getPlacedAt() {
+        return placedAt;
+    }
+
+    public void setPlacedAt(LocalDateTime placedAt) {
+        this.placedAt = placedAt;
     }
 
     public List<Product> getProducts() {
@@ -140,7 +148,6 @@ public class Order extends ObjectPlusPlus {
         if (product == null) {
             return;
         }
-
         products.remove(product);
     }
 

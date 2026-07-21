@@ -25,7 +25,7 @@ public class ClientOrderHistoryPanel extends JPanel {
     // COMPONENTS
     private void initializeComponents() {
         tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"Order ID", "Date", "Products", "Status", "Value"});
+        tableModel.setColumnIdentifiers(new String[]{"Order ID", "Date of creation", "Date of place" , "Products", "Status", "Value"});
         ordersTable = new JTable(tableModel);
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         ordersTable.setRowSorter(sorter);
@@ -65,7 +65,7 @@ public class ClientOrderHistoryPanel extends JPanel {
                 products.append(product.getProductName());
                 value += product.getProductCost();
             }
-            tableModel.addRow(new Object[]{order.getOrderID(), order.getCreatedAt(), products.toString(),
+            tableModel.addRow(new Object[]{order.getOrderID(), order.getCreatedAt(), order.getPlacedAt(), products.toString(),
                 order.getOrderStatus(), value
             });
         }

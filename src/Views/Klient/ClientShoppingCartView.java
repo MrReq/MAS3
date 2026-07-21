@@ -6,13 +6,16 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.time.LocalDateTime;
+
 public class ClientShoppingCartView extends JPanel {
     private final Client loggedClient;
     private JTable cartTable;
     private DefaultTableModel tableModel;
     private JLabel totalLabel;
     private JButton refreshButton;
-    private JButton removeButton;
+    private JButton removeProductButton;
+    private JButton removeManyProductsButton;
     private JButton placeOrderButton;
     private ClientDashboardView parent;
     public ClientShoppingCartView(Client loggedClient, ClientDashboardView parent) {
@@ -31,9 +34,11 @@ public class ClientShoppingCartView extends JPanel {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         cartTable.setRowSorter(sorter);
         cartTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        cartTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         totalLabel = new JLabel("Total: 0.00 zł");
         refreshButton = new JButton("Refresh");
-        removeButton = new JButton("Remove");
+        removeProductButton = new JButton("Remove Product");
+        removeManyProductsButton = new JButton("Remove Many Products");
         placeOrderButton = new JButton("Place order");
     }
     // LAYOUT
@@ -46,7 +51,8 @@ public class ClientShoppingCartView extends JPanel {
         JPanel bottom = new JPanel(new BorderLayout());
         JPanel buttons = new JPanel();
         buttons.add(refreshButton);
-        buttons.add(removeButton);
+        buttons.add(removeProductButton);
+        buttons.add(removeManyProductsButton);
         buttons.add(placeOrderButton);
         bottom.add(totalLabel, BorderLayout.WEST);
         bottom.add(buttons, BorderLayout.EAST);
@@ -55,7 +61,8 @@ public class ClientShoppingCartView extends JPanel {
     // LISTENERS
     private void initializeListeners() {
         refreshButton.addActionListener(e -> refreshTable());
-        removeButton.addActionListener(e -> removeProduct());
+        removeProductButton.addActionListener(e -> removeProduct());
+        removeManyProductsButton.addActionListener(e -> removeManyProducts());
         placeOrderButton.addActionListener(e -> placeOrder());
     }
     // REFRESH
@@ -83,6 +90,23 @@ public class ClientShoppingCartView extends JPanel {
         cart.removeProduct(product);
         refreshTable();
     }
+
+    private void removeManyProducts() {
+        int counter = 0;
+        int[] rows = cartTable.getSelectedRows();
+        if (rows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Select at least one product.");
+            return;
+        }
+        Order cart = loggedClient.getShoppingCart();
+        for (int i = rows.length - 1; i >= 0; i--) {
+            Product product = cart.getProducts().get(rows[i]);
+            cart.removeProduct(product);
+            counter++;
+        }
+        JOptionPane.showMessageDialog(this, counter + " Products have been removed.");
+        refreshTable();
+    }
     // PLACE ORDER
     private void placeOrder() {
         Order cart = loggedClient.getShoppingCart();
@@ -90,6 +114,7 @@ public class ClientShoppingCartView extends JPanel {
             JOptionPane.showMessageDialog(this, "Shopping cart is empty.");
             return;
         }
+        cart.setPlacedAt(LocalDateTime.now());
         cart.setShoppingCart(false);
         JOptionPane.showMessageDialog(this, "Order placed successfully.");
         loggedClient.createNewShoppingCart();

@@ -2,15 +2,12 @@ package Models;
 import Enums.CoffeeCountry;
 import Enums.OrderStatus;
 import Enums.Sex;
-import SecondaryClasses.ObjectPlus;
 import java.time.LocalDate;
 import java.util.*;
 public class Barista extends Employee {
     private static final long serialVersionUID = 1L;
     private CoffeeCountry favouriteCoffeeCountry;
-
     private final Map<Integer, Order> orders = new HashMap<>();
-
     public Barista() {
         super();
     }
@@ -27,7 +24,6 @@ public class Barista extends Employee {
             return Collections.emptyList();
         }
     }
-
     // EXTENT
     public static List<Barista> getBaristaExtent() {
         return getExtent(Barista.class);
@@ -78,7 +74,6 @@ public class Barista extends Employee {
                 .filter(p -> p.getBarista() == this)
                 .filter(p -> p.getOrder().getOrderStatus() == OrderStatus.ACCEPTED)
                 .count();
-
     }
     public int countPreparingOrders() {
         return (int) getPreparations().stream()
