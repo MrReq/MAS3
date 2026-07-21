@@ -43,6 +43,16 @@ public class Waiter extends Employee {
             return Arrays.stream(getLinks("deliveries"))
                     .map(link -> (Delivery) link)
                     .filter(delivery -> delivery.getOrder().getOrderStatus() == OrderStatus.SERVED)
+                    .filter(delivery -> delivery.getWaiter() == this)
+                    .toList();
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
+    public Collection<Delivery> getDeliveries() {
+        try {
+            return Arrays.stream(getLinks("deliveries"))
+                    .map(link -> (Delivery) link)
                     .toList();
         } catch (Exception e) {
             return Collections.emptyList();

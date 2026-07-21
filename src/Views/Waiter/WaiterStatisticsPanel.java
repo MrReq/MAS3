@@ -1,5 +1,5 @@
 package Views.Waiter;
-import Models.Order;
+import Models.Delivery;
 import Models.Waiter;
 import javax.swing.*;
 import java.awt.*;
@@ -57,15 +57,24 @@ public class WaiterStatisticsPanel extends JPanel {
         refreshButton.addActionListener(e -> refreshStatistics());
     }
     private void refreshStatistics() {
+
         servedTables.setText(String.valueOf(loggedWaiter.countServedOrders()));
-        completedOrders.setText(String.valueOf(
-                Order.getOrderExtent().stream()
-                        .filter(o -> o.getOrderStatus() == OrderStatus.PAID)
-                        .count()));
+
+        long completed = loggedWaiter.getDeliveries().stream()
+                .map(Delivery::getOrder)
+                .filter(order -> order.getOrderStatus() == OrderStatus.PAID)
+                .count();
+
+        completedOrders.setText(String.valueOf(completed));
+
         tips.setText(String.format("%.2f PLN", loggedWaiter.countTips()));
+
         averageGrade.setText(loggedWaiter.getWaitersGrade().toString());
-        workedHours.setText(loggedWaiter.getCurrentEmployment() != null
-                        ? loggedWaiter.getCurrentEmployment().getEmploymentPeriodText() : "-"
+
+        workedHours.setText(
+                loggedWaiter.getCurrentEmployment() != null
+                        ? loggedWaiter.getCurrentEmployment().getEmploymentPeriodText()
+                        : "-"
         );
     }
     public void reload(){

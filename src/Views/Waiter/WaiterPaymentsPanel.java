@@ -45,13 +45,15 @@ public class WaiterPaymentsPanel extends JPanel {
     }
     private void refreshTable() {
         tableModel.setRowCount(0);
-        for (Order order : Order.getOrderExtent()) {
+        for (Delivery delivery : waiter.getDeliveries()) {
+            Order order = delivery.getOrder();
             if (order.getOrderStatus() != OrderStatus.PAID)
                 continue;
             StringBuilder products = new StringBuilder();
             for (Product product : order.getProducts()) {
-                if (products.length() > 0)
+                if (products.length() > 0) {
                     products.append(", ");
+                }
                 products.append(product.getProductName());
             }
             tableModel.addRow(new Object[]{
