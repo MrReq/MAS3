@@ -1,11 +1,13 @@
 package Models;
 import SecondaryClasses.ObjectPlus;
+import SecondaryClasses.ObjectPlusPlus;
+
 import javax.swing.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-public class Employment extends ObjectPlus implements Serializable {
+public class Employment extends ObjectPlusPlus implements Serializable {
     private static final long serialVersionUID = 1L;
     private final Boss boss;
     private final Employee employee;
