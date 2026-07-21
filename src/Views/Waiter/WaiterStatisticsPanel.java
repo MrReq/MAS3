@@ -40,7 +40,7 @@ public class WaiterStatisticsPanel extends JPanel {
         center.add(new JLabel(loggedWaiter.getPersonName()+" "+loggedWaiter.getPeronSurname()));
         center.add(new JLabel("Served Tables:"));
         center.add(servedTables);
-        center.add(new JLabel("Completed Orders:"));
+        center.add(new JLabel("Completed/Paid Orders:"));
         center.add(completedOrders);
         center.add(new JLabel("Tips:"));
         center.add(tips);

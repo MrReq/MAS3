@@ -11,6 +11,7 @@ public class ClientMenuPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JButton refreshButton;
     private JButton addToCartButton;
+    private JButton addManyToCartButton;
     private ClientDashboardView parent;
     public ClientMenuPanel(Client loggedClient, ClientDashboardView parent) {
         this.loggedClient = loggedClient;
@@ -32,8 +33,10 @@ public class ClientMenuPanel extends JPanel {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         productsTable.setRowSorter(sorter);
         productsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        productsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         refreshButton = new JButton("Refresh");
         addToCartButton = new JButton("Add to cart");
+        addManyToCartButton = new JButton("Add Many to cart");
     }
     // LAYOUT
     private void initializeLayout() {
@@ -45,12 +48,14 @@ public class ClientMenuPanel extends JPanel {
         JPanel bottom = new JPanel();
         bottom.add(refreshButton);
         bottom.add(addToCartButton);
+        bottom.add(addManyToCartButton);
         add(bottom, BorderLayout.SOUTH);
     }
     // LISTENERS
     private void initializeListeners() {
         refreshButton.addActionListener(e -> refreshTable());
         addToCartButton.addActionListener(e -> addToCart());
+        addManyToCartButton.addActionListener(e -> addManyToCart());
     }
     // TABLE
     public void refreshTable() {
@@ -82,6 +87,33 @@ public class ClientMenuPanel extends JPanel {
         }
         loggedClient.getShoppingCart().addProduct(selectedProduct);
         JOptionPane.showMessageDialog(this, "Product added to shopping cart.","Accepted",
+                JOptionPane.INFORMATION_MESSAGE);
+        parent.refreshAllPanels();
+    }
+
+    private void addManyToCart() {
+        int counter = 0;
+        int[] rows = productsTable.getSelectedRows();
+        if (rows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Select at least one product.","Error",0);
+            return;
+        }
+        for (int row : rows){
+            int modelRow = productsTable.convertRowIndexToModel(row);
+            int productID = (Integer) tableModel.getValueAt(modelRow, 0);
+            Product selectedProduct = Product.findById(productID);
+            if (selectedProduct == null) {
+                JOptionPane.showMessageDialog(this, "Product not found.","Error",0);
+                return;
+            }
+            if (!selectedProduct.isProductAvailability()) {
+                JOptionPane.showMessageDialog(this, "Product is unavailable.","Error",0);
+                return;
+            }
+            loggedClient.getShoppingCart().addProduct(selectedProduct);
+            counter++;
+        }
+        JOptionPane.showMessageDialog(this, counter + " Products added to shopping cart.","Accepted",
                 JOptionPane.INFORMATION_MESSAGE);
         parent.refreshAllPanels();
     }

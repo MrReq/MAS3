@@ -17,7 +17,7 @@ public class Boss extends Person {
     private String password;
 
     public static LocalTime start = LocalTime.of(8, 0);
-    public static LocalTime end = LocalTime.of(20, 0);
+    public static LocalTime end = LocalTime.of(23, 0);
 
     // TODO (Etap 2 - ObjectPlusPlus Association)
     private List<Employment> employments = new ArrayList<>();

@@ -12,7 +12,8 @@ public class WaiterOrdersPanel extends JPanel {
     private JTable ordersTable;
     private DefaultTableModel tableModel;
     private JButton refreshButton;
-    private JButton serveButton;
+    private JButton serveOrderButton;
+    private JButton serveManyOrdersButton;
     private JButton detailsButton;
     private WaiterDashboardView parent;
 
@@ -32,8 +33,10 @@ public class WaiterOrdersPanel extends JPanel {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         ordersTable.setRowSorter(sorter);
         ordersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ordersTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         refreshButton = new JButton("Refresh");
-        serveButton = new JButton("Serve Order");
+        serveOrderButton = new JButton("Serve Order");
+        serveManyOrdersButton = new JButton("Serve Many Orders");
         detailsButton = new JButton("Details");
     }
     // LAYOUT
@@ -43,14 +46,16 @@ public class WaiterOrdersPanel extends JPanel {
         JPanel bottom = new JPanel();
         bottom.add(refreshButton);
         bottom.add(detailsButton);
-        bottom.add(serveButton);
+        bottom.add(serveOrderButton);
+        bottom.add(serveManyOrdersButton);
         add(bottom, BorderLayout.SOUTH);
     }
     // LISTENERS
     private void initializeListeners() {
         refreshButton.addActionListener(e -> refreshTable());
         detailsButton.addActionListener(e -> showDetails());
-        serveButton.addActionListener(e -> serveOrder());
+        serveOrderButton.addActionListener(e -> serveOrder());
+        serveManyOrdersButton.addActionListener(e -> serveManyOrders());
     }
     // TABLE
     private void refreshTable() {
@@ -89,7 +94,26 @@ public class WaiterOrdersPanel extends JPanel {
             loggedWaiter.serveOrder(selectedOrder);
         } catch (Exception e) {
             throw new RuntimeException(e);}
-        parent.refreshAllPanels();}
+        parent.refreshAllPanels();
+    }
+
+    private void serveManyOrders() {
+        System.out.println("serveOrder() called");
+        int[] rows = ordersTable.getSelectedRows();
+        if (rows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Select at least one order.");
+            return;
+        }
+        for(int row : rows){
+            int orderId = (Integer) tableModel.getValueAt(row, 0);
+            Order selectedOrder = Order.findOrderById(orderId);
+            try {
+                loggedWaiter.serveOrder(selectedOrder);
+            } catch (Exception e) {
+                throw new RuntimeException(e);}
+        }
+        parent.refreshAllPanels();
+    }
     public void reload() {
         refreshTable();
     }

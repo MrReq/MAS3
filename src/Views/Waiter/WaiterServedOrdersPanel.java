@@ -16,6 +16,7 @@ public class WaiterServedOrdersPanel extends JPanel {
     private JButton showAllDeliveriesButton;
     private JButton showOnlyMyDeliveriesButton;
     private JButton receivePaymentButton;
+    private JButton receiveManyPaymentsButton;
     private WaiterDashboardView parent;
 
     public WaiterServedOrdersPanel(Waiter loggedWaiter, WaiterDashboardView parent) {
@@ -37,6 +38,7 @@ public class WaiterServedOrdersPanel extends JPanel {
         showAllDeliveriesButton = new JButton("Show All Deliveries");
         showOnlyMyDeliveriesButton = new JButton("Show Only My Deliveries");
         receivePaymentButton = new JButton("Receive Payment");
+        receiveManyPaymentsButton = new JButton("Receive Many Payments");
     }
     // LAYOUT
     private void initializeLayout() {
@@ -50,6 +52,7 @@ public class WaiterServedOrdersPanel extends JPanel {
         bottom.add(showAllDeliveriesButton);
         bottom.add(showOnlyMyDeliveriesButton);
         bottom.add(receivePaymentButton);
+        bottom.add(receiveManyPaymentsButton);
         add(bottom, BorderLayout.SOUTH);
     }
     // LISTENERS
@@ -59,6 +62,7 @@ public class WaiterServedOrdersPanel extends JPanel {
         showAllDeliveriesButton.addActionListener(e -> showAllDeliveries());
         showOnlyMyDeliveriesButton.addActionListener(e -> showOnlyMyDeliveries());
         receivePaymentButton.addActionListener(e -> receivePayment());
+        receiveManyPaymentsButton.addActionListener(e -> receiveManyPayments());
     }
     // TABLE
     private void refreshTable() {
@@ -96,6 +100,27 @@ public class WaiterServedOrdersPanel extends JPanel {
         JOptionPane.showMessageDialog(this, "Payment has been received.");
         parent.refreshAllPanels();
     }
+    private void receiveManyPayments() {
+        int counter = 0;
+        int[] rows = ordersTable.getSelectedRows();
+        if (rows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Please select at least one order.");
+            return;
+        }
+        for(int row : rows){
+            int orderId = (Integer) tableModel.getValueAt(row, 0);
+            Order order = Order.findOrderById(orderId);
+            if (order == null) {
+                JOptionPane.showMessageDialog(this, "Order not found.");
+                return;
+            }
+            loggedWaiter.receivePayment(order);
+            counter++;
+        }
+        JOptionPane.showMessageDialog(this, counter + " Payments have been received.");
+        parent.refreshAllPanels();
+    }
+
     public void reload() {
         refreshTable();
     }
