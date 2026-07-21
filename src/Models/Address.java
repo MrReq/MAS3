@@ -1,9 +1,11 @@
 package Models;
 import SecondaryClasses.ObjectPlus;
+import SecondaryClasses.ObjectPlusPlus;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Address extends ObjectPlus {
+public class Address extends ObjectPlusPlus {
     public static List<Address> getAddressExtent() {
         return ObjectPlus.getExtent(Address.class);
     }

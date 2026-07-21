@@ -2,12 +2,13 @@ package Models;
 
 import Models.Order;
 import SecondaryClasses.ObjectPlus;
+import SecondaryClasses.ObjectPlusPlus;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-public class Delivery extends ObjectPlus {
+public class Delivery extends ObjectPlusPlus {
     public static List<Delivery> getDeliveryExtent() {
         return  ObjectPlus.getExtent(Delivery.class);
     }
