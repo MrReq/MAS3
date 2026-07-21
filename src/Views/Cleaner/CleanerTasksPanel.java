@@ -82,7 +82,7 @@ public class CleanerTasksPanel extends JPanel {
         }
         int modelRow = tasksTable.convertRowIndexToModel(row);
         int orderId = (Integer) tableModel.getValueAt(modelRow, 0);
-        Order order = Order.findById(orderId);
+        Order order = Order.findOrderById(orderId);
         if (order == null) {
             JOptionPane.showMessageDialog(this, "Order not found.");
             return;

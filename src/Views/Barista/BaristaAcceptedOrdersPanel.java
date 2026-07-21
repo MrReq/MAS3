@@ -92,7 +92,7 @@ public class BaristaAcceptedOrdersPanel extends JPanel {
             return;
         }
         int orderId = (Integer) tableModel.getValueAt(row, 0);
-        Order order = Order.findById(orderId);
+        Order order = Order.findOrderById(orderId);
         loggedBarista.startPreparing(order);
         parent.refreshAllPanels();
     }
@@ -104,7 +104,7 @@ public class BaristaAcceptedOrdersPanel extends JPanel {
         }
         for (int row : rows) {
             int orderId = (Integer) tableModel.getValueAt(row, 0);
-            Order order = Order.findById(orderId);
+            Order order = Order.findOrderById(orderId);
             if (order != null)
                 loggedBarista.startPreparing(order);
         }

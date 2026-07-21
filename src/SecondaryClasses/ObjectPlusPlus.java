@@ -40,6 +40,12 @@ public abstract class ObjectPlusPlus extends ObjectPlus implements Serializable 
             targetObject.addLink(reverseRoleName, roleName, this, this, counter - 1);
         }
     }
+    public void removeAllLinks(String roleName) {
+        if (!links.containsKey(roleName)) {
+            return;
+        }
+        links.get(roleName).clear();
+    }
 
     /**
      * Ordinary association.

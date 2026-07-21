@@ -123,7 +123,7 @@ public class BaristaPrepareCoffeePanel extends JPanel {
             return;
         }
         int orderID = (Integer) tableModel.getValueAt(row, 0);
-        Order selectedOrder = Order.findById(orderID);
+        Order selectedOrder = Order.findOrderById(orderID);
         loggedBarista.markOrderAsReady(selectedOrder);
         JOptionPane.showMessageDialog(this, "Coffee is ready to serve.");
         parent.refreshAllPanels();
@@ -137,11 +137,11 @@ public class BaristaPrepareCoffeePanel extends JPanel {
         }
         for(int row : rows){
             int orderID = (Integer) tableModel.getValueAt(row,0);
-            Order selectedOrder = Order.findById(orderID);
+            Order selectedOrder = Order.findOrderById(orderID);
             if (selectedOrder != null)
                 loggedBarista.markOrderAsReady(selectedOrder);
         }
-        JOptionPane.showMessageDialog(this,rows.length + " coffees are ready","OK",0);
+        JOptionPane.showMessageDialog(this,rows.length + " coffees are ready","OK",JOptionPane.INFORMATION_MESSAGE);
         parent.refreshAllPanels();
     }
 

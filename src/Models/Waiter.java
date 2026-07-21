@@ -5,21 +5,16 @@ import Enums.OrderStatus;
 import Enums.Sex;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 public class Waiter extends Employee {
     private static final long serialVersionUID = 1L;
 
     // ATTRIBUTES
-
     private float waitersTip;
     private int waitersGrade;
     private final List<Integer> waitersGrades = new ArrayList<>();
     private final EnumSet<AllPersonTypes> personKind = EnumSet.of(AllPersonTypes.Waiter);
-    private final List<Delivery> servedDeliveries = new ArrayList<>();
 
     // CONSTRUCTORS
 
@@ -43,8 +38,15 @@ public class Waiter extends Employee {
         return waitersGrades;
     }
 
-    public List<Delivery> getServedDeliveries() {
-        return Collections.unmodifiableList(servedDeliveries);
+    public Collection<Delivery> getServedDeliveries() {
+        try {
+            return Arrays.stream(getLinks("deliveries"))
+                    .map(link -> (Delivery) link)
+                    .filter(delivery -> delivery.getOrder().getOrderStatus() == OrderStatus.SERVED)
+                    .toList();
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
 
     // BUSINESS METHODS
@@ -68,9 +70,7 @@ public class Waiter extends Employee {
                 "Delivery #" + order.getOrderID(),
                 "dzisiaj"
         );
-
-        delivery.setWaiter(this);
-
+        addLink("deliveries", "waiter", delivery);
         System.out.println("Order served.");
     }
 
@@ -108,20 +108,10 @@ public class Waiter extends Employee {
         waitersGrade = average / waitersGrades.size();
     }
 
-    public void addDelivery(Delivery delivery) {
-        if (delivery == null)
-            throw new IllegalArgumentException("Delivery cannot be null.");
 
-        if (!servedDeliveries.contains(delivery)) {
-            servedDeliveries.add(delivery);
-
-            if (delivery.getWaiter() != this)
-                delivery.setWaiter(this);
-        }
-    }
 
     public int countServedOrders() {
-        return servedDeliveries.size();
+        return getServedDeliveries().size();
     }
 
     public void receivePayment(Order order) {

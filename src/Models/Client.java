@@ -19,7 +19,7 @@ public class Client extends Person {
     private Address address;
 
     // TODO (Etap 2 - ObjectPlusPlus Association)
-    private final Map<Integer, Order> orders = new TreeMap<>();
+
 
     public Client() {
         super();
@@ -92,7 +92,13 @@ public class Client extends Person {
     }
 
     public Collection<Order> getOrders() {
-        return Collections.unmodifiableCollection(orders.values());
+        try {
+            return Arrays.stream(getLinks("orders"))
+                    .map(o -> (Order) o)
+                    .toList();
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
 
     @Override
@@ -122,13 +128,12 @@ public class Client extends Person {
     }
 
     public void addOrder(Order order) {
-        Objects.requireNonNull(order);
-
-        if (orders.containsKey(order.getOrderID()))
-            return;
-
-        orders.put(order.getOrderID(), order);
-        order.setClient(this);
+        addLink(
+                "orders",
+                "client",
+                order,
+                order.getOrderID()
+        );
     }
 
     @Override
@@ -144,11 +149,11 @@ public class Client extends Person {
     }
 
     public Order getShoppingCart() {
-        for (Order order : orders.values()) {
-            if (order.isShoppingCart())
+        for (Order order : getOrders()) {
+            if (order.isShoppingCart()) {
                 return order;
+            }
         }
-
         return createNewShoppingCart();
     }
 

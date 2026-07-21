@@ -8,9 +8,9 @@ import java.util.*;
 public class Barista extends Employee {
     private static final long serialVersionUID = 1L;
     private CoffeeCountry favouriteCoffeeCountry;
-    private List<Preparation> preparations = new ArrayList<>();
+
     private final Map<Integer, Order> orders = new HashMap<>();
-    private Preparation preparation;
+
     public Barista() {
         super();
     }
@@ -18,13 +18,19 @@ public class Barista extends Employee {
         super(name, surname, dateOfBirth, sex, salary);
         this.favouriteCoffeeCountry = favouriteCoffeeCountry;
     }
-
-    public void addPreparation(Preparation preparation) {
-        this.preparation = preparation;
+    public Collection<Preparation> getPreparations() {
+        try {
+            return Arrays.stream(getLinks("preparations"))
+                    .map(p -> (Preparation) p)
+                    .toList();
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
+
     // EXTENT
     public static List<Barista> getBaristaExtent() {
-        return ObjectPlus.getExtent(Barista.class);
+        return getExtent(Barista.class);
     }
     // GETTERS
     public CoffeeCountry getFavouriteCoffeeCountry() {
@@ -42,7 +48,7 @@ public class Barista extends Employee {
                 employeeSalary, favouriteCoffeeCountry);
     }
     public void startPreparing(Order order){
-        order.startPreparation(this);
+        order.setOrderStatus(OrderStatus.PREPARING);
     }
     public void markOrderAsReady(Order order) {
         if(order == null)
@@ -64,38 +70,28 @@ public class Barista extends Employee {
             if (!product.isProductAvailability())
                 throw new IllegalStateException("Some products are unavailable.");
         }
-        Preparation preparation = new Preparation(this, order);
-        order.setPreparation(preparation);
-        preparations.add(preparation);
-        addOrder(order);
+        new Preparation(this, order);
         order.acceptOrder();
     }
     public int countAcceptedOrders() {
-        return (int) preparations.stream()
+        return (int) getPreparations().stream()
                 .filter(p -> p.getBarista() == this)
                 .filter(p -> p.getOrder().getOrderStatus() == OrderStatus.ACCEPTED)
                 .count();
 
     }
     public int countPreparingOrders() {
-        return (int) preparations.stream()
+        return (int) getPreparations().stream()
                 .filter(p -> p.getBarista() == this)
                 .filter(p -> p.getOrder().getOrderStatus() == OrderStatus.PREPARING)
                 .count();
     }
     public int countReadyOrders() {
-        return (int) Preparation.getPreparationExtent()
+        return (int) getPreparations()
                 .stream()
                 .filter(p -> p.getBarista() == this)
                 .filter(p -> p.getOrder().getOrderStatus() == OrderStatus.READY)
                 .count();
     }
-    public Collection<Order> getOrders() {
-        return Collections.unmodifiableCollection(orders.values());
-    }
-    public void addOrder(Order order) {
-        if (order == null)
-            throw new IllegalArgumentException("Order cannot be null.");
-        orders.put(order.getOrderID(), order);
-    }
+
 }

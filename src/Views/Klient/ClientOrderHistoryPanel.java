@@ -12,9 +12,11 @@ public class ClientOrderHistoryPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JButton refreshButton;
     private JButton detailsButton;
+    private ClientDashboardView parent;
 
-    public ClientOrderHistoryPanel(Client loggedClient) {
+    public ClientOrderHistoryPanel(Client loggedClient, ClientDashboardView parent) {
         this.loggedClient = loggedClient;
+        this.parent = parent;
         initializeComponents();
         initializeLayout();
         initializeListeners();

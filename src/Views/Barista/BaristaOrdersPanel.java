@@ -105,7 +105,7 @@ public class BaristaOrdersPanel extends JPanel {
             return;
         }
         int orderId = (Integer) tableModel.getValueAt(row,0);
-        Order order = Order.findById(orderId);
+        Order order = Order.findOrderById(orderId);
         try{
             loggedBarista.acceptOrder(order);
             JOptionPane.showMessageDialog(this, "Order accepted.");
@@ -121,7 +121,7 @@ public class BaristaOrdersPanel extends JPanel {
         }
         for (int row : rows) {
             int orderId = (Integer) tableModel.getValueAt(row, 0);
-            Order order = Order.findById(orderId);
+            Order order = Order.findOrderById(orderId);
             if (order != null)
                 loggedBarista.acceptOrder(order);
         }

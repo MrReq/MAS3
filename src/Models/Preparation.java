@@ -11,9 +11,6 @@ public class Preparation extends ObjectPlusPlus implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // FIELDS
-
-    private Barista barista;
-    private Order order;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
@@ -31,14 +28,11 @@ public class Preparation extends ObjectPlusPlus implements Serializable {
         if (order == null) {
             throw new IllegalArgumentException("Order cannot be null.");
         }
+        this.startTime = LocalDateTime.now();
 
-        this.barista = barista;
-        this.order = order;
+        barista.addLink("preparations", "barista", this);
 
         order.setPreparation(this);
-        barista.addPreparation(this);
-
-        this.startTime = LocalDateTime.now();
     }
 
     // EXTENT
@@ -64,11 +58,18 @@ public class Preparation extends ObjectPlusPlus implements Serializable {
     // GETTERS
 
     public Barista getBarista() {
-        return barista;
+        try {
+            return (Barista) getLinks("barista")[0];
+        } catch (Exception e) {
+            return null;
+        }
     }
-
     public Order getOrder() {
-        return order;
+        try {
+            return (Order) getLinks("order")[0];
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public LocalDateTime getStartTime() {
@@ -82,8 +83,8 @@ public class Preparation extends ObjectPlusPlus implements Serializable {
     @Override
     public String toString() {
         return "Preparation{" +
-                "barista=" + barista.getPersonName() +
-                ", order=" + order.getOrderID() +
+                "barista=" + getBarista().getPersonName() +
+                ", order=" + getOrder().getOrderID() +
                 ", started=" + startTime +
                 ", finished=" + endTime +
                 '}';

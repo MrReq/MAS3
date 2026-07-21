@@ -1,6 +1,8 @@
 package Models;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import SecondaryClasses.ObjectPlusPlus;
@@ -24,7 +26,6 @@ public class Delivery extends ObjectPlusPlus {
     private String deliveryDate;
 
     // TODO (Etap 2 - ObjectPlusPlus Association)
-    private Waiter waiter;
 
     private Delivery(Order order, String address, String deliveryDate) {
         if (order == null) {
@@ -42,12 +43,13 @@ public class Delivery extends ObjectPlusPlus {
     }
 
     public Waiter getWaiter() {
-        return waiter;
+        try {
+            return (Waiter) getLinks("waiter")[0];
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public void setWaiter(Waiter waiter) {
-        this.waiter = waiter;
-    }
 
     public int getDeliveryID() {
         return deliveryID;
@@ -95,4 +97,5 @@ public class Delivery extends ObjectPlusPlus {
                 ", deliveryDate='" + deliveryDate + '\'' +
                 '}';
     }
+
 }

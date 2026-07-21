@@ -19,8 +19,8 @@ public class ClientDashboardView extends JFrame {
         this.loggedClient = client;
         clientmenuPanel = new ClientMenuPanel(loggedClient,this);
         clientShoppingCartView = new ClientShoppingCartView(loggedClient,this);
-        clientProfileView = new ClientProfileView(loggedClient);
-        clientOrderHistoryView = new ClientOrderHistoryPanel(loggedClient);
+        clientProfileView = new ClientProfileView(loggedClient,this);
+        clientOrderHistoryView = new ClientOrderHistoryPanel(loggedClient,this);
         initializeFrame();
         initializeComponents();
         initializeLayout();
@@ -93,5 +93,6 @@ public class ClientDashboardView extends JFrame {
             refreshAllPanels();
             JOptionPane.showMessageDialog(this, "Address saved successfully.");
         }
+        refreshAllPanels();
     }
 }

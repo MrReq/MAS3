@@ -83,7 +83,7 @@ public class WaiterOrdersPanel extends JPanel {
             return;
         }
         int orderId = (Integer) tableModel.getValueAt(row, 0);
-        Order selectedOrder = Order.findById(orderId);
+        Order selectedOrder = Order.findOrderById(orderId);
         try {
             loggedWaiter.serveOrder(selectedOrder);
         } catch (Exception e) {

@@ -188,7 +188,14 @@ public class LoginSelectionView extends JFrame {
 
         tabbedPane.addTab("Composition", new JOptionPane("Here is the message about Association with an attribute",JOptionPane.INFORMATION_MESSAGE));
 
-        tabbedPane.addTab("Disjoint", new JOptionPane("Here is the message about Disjoint",JOptionPane.INFORMATION_MESSAGE));
+        tabbedPane.addTab("Disjoint", new JOptionPane(
+                "Disjoint inheritance means that an object can belong to only one subclass within the inheritance hierarchy.\n" +
+                        "Each subclass represents a different specialization of the superclass.\n" +
+                        "Java supports disjoint inheritance directly by using the 'extends' keyword.\n" +
+                        "In my project, Employee is the superclass for the employee hierarchy.\n" +
+                        "The subclasses Barista, Waiter, and Cleaner represent disjoint specializations of Employee.\n" +
+                        "An employee can be either a Barista, a Waiter, or a Cleaner, but cannot belong to more than one of these subclasses at the same time.",
+                JOptionPane.INFORMATION_MESSAGE));
 
         tabbedPane.addTab("Abstract class", new JOptionPane("Here is the message about Abstract class",JOptionPane.INFORMATION_MESSAGE));
 

@@ -75,7 +75,11 @@ public class Order extends ObjectPlusPlus {
     }
 
     public Preparation getPreparation() {
-        return preparation;
+        try {
+            return (Preparation) getLinks("preparation")[0];
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public Delivery getDelivery() {
@@ -100,9 +104,6 @@ public class Order extends ObjectPlusPlus {
         this.orderStatus = status;
     }
 
-    public void setPreparation(Preparation preparation) {
-        this.preparation = preparation;
-    }
 
     public void setClient(Client client) {
         if (this.client == client) {
@@ -160,14 +161,17 @@ public class Order extends ObjectPlusPlus {
         orderStatus = OrderStatus.ACCEPTED;
     }
 
-    public void startPreparation(Barista barista) {
-        if (orderStatus != OrderStatus.ACCEPTED) {
-            throw new IllegalStateException("Only accepted orders can be prepared.");
+    public void setPreparation(Preparation preparation) {
+        if (preparation == null) {
+            throw new IllegalArgumentException("Preparation cannot be null.");
         }
 
-        orderStatus = OrderStatus.PREPARING;
+        if (this.preparation != null) {
+            return;
+        }
 
-        // preparation = new Preparation(barista, this);
+        this.preparation = preparation;
+        addLink("preparation", "order", preparation);
     }
 
     public void markAsReady() {
@@ -189,20 +193,12 @@ public class Order extends ObjectPlusPlus {
         return new Order(client, type);
     }
 
-    public static Order findById(int orderID) {
-        System.out.println("Searching for order ID = " + orderID);
-        System.out.println("Orders in extent: " + getOrderExtent().size());
-
+    public static Order findOrderById(int id) {
         for (Order order : getOrderExtent()) {
-            System.out.println("Found order: " + order.getOrderID());
-
-            if (order.getOrderID() == orderID) {
-                System.out.println("MATCH!");
+            if (order.getOrderID() == id) {
                 return order;
             }
         }
-
-        System.out.println("NOT FOUND");
         return null;
     }
 

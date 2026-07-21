@@ -87,7 +87,7 @@ public class WaiterServedOrdersPanel extends JPanel {
             return;
         }
         int orderId = (Integer) tableModel.getValueAt(row, 0);
-        Order order = Order.findById(orderId);
+        Order order = Order.findOrderById(orderId);
         if (order == null) {
             JOptionPane.showMessageDialog(this, "Order not found.");
             return;
