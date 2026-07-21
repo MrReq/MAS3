@@ -77,6 +77,7 @@ public class WaiterOrdersPanel extends JPanel {
     }
     // SERVE
     private void serveOrder() {
+        System.out.println("serveOrder() called");
         int row = ordersTable.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Select order.");
@@ -88,11 +89,6 @@ public class WaiterOrdersPanel extends JPanel {
             loggedWaiter.serveOrder(selectedOrder);
         } catch (Exception e) {
             throw new RuntimeException(e);}
-        try {
-            Delivery.createDelivery(selectedOrder, "Standard Delivery","dzisij");
-            JOptionPane.showMessageDialog(null, "Order served.\nDelivery created.");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);}
         parent.refreshAllPanels();}
     public void reload() {
         refreshTable();

@@ -28,14 +28,17 @@ public class Delivery extends ObjectPlusPlus {
     // TODO (Etap 2 - ObjectPlusPlus Association)
 
     private Delivery(Order order, String address, String deliveryDate) {
-        if (order == null) {
+        System.out.println("CREATING DELIVERY for order " + order.getOrderID());
+
+        if (order == null)
             throw new IllegalArgumentException("Order cannot be null.");
-        }
 
         this.deliveryID = counter++;
         this.order = order;
         this.address = address;
         this.deliveryDate = deliveryDate;
+
+        addLink("order", "delivery", order);
     }
 
     public static Delivery createDelivery(Order order, String address, String deliveryDate) {
@@ -44,8 +47,11 @@ public class Delivery extends ObjectPlusPlus {
 
     public Waiter getWaiter() {
         try {
-            return (Waiter) getLinks("waiter")[0];
+            Object[] links = getLinks("waiter");
+            System.out.println("Delivery " + deliveryID + " waiter links = " + links.length);
+            return (Waiter) links[0];
         } catch (Exception e) {
+            System.out.println("Delivery " + deliveryID + " has NO waiter!");
             return null;
         }
     }

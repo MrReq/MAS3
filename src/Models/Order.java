@@ -21,7 +21,6 @@ public class Order extends ObjectPlusPlus {
     private OrderStatus orderStatus;
     private final LocalDateTime createdAt;
     private Client client;
-    private Delivery delivery;
     private boolean shoppingCart = true;
 
     private final List<Product> products = new ArrayList<>();
@@ -83,7 +82,11 @@ public class Order extends ObjectPlusPlus {
     }
 
     public Delivery getDelivery() {
-        return delivery;
+        try {
+            return (Delivery) getLinks("delivery")[0];
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public LocalDateTime getCreatedAt() {

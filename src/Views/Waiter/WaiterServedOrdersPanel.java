@@ -100,6 +100,15 @@ public class WaiterServedOrdersPanel extends JPanel {
         refreshTable();
     }
     private void showAllDeliveries() {
+        System.out.println("===== DELIVERY EXTENT =====");
+        for (Delivery d : Delivery.getDeliveryExtent()) {
+            System.out.println(
+                    "Delivery object=" + System.identityHashCode(d)
+                            + ", id=" + d.getDeliveryID()
+                            + ", order=" + d.getOrder().getOrderID()
+            );
+        }
+
         StringBuilder sb = new StringBuilder();
         if (Delivery.getDeliveryExtent().isEmpty()) {
             sb.append("No deliveries.");

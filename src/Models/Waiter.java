@@ -70,6 +70,7 @@ public class Waiter extends Employee {
                 "Delivery #" + order.getOrderID(),
                 "dzisiaj"
         );
+        System.out.println("Delivery extent size = " + Delivery.getDeliveryExtent().size());
         addLink("deliveries", "waiter", delivery);
         System.out.println("Order served.");
     }
